@@ -4,8 +4,7 @@ import validationErrorMessage from "../util/validationErrorMessage.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
-// We should deside how to store secret key or another way for login (Firebase, for example)
+// We should decide how to store secret key or another way for login (Firebase, for example)
 const SECRET = "mysecretkey";
 // Lidiia suggestion: I think we don't need getUsers function in our project.
 // We need it only to test the database working.
