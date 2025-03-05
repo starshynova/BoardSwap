@@ -7,20 +7,6 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Lidiia suggestion: I think we don't need getUsers function in our project.
-// We need it only to test the database working.
-export const getUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json({ success: true, result: users });
-  } catch (error) {
-    logError(error);
-    res
-      .status(500)
-      .json({ success: false, msg: "Unable to get users, try again later" });
-  }
-};
-
 export const createUser = async (req, res) => {
   try {
     const { user } = req.body;
@@ -120,6 +106,13 @@ export const loginUser = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   const { id } = req.params;
+
+  // eslint-disable-next-line no-undef
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(400)
+      .json({ success: false, msg: "Invalid user ID format" });
+  }
   try {
     const user = await User.findById(id);
     res.status(200).json({ success: true, result: user });
@@ -160,9 +153,9 @@ export const updateUser = async (req, res) => {
 
     if (!updatedUser) {
       return res.status(404).json({ success: false, msg: "User not found" });
+    } else {
+      return res.status(200).json({ success: true, user: updatedUser });
     }
-
-    res.status(200).json({ success: true, user: updatedUser });
   } catch (error) {
     logError(error);
     res.status(500).json({
@@ -174,6 +167,12 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   const { id } = req.params;
+  // eslint-disable-next-line no-undef
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res
+      .status(400)
+      .json({ success: false, msg: "Invalid user ID format" });
+  }
   if (!id) {
     res.status(400).send({ error: "Please, provide user ID" });
     return;
@@ -197,3 +196,44 @@ export const deleteUser = async (req, res) => {
 const getUserByEmail = async (email) => {
   return await User.findOne({ email });
 };
+
+// The token should be saved after a successful login
+
+// fetch("http://localhost:3000/api/users/login", {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({ email: "test@example.com", password: "123456" ...}),
+// })
+//   .then((response) => response.json())
+//   .then((data) => {
+//     if (data.token) {
+//       localStorage.setItem("token", data.token);
+//     } else {
+//       console.error("Authentication error:", data.error);
+//     }
+//   })
+//   .catch((error) => console.error("Error:", error));
+
+// When sending requests to secure APIs (where authMiddleware is needed),
+// you should pass the token to the headers:
+
+// const token = localStorage.getItem("token");
+// fetch("http://localhost:5000/api/users/:id", {
+//   method: "GET",
+//   headers: {
+//   "Authorization": `Bearer ${token}`,
+//   "Content-Type": "application/json",
+// },
+// })
+// .then((response) => response.json())
+// .then((data) => console.log("User's data:", data))
+// .catch((error) => console.error("Error:", error));
+
+// When logging out, the token must be deleted
+
+// function logout() {
+//   localStorage.removeItem("token");
+//   console.log("User logged out.");
+// }
