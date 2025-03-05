@@ -4,7 +4,7 @@ import validateAllowedFields from "../util/validateAllowedFields.js";
 
 const itemSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: Number, required: true, min: 0 },
   type: { type: String, required: true, enum: ["Puzzle", "Board Game"] },
   condition: {
     type: String,
@@ -31,6 +31,9 @@ export const validateItem = (itemObject) => {
     "price",
     "type",
     "condition",
+    "photo",
+    "description",
+    "created_date",
     "seller_id",
     "status",
   ];
