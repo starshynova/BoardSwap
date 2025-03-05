@@ -3,9 +3,10 @@ import { logError } from "../util/logging.js";
 import validationErrorMessage from "../util/validationErrorMessage.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-// We should decide how to store secret key or another way for login (Firebase, for example)
-const SECRET = "mysecretkey";
+dotenv.config();
+
 // Lidiia suggestion: I think we don't need getUsers function in our project.
 // We need it only to test the database working.
 export const getUsers = async (req, res) => {
@@ -38,14 +39,44 @@ export const createUser = async (req, res) => {
     const errorList = validateUser(user);
 
     if (errorList.length > 0) {
-      res
+      return res
         .status(400)
         .json({ success: false, msg: validationErrorMessage(errorList) });
-    } else {
-      const newUser = await User.create(user);
-
-      res.status(201).json({ success: true, user: newUser });
     }
+
+    const isEmailAvailable = await getUserByEmail(user.email);
+    if (isEmailAvailable) {
+      res.status(400).send({ error: "E-mail already exist" });
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(user.password, 12);
+
+    const newUser = {
+      email: user.email,
+      password: hashedPassword,
+      first_name: user.first_name,
+      ...(user.last_name && { last_name: user.last_name }),
+      post_code: user.post_code,
+      ...(user.address && { address: user.address }),
+      ...(user.city && { city: user.city }),
+      created_date: new Date(),
+    };
+
+    const insertedUser = await User.create(newUser);
+
+    return res.status(201).json({
+      success: true,
+      user: {
+        email: insertedUser.email,
+        first_name: insertedUser.first_name,
+        last_name: insertedUser.last_name || null,
+        post_code: insertedUser.post_code,
+        address: insertedUser.address || null,
+        city: insertedUser.city || null,
+        created_date: insertedUser.created_date,
+      },
+    });
   } catch (error) {
     logError(error);
     res
@@ -63,10 +94,7 @@ export const loginUser = async (req, res) => {
     return;
   }
 
-  const getUserByEmail = (email) => {
-    return User.find((user) => user.email === email);
-  };
-  const user = getUserByEmail(email);
+  const user = await getUserByEmail(email);
   if (!user) {
     res.status(401).send({ error: "Invalid e-mail address of user" });
     return;
@@ -79,7 +107,9 @@ export const loginUser = async (req, res) => {
   }
 
   try {
-    const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+      expiresIn: "1h",
+    });
     res.status(201).send({ token });
     return;
   } catch (err) {
@@ -91,7 +121,7 @@ export const loginUser = async (req, res) => {
 export const getUserById = async (req, res) => {
   const { id } = req.params;
   try {
-    const user = await User.find((user) => user.id === id);
+    const user = await User.findById(id);
     res.status(200).json({ success: true, result: user });
   } catch (error) {
     logError(error);
@@ -105,34 +135,28 @@ export const getUserById = async (req, res) => {
 export const updateUser = async (req, res) => {
   const { id } = req.params;
   const { user } = req.body;
+
   if (!id) {
-    res.status(400).send({ error: "Please, provide user ID" });
-    return;
+    return res.status(400).json({ error: "Please, provide user ID" });
   }
-  if (!user) {
-    res.status(400).send({ error: "Please, provide user data" });
-    return;
-  }
-  if (typeof user !== "object") {
-    res.status(400).json({
+
+  if (!user || typeof user !== "object") {
+    return res.status(400).json({
       success: false,
-      msg: `You need to provide a 'user' object. Received: ${JSON.stringify(
-        user,
-      )}`,
+      msg: "You need to provide a valid 'user' object.",
     });
-
-    return;
-  }
-  const errorList = validateUser(user);
-
-  if (errorList.length > 0) {
-    return res
-      .status(400)
-      .json({ success: false, msg: validationErrorMessage(errorList) });
   }
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(id, user, { new: true });
+    if (user.password) {
+      user.password = await bcrypt.hash(user.password, 12);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: user },
+      { new: true, runValidators: true },
+    );
 
     if (!updatedUser) {
       return res.status(404).json({ success: false, msg: "User not found" });
@@ -141,9 +165,10 @@ export const updateUser = async (req, res) => {
     res.status(200).json({ success: true, user: updatedUser });
   } catch (error) {
     logError(error);
-    res
-      .status(500)
-      .json({ success: false, msg: "Unable to update user, try again later" });
+    res.status(500).json({
+      success: false,
+      msg: "Unable to update user, try again later",
+    });
   }
 };
 
@@ -167,4 +192,8 @@ export const deleteUser = async (req, res) => {
       .status(500)
       .json({ success: false, msg: "Unable to delete user, try again later" });
   }
+};
+
+const getUserByEmail = async (email) => {
+  return await User.findOne({ email });
 };
