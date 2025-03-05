@@ -6,24 +6,29 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, minLength: 6, required: true },
   first_name: { type: String, minLength: 2, required: true },
-  last_name: { type: String, minLength: 3, required: false },
+  last_name: { type: String, minLength: 2, required: false },
   post_code: { type: String, minLength: 6, maxLength: 6, required: true },
   address: { type: String, required: false },
   city: { type: String, required: false },
   created_date: { type: Date, default: Date.now },
-  products: {
-    type: Array,
-    required: false,
-    additionalItems: true,
-    items: { type: String },
-  },
+  products: [{ type: String }],
 });
 
 const User = mongoose.model("users", userSchema);
 
 export const validateUser = (userObject) => {
   const errorList = [];
-  const allowedKeys = ["email", "password", "first_name", "post_code"];
+  const allowedKeys = [
+    "email",
+    "password",
+    "first_name",
+    "last_name",
+    "post_code",
+    "address",
+    "city",
+    "created_date",
+    "products",
+  ];
 
   const validatedKeysMessage = validateAllowedFields(userObject, allowedKeys);
 
