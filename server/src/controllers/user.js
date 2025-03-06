@@ -9,7 +9,7 @@ dotenv.config();
 
 export const createUser = async (req, res) => {
   try {
-    const { user } = req.body;
+    const user = req.body;
 
     if (typeof user !== "object") {
       res.status(400).json({
