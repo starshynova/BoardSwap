@@ -9,7 +9,7 @@ const SearchContainer = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   border: "1.5px solid ",
-  borderColor:theme.palette.secondary.main,
+  borderColor: theme.palette.secondary.main,
   flex: 1,
 }));
 
@@ -17,7 +17,7 @@ const Wrapper = styled("div")({
   display: "flex",
   alignItems: "center",
   gap: "8px",
-  width: "50%", 
+  width: "50%",
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -25,8 +25,8 @@ const StyledButton = styled(Button)(({ theme }) => ({
   borderColor: theme.palette.secondary.main,
   backgroundColor: theme.palette.text.primary,
   "&:hover": {
- backgroundColor: theme.palette.action.hover, 
- color: theme.palette.text.primary,
+    backgroundColor: theme.palette.action.hover,
+    color: theme.palette.text.primary,
   },
 }));
 

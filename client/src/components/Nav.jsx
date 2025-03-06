@@ -21,7 +21,7 @@ const Icons = styled(Box)(({ theme }) => ({
 }));
 
 const Logo = styled("img")({
-  height: 50, 
+  height: 50,
   width: "auto",
 });
 
@@ -29,14 +29,14 @@ const Nav = () => {
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <StyledToolbar>
-      <Logo src="/Logo.png" alt="Logo" />
+        <Logo src="/Logo.png" alt="Logo" />
         <SearchBar />
         <Icons>
           <IconButton aria-label="create">
             <AddCircleIcon sx={{ color: "white" }} />
           </IconButton>
           <IconButton aria-label="cart">
-            <Badge >
+            <Badge>
               <AddShoppingCartIcon sx={{ color: "white" }} />
             </Badge>
           </IconButton>
