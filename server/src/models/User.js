@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   items: [{ type: String }],
 });
 
-userSchema.methods.validateUser = function (userObject) {
+export const validateUser = (userObject) => {
   const errorList = [];
   const allowedKeys = [
     "name",
