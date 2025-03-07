@@ -4,7 +4,17 @@ import validationErrorMessage from "../util/validationErrorMessage.js";
 
 export const getItems = async (req, res) => {
   try {
-    const items = await Item.find();
+    const { sort } = req.query;
+
+    let sortQuery = {};
+
+    if (sort === "price_asc") {
+      sortQuery.price = 1;
+    } else if (sort === "price_desc") {
+      sortQuery.price = -1;
+    }
+
+    const items = await Item.find().sort(sortQuery);
     res.status(200).json({ success: true, result: items });
   } catch (error) {
     logError(error);
