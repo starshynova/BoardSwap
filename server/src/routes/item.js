@@ -5,6 +5,7 @@ import {
   getItemById,
   updateItem,
   deleteItem,
+  searchItems,
 } from "../controllers/item.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
@@ -15,5 +16,6 @@ itemRouter.get("/", getItems);
 itemRouter.get("/:id", getItemById);
 itemRouter.put("/:id", authMiddleware, updateItem);
 itemRouter.delete("/:id", authMiddleware, deleteItem);
+itemRouter.get("/search", searchItems);
 
 export default itemRouter;

@@ -146,3 +146,32 @@ export const deleteItem = async (req, res) => {
     });
   }
 };
+
+export const searchItems = async (req, res) => {
+  try {
+    const { q } = req.query; // Get search query from request
+
+    if (!q) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "Search query is required" });
+    }
+
+    const searchQuery = {
+      $or: [
+        { title: { $regex: q, $options: "i" } }, // Case-insensitive search in title
+        { description: { $regex: q, $options: "i" } }, // Case-insensitive search in description
+      ],
+    };
+
+    const items = await Item.find(searchQuery);
+
+    res.status(200).json({ success: true, result: items });
+  } catch (error) {
+    logError(error);
+    res.status(500).json({
+      success: false,
+      msg: "Unable to search products, try again later",
+    });
+  }
+};
