@@ -1,122 +1,71 @@
-import { useState } from "react";
-import CreateUserForm from "../../components/CreateUserForm";
+import { useEffect, useState } from "react";
+
+import Input from "../../components/Input";
 import useFetch from "../../hooks/useFetch";
+import TEST_ID from "./CreateUser.testid";
 
 const CreateUser = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
-  const { isLoading, error, performFetch } = useFetch("/users", () => {
-    setSuccessMessage("Account created successfully!");
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-    });
-  });
-
-  const validateField = (fieldName, value) => {
-    let errorMessage = "";
-
-    switch (fieldName) {
-      case "name":
-        if (!value.trim()) {
-          errorMessage = "Name is required";
-        }
-        break;
-      case "email":
-        if (!value.trim() || !/\S+@\S+\.\S+/.test(value)) {
-          errorMessage = "Invalid email format";
-        }
-        break;
-      case "password":
-        if (!value.trim() || value.length < 6) {
-          errorMessage = "Password must be at least 8 characters";
-        }
-        break;
-      default:
-        break;
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [fieldName]: errorMessage,
-    }));
+  const onSuccess = () => {
+    setName("");
+    setEmail("");
   };
+  const { isLoading, error, performFetch, cancelFetch } = useFetch(
+    "/users",
+    onSuccess,
+  );
 
-  const validateForm = (data) => {
-    const newErrors = {};
-    let valid = true;
+  useEffect(() => {
+    return cancelFetch;
+  }, []);
 
-    // Validate required fields (frontend validation)
-    if (!data.name.trim()) {
-      newErrors.name = "Name is required";
-      valid = false;
-    }
-    if (!data.email.trim() || !/\S+@\S+\.\S+/.test(data.email)) {
-      newErrors.email = "Invalid email format";
-      valid = false;
-    }
-    if (!data.password.trim() || data.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-
-    validateField(name, value);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    if (validateForm(formData)) {
-      const options = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      };
-
-      performFetch(options);
-    }
+    performFetch({
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ user: { name, email } }),
+    });
   };
+
+  let statusComponent = null;
+  if (error != null) {
+    statusComponent = (
+      <div data-testid={TEST_ID.errorContainer}>
+        Error while trying to create user: {error.toString()}
+      </div>
+    );
+  } else if (isLoading) {
+    statusComponent = (
+      <div data-testid={TEST_ID.loadingContainer}>Creating user....</div>
+    );
+  }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <CreateUserForm
-        formData={formData}
-        errors={errors}
-        isLoading={isLoading}
-        errorMessage={error || errorMessage}
-        successMessage={successMessage}
-        handleSubmit={handleSubmit}
-        handleInputChange={handleInputChange}
-      />
+    <div data-testid={TEST_ID.container}>
+      <h1>What should the user be?</h1>
+      <form onSubmit={handleSubmit}>
+        <Input
+          name="name"
+          value={name}
+          onChange={(value) => setName(value)}
+          data-testid={TEST_ID.nameInput}
+        />
+        <Input
+          name="email"
+          value={email}
+          onChange={(value) => setEmail(value)}
+          data-testid={TEST_ID.emailInput}
+        />
+        <button type="submit" data-testid={TEST_ID.submitButton}>
+          Submit
+        </button>
+      </form>
+      {statusComponent}
     </div>
   );
 };
