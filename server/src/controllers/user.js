@@ -8,6 +8,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+const getUserByEmail = async (email) => {
+  return await User.findOne({ email });
+};
+
 export const createUser = async (req, res) => {
   try {
     const user = req.body;
@@ -15,7 +19,7 @@ export const createUser = async (req, res) => {
     if (typeof user !== "object") {
       return res.status(400).json({
         success: false,
-        msg: `You need to provide a 'user' object. Received: ${JSON.stringify(user)}`,
+        msg: `Invalid user data. Please ensure you're sending the correct information.: ${JSON.stringify(user)}`,
       });
     }
 
@@ -28,7 +32,10 @@ export const createUser = async (req, res) => {
 
     const isEmailAvailable = await getUserByEmail(user.email);
     if (isEmailAvailable) {
-      return res.status(400).send({ error: "E-mail already exists" });
+      return res.status(400).json({
+        success: false,
+        msg: "This email is already registered. Please use a different email.",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(user.password, 12);
@@ -118,27 +125,37 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const user = req.body;
+  const userUpdates = req.body;
 
-  if (!id) {
-    return res.status(400).json({ error: "Please, provide user ID" });
+  if (!req.user) {
+    return res
+      .status(401)
+      .json({ success: false, msg: "User not authenticated. Please log in." });
   }
 
-  if (!user || typeof user !== "object") {
+  const allowedFields = ["post_code", "city"];
+  const fieldsToUpdate = Object.keys(userUpdates);
+  const invalidFields = fieldsToUpdate.filter(
+    (field) => !allowedFields.includes(field),
+  );
+
+  if (invalidFields.length > 0) {
     return res.status(400).json({
       success: false,
-      msg: "You need to provide a valid 'user' object.",
+      msg: `You can only update the following fields: ${allowedFields.join(", ")}`,
     });
   }
 
-  try {
-    if (user.password) {
-      user.password = await bcrypt.hash(user.password, 12);
-    }
+  if (req.user.id !== id) {
+    return res
+      .status(403)
+      .json({ success: false, msg: "You can only update your own profile" });
+  }
 
+  try {
     const updatedUser = await User.findByIdAndUpdate(
       id,
-      { $set: user },
+      { $set: userUpdates },
       { new: true, runValidators: true },
     );
 
@@ -158,9 +175,10 @@ export const updateUser = async (req, res) => {
     });
   } catch (error) {
     logError(error);
-    return res
-      .status(500)
-      .json({ success: false, msg: "Unable to update user, try again later" });
+    return res.status(500).json({
+      success: false,
+      msg: "Unable to update user, try again later",
+    });
   }
 };
 
@@ -178,15 +196,20 @@ export const deleteUser = async (req, res) => {
     if (!deletedUser) {
       return res.status(404).json({ success: false, msg: "User not found" });
     }
-    return res.status(200).json({ success: true, user: deletedUser });
+    return res.status(200).json({
+      success: true,
+      user: {
+        email: deletedUser.email,
+        name: deletedUser.name,
+        post_code: deletedUser.post_code,
+        city: deletedUser.city,
+      },
+    });
   } catch (error) {
     logError(error);
-    return res
-      .status(500)
-      .json({ success: false, msg: "Unable to delete user, try again later" });
+    return res.status(500).json({
+      success: false,
+      msg: "Unable to delete user, try again later",
+    });
   }
-};
-
-const getUserByEmail = async (email) => {
-  return await User.findOne({ email });
 };
