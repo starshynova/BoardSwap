@@ -13,9 +13,9 @@ const itemRouter = express.Router();
 
 itemRouter.post("/", authMiddleware, createItem);
 itemRouter.get("/", getItems);
+itemRouter.get("/search", searchItems);
 itemRouter.get("/:id", getItemById);
 itemRouter.put("/:id", authMiddleware, updateItem);
 itemRouter.delete("/:id", authMiddleware, deleteItem);
-itemRouter.get("/search", searchItems);
 
 export default itemRouter;
