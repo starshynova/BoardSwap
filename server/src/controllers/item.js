@@ -67,7 +67,10 @@ export const createItem = async (req, res) => {
 export const getItemById = async (req, res) => {
   const { id } = req.params;
   try {
-    const item = await Item.find((item) => item.id === id);
+    const item = await Item.findById(id);
+    if (!item) {
+      return res.status(404).json({ success: false, msg: "Item not found" });
+    }
     res.status(200).json({ success: true, result: item });
   } catch (error) {
     logError(error);
@@ -149,7 +152,7 @@ export const deleteItem = async (req, res) => {
 
 export const searchItems = async (req, res) => {
   try {
-    const { q } = req.query; // Get search query from request
+    const { q } = req.query;
 
     if (!q) {
       return res
