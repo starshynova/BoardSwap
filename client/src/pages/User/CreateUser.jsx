@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CreateUserForm from "../../components/CreateUserForm";
+import UserForm from "../../components/UserForm";
 import useFetch from "../../hooks/useFetch";
 
 const CreateUser = () => {
@@ -108,7 +108,7 @@ const CreateUser = () => {
         height: "100vh",
       }}
     >
-      <CreateUserForm
+      <UserForm
         formData={formData}
         errors={errors}
         isLoading={isLoading}
