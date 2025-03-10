@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const CreateUserForm = ({
+const UserForm = ({
   formData,
   errors,
   isLoading,
@@ -44,6 +44,7 @@ const CreateUserForm = ({
     "primary",
     "success",
   ];
+
   const passwordStrengthLabels = [
     "Very Weak",
     "Weak",
@@ -96,6 +97,13 @@ const CreateUserForm = ({
           onChange={handleInputChange}
           error={!!errors.name}
           helperText={errors.name}
+          sx={{
+            backgroundColor: "#D6F9FA",
+            borderRadius: "5px",
+            "& .MuiInputBase-input": {
+              color: "#000000",
+            },
+          }}
         />
       )}
 
@@ -109,6 +117,13 @@ const CreateUserForm = ({
         onChange={handleInputChange}
         error={!!errors.email}
         helperText={errors.email}
+        sx={{
+          backgroundColor: "#D6F9FA",
+          borderRadius: "5px",
+          "& .MuiInputBase-input": {
+            color: "#000000",
+          },
+        }}
       />
 
       <TextField
@@ -121,6 +136,17 @@ const CreateUserForm = ({
         onChange={handleInputChange}
         error={!!errors.password}
         helperText={errors.password}
+        required
+        sx={{
+          backgroundColor: "#D6F9FA",
+          borderRadius: "5px",
+          "& .MuiInputBase-input": {
+            color: "#000000",
+          },
+          "& .MuiInputLabel-asterisk": {
+            color: "red",
+          },
+        }}
       />
 
       {!isLogin && formData.password && (
@@ -168,7 +194,7 @@ const CreateUserForm = ({
   );
 };
 
-CreateUserForm.propTypes = {
+UserForm.propTypes = {
   formData: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
@@ -179,4 +205,4 @@ CreateUserForm.propTypes = {
   isLogin: PropTypes.bool,
 };
 
-export default CreateUserForm;
+export default UserForm;
