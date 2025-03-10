@@ -11,16 +11,16 @@ import UIProvider from "./context/UIContext";
 const App = () => {
   return (
     <>
-     <UIProvider>
-      <ThemeProvider theme={theme}>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/user" element={<UserList />} />
-          <Route path="/register" element={<CreateUser />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </ThemeProvider>
+      <UIProvider>
+        <ThemeProvider theme={theme}>
+          <Nav />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/user" element={<UserList />} />
+            <Route path="/register" element={<CreateUser />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </ThemeProvider>
       </UIProvider>
     </>
   );
