@@ -4,6 +4,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchBar from "./searchBar";
+import { useUIContext } from "../context/UIContext";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -26,6 +27,7 @@ const Logo = styled("img")({
 });
 
 const Nav = () => {
+  const { cart, setShowCart } = useUIContext();
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <StyledToolbar>
@@ -35,8 +37,8 @@ const Nav = () => {
           <IconButton aria-label="create">
             <AddCircleIcon sx={{ color: "white" }} />
           </IconButton>
-          <IconButton aria-label="cart">
-            <Badge>
+          <IconButton aria-label="cart" onClick={() => setShowCart(true)}>
+            <Badge badgeContent={cart.length} color="error">
               <AddShoppingCartIcon sx={{ color: "white" }} />
             </Badge>
           </IconButton>

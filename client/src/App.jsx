@@ -6,10 +6,12 @@ import Login from "./pages/User/Login";
 import UserList from "./pages/User/UserList";
 import theme from "./components/theme";
 import { ThemeProvider } from "@mui/material/styles";
+import UIProvider from "./context/UIContext";
 
 const App = () => {
   return (
     <>
+     <UIProvider>
       <ThemeProvider theme={theme}>
         <Nav />
         <Routes>
@@ -19,6 +21,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
         </Routes>
       </ThemeProvider>
+      </UIProvider>
     </>
   );
 };
