@@ -1,7 +1,7 @@
 import express from "express";
 
-import userRouter from "./routes/user.js";
-import itemRouter from "./routes/item.js";
+import userRouter from "./routes/user-route.js";
+import itemRouter from "./routes/item-route.js";
 
 // Create an express server
 const app = express();
