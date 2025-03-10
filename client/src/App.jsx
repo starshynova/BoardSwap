@@ -5,6 +5,7 @@ import CreateUser from "./pages/User/CreateUser";
 import UserList from "./pages/User/UserList";
 import theme from "./components/theme";
 import { ThemeProvider } from "@mui/material/styles";
+import CreateItem from "./pages/Item/CreateItem";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<UserList />} />
           <Route path="/register" element={<CreateUser />} />
+          <Route path="/items/create" element={<CreateItem />} />
         </Routes>
       </ThemeProvider>
     </>
