@@ -6,7 +6,7 @@ import {
   updateItem,
   deleteItem,
   searchItems,
-} from "../controllers/item.js";
+} from "../controllers/item-controller.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const itemRouter = express.Router();
