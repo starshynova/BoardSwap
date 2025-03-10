@@ -16,4 +16,11 @@ menu {
 
 body {
   padding: 20px;
+  background-image: url("../public/background.png");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
