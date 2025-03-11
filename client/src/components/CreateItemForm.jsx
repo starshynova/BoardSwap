@@ -6,7 +6,7 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { useState} from "react";
+import { useState } from "react";
 
 const CreateItemForm = () => {
   const itemType = [
@@ -59,8 +59,8 @@ const CreateItemForm = () => {
     if (!formData.price.trim()) {
       newErrors.price = "Price is required field";
     }
-    if (formData.price<0) {
-      newErrors.price = "The price should be a positive number or 0"
+    if (formData.price < 0) {
+      newErrors.price = "The price should be a positive number or 0";
     }
     if (!formData.type.trim()) {
       newErrors.type = "Category is required field";
@@ -114,7 +114,7 @@ const CreateItemForm = () => {
       <TextField
         required
         id="outlined-title"
-        name="title" 
+        name="title"
         label="Title"
         sx={inputStyles}
         onChange={handleChange}
@@ -125,7 +125,7 @@ const CreateItemForm = () => {
       <TextField
         required
         id="outlined-price"
-        name="price" 
+        name="price"
         label="Price"
         sx={inputStyles}
         slotProps={{
@@ -142,7 +142,7 @@ const CreateItemForm = () => {
       <TextField
         required
         id="outlined-select-category"
-        name="type" 
+        name="type"
         select
         label="Category"
         sx={inputStyles}
@@ -152,7 +152,11 @@ const CreateItemForm = () => {
         error={!!errors.type}
       >
         {itemType.map((option) => (
-          <MenuItem sx={{color: "#000000"}} key={option.value} value={option.value}>
+          <MenuItem
+            sx={{ color: "#000000" }}
+            key={option.value}
+            value={option.value}
+          >
             {option.label}
           </MenuItem>
         ))}
@@ -161,7 +165,7 @@ const CreateItemForm = () => {
       <TextField
         required
         id="outlined-select-condition"
-        name="condition" 
+        name="condition"
         select
         label="Condition"
         sx={inputStyles}
@@ -171,7 +175,11 @@ const CreateItemForm = () => {
         error={!!errors.condition}
       >
         {itemCondition.map((option) => (
-          <MenuItem sx={{color: "#000000"}} key={option.value} value={option.value}>
+          <MenuItem
+            sx={{ color: "#000000" }}
+            key={option.value}
+            value={option.value}
+          >
             {option.label}
           </MenuItem>
         ))}
@@ -179,7 +187,7 @@ const CreateItemForm = () => {
 
       <TextField
         id="outlined-photo"
-        name="photo" 
+        name="photo"
         label="Photo"
         sx={inputStyles}
         onChange={handleChange}
@@ -188,7 +196,7 @@ const CreateItemForm = () => {
 
       <TextField
         id="outlined-multiline-description"
-        name="description" 
+        name="description"
         label="Description"
         sx={inputStyles}
         multiline
