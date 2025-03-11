@@ -1,6 +1,8 @@
 import TEST_ID from "./Home.testid";
 import CenteredTabs from "../../components/Tabs";
 import SortDropdown from "../../components/SortDropdown";
+import ProductsPage from "../../components/ProductsPage";
+import Cart from "../../components/cart";
 
 // This is dummy data, I'll remove it after backend implementation
 const items = [
@@ -47,6 +49,8 @@ const Home = () => {
       <div>
         <CenteredTabs />
         <SortDropdown items={items} />
+        <ProductsPage />
+        <Cart />
       </div>
     </div>
   );

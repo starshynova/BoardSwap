@@ -4,13 +4,14 @@ import Home from "./pages/Home/Home";
 import CreateUser from "./pages/User/CreateUser";
 import Login from "./pages/User/Login";
 import UserList from "./pages/User/UserList";
+import CreateItem from "./pages/Item/CreateItem";
 import theme from "./components/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import CreateItem from "./pages/Item/CreateItem";
+import UIProvider from "./context/UIProvider";
 
 const App = () => {
   return (
-    <>
+    <UIProvider>
       <ThemeProvider theme={theme}>
         <Nav />
         <Routes>
@@ -21,7 +22,7 @@ const App = () => {
           <Route path="/items/create" element={<CreateItem />} />
         </Routes>
       </ThemeProvider>
-    </>
+    </UIProvider>
   );
 };
 
