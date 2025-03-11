@@ -38,6 +38,12 @@ const SearchBar = ({ onSearch }) => {
   const handleSearch = () => {
     onSearch(query.trim());
   };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
   return (
     <Wrapper>
       <SearchContainer>
@@ -52,6 +58,7 @@ const SearchBar = ({ onSearch }) => {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyPress}
         />
       </SearchContainer>
 

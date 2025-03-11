@@ -9,19 +9,25 @@ import {
 } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 import { useUIContext } from "../context/UIContext";
+import { useSearch } from "../context/SearchContext";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const { cart, setCart } = useUIContext();
-  const { isLoading, error, performFetch } = useFetch("/items", (data) => {
-    if (data.success) {
-      setProducts(data.result);
-    }
-  });
+  const { searchQuery } = useSearch();
+  const { isLoading, error, performFetch } = useFetch(
+    "/items",
+    (data) => {
+      if (data.success) {
+        setProducts(data.result);
+      }
+    },
+    searchQuery,
+  );
 
   useEffect(() => {
     performFetch();
-  }, []);
+  }, [searchQuery]);
 
   const toggleCartItem = (product) => {
     setCart((prevCart) => {
@@ -47,11 +53,10 @@ const ProductsPage = () => {
               <Card sx={{ boxShadow: 2, textAlign: "center" }}>
                 <CardMedia
                   component="img"
-                  objectFit="contain"
                   height="200"
                   image={product.photo}
                   alt={product.title}
-                  sx={{ objectFit: "cover" }}
+                  sx={{ objectFit: "contain" }}
                 />
                 <CardContent>
                   <Typography variant="h6" color="text.secondary">
