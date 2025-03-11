@@ -2,8 +2,8 @@ import TEST_ID from "./Home.testid";
 import CenteredTabs from "../../components/Tabs";
 import SortDropdown from "../../components/SortDropdown";
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 const Home = ({ searchQuery }) => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
@@ -64,4 +64,7 @@ const Home = ({ searchQuery }) => {
   );
 };
 
+Home.propTypes = {
+  searchQuery: PropTypes.string,
+};
 export default Home;

@@ -1,6 +1,7 @@
 import { InputBase, InputAdornment, styled, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 const SearchContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -31,7 +32,6 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-/* eslint-disable react/prop-types */
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
@@ -60,6 +60,10 @@ const SearchBar = ({ onSearch }) => {
       </StyledButton>
     </Wrapper>
   );
+};
+
+SearchBar.propTypes = {
+  onSearch: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

@@ -4,6 +4,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchBar from "./SearchBar";
+import PropTypes from "prop-types";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -25,7 +26,6 @@ const Logo = styled("img")({
   width: "auto",
 });
 
-// eslint-disable-next-line react/prop-types
 const Nav = ({ onSearch }) => {
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
@@ -48,6 +48,9 @@ const Nav = ({ onSearch }) => {
       </StyledToolbar>
     </AppBar>
   );
+};
+Nav.propTypes = {
+  onSearch: PropTypes.func.isRequired,
 };
 
 export default Nav;
