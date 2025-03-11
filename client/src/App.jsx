@@ -6,7 +6,7 @@ import Login from "./pages/User/Login";
 import UserList from "./pages/User/UserList";
 import theme from "./components/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import UIProvider from "./context/UIContext";
+import UIProvider from "./context/UIProvider";
 
 const App = () => {
   return (
