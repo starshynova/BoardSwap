@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import SearchBar from "./SearchBar";
+import searchBar from "./searchBar";
 import PropTypes from "prop-types";
 import { useUIContext } from "../context/UIContext";
 import { Link } from "react-router-dom";
