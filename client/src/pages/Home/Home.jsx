@@ -3,6 +3,8 @@ import CenteredTabs from "../../components/Tabs";
 import SortDropdown from "../../components/SortDropdown";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import ProductsPage from "../../components/ProductsPage";
+import Cart from "../../components/cart";
 
 const Home = ({ searchQuery }) => {
   const [items, setItems] = useState([]);
@@ -59,6 +61,8 @@ const Home = ({ searchQuery }) => {
             ))}
           </ul>
         </div>
+        <ProductsPage />
+        <Cart />
       </div>
     </div>
   );

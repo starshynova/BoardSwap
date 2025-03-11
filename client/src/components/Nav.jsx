@@ -5,6 +5,9 @@ import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchBar from "./SearchBar";
 import PropTypes from "prop-types";
+import SearchBar from "./searchBar";
+import { useUIContext } from "../context/UIContext";
+import { Link } from "react-router-dom";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -27,17 +30,21 @@ const Logo = styled("img")({
 });
 
 const Nav = ({ onSearch }) => {
+  const { cart, setShowCart } = useUIContext();
+
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <StyledToolbar>
         <Logo src="/Logo.png" alt="Logo" />
         <SearchBar onSearch={onSearch} />
         <Icons>
-          <IconButton aria-label="create">
-            <AddCircleIcon sx={{ color: "white" }} />
-          </IconButton>
-          <IconButton aria-label="cart">
-            <Badge>
+          <Link to={"/items/create"}>
+            <IconButton aria-label="create">
+              <AddCircleIcon sx={{ color: "white" }} />
+            </IconButton>
+          </Link>
+          <IconButton aria-label="cart" onClick={() => setShowCart(true)}>
+            <Badge badgeContent={cart.length} color="error">
               <AddShoppingCartIcon sx={{ color: "white" }} />
             </Badge>
           </IconButton>
