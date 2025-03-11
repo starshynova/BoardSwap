@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { UIContext } from "./UIContext"; // استيراد الـ Context فقط
+import { UIContext } from "./UIContext";
 
 const UIProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
