@@ -4,6 +4,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchBar from "./searchBar";
+import { Link } from "react-router-dom";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -32,9 +33,11 @@ const Nav = () => {
         <Logo src="/Logo.png" alt="Logo" />
         <SearchBar />
         <Icons>
-          <IconButton aria-label="create">
-            <AddCircleIcon sx={{ color: "white" }} />
-          </IconButton>
+          <Link to={"/items/create"}>
+            <IconButton aria-label="create">
+              <AddCircleIcon sx={{ color: "white" }} />
+            </IconButton>
+          </Link>
           <IconButton aria-label="cart">
             <Badge>
               <AddShoppingCartIcon sx={{ color: "white" }} />
