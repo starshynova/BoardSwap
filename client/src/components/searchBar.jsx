@@ -2,6 +2,8 @@ import { InputBase, InputAdornment, styled, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useSearch } from "../context/SearchContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SearchContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -32,11 +34,18 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = () => {
   const [query, setQuery] = useState("");
+  const { setSearchQuery } = useSearch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearch = () => {
-    onSearch(query.trim());
+    setSearchQuery(query.trim());
+
+    if (location.pathname !== "/") {
+      navigate("/");
+    }
   };
 
   const handleKeyPress = (e) => {
@@ -44,6 +53,7 @@ const SearchBar = ({ onSearch }) => {
       handleSearch();
     }
   };
+
   return (
     <Wrapper>
       <SearchContainer>
