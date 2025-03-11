@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserForm from "../../components/UserForm";
 import useFetch from "../../hooks/useFetch";
 
@@ -19,7 +20,13 @@ const CreateUser = () => {
       email: "",
       password: "",
     });
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
   });
+
+  const navigate = useNavigate();
 
   const validateField = (fieldName, value) => {
     let errorMessage = "";

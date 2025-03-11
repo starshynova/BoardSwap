@@ -13,29 +13,14 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { performFetch, response, error } = useFetch(
-    "/users/login",
-    (response) => {
-      if (response?.success) {
-        localStorage.setItem("authToken", response.authToken);
-        navigate("/landing");
-      } else {
-        setErrorMessage(response?.message || "Login failed. Please try again.");
-      }
-    },
-  );
-
-  useEffect(() => {
-    if (error) {
-      setErrorMessage("Something went wrong. Please try again.");
-      setIsLoading(false);
-    }
-    if (response?.success) {
+  const { performFetch, error } = useFetch("/users/login", (response) => {
+    if (response?.success && response?.token) {
+      localStorage.setItem("authToken", response.token);
       navigate("/landing");
-    } else if (response?.message) {
-      setErrorMessage(response?.message);
+    } else {
+      setErrorMessage(response?.msg || "Login failed. Please try again.");
     }
-  }, [response, error, navigate]);
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,6 +59,12 @@ const Login = () => {
     setErrors(newErrors);
     return valid;
   };
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(error);
+      setIsLoading(false);
+    }
+  }, [error]);
 
   return (
     <div
