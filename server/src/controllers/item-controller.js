@@ -1,4 +1,4 @@
-import Item, { validateItem } from "../models/Item.js";
+import Item, { validateItem } from "../models/item-model.js";
 import { logError } from "../util/logging.js";
 import validationErrorMessage from "../util/validationErrorMessage.js";
 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import User, { validateUser } from "../models/User.js";
+import User, { validateUser } from "../models/user-model.js";
 import { logError } from "../util/logging.js";
 import validationErrorMessage from "../util/validationErrorMessage.js";
 import bcrypt from "bcrypt";
