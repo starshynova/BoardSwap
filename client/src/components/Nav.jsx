@@ -3,7 +3,7 @@ import AppBar from "@mui/material/AppBar";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import SearchBar from "./searchBar";
+import SearchBar from "./SearchBar";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -25,12 +25,13 @@ const Logo = styled("img")({
   width: "auto",
 });
 
-const Nav = () => {
+// eslint-disable-next-line react/prop-types
+const Nav = ({ onSearch }) => {
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <StyledToolbar>
         <Logo src="/Logo.png" alt="Logo" />
-        <SearchBar />
+        <SearchBar onSearch={onSearch} />
         <Icons>
           <IconButton aria-label="create">
             <AddCircleIcon sx={{ color: "white" }} />

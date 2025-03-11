@@ -1,11 +1,12 @@
 import express from "express";
-
+import cors from "cors";
 import userRouter from "./routes/user-route.js";
 import itemRouter from "./routes/item-route.js";
 
 // Create an express server
 const app = express();
 
+app.use(cors());
 // Tell express to use the json middleware
 app.use(express.json());
 
