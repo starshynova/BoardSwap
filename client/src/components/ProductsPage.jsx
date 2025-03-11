@@ -46,7 +46,7 @@ const ProductsPage = () => {
       <Typography variant="h5" color="secondary" gutterBottom>
         {searchQuery ? `Search results for: "${searchQuery}"` : "All Products"}
       </Typography>
-      {products.length === 0 ? (
+      {products.length === 0 && searchQuery ? (
         <Typography
           variant="h6"
           color="error"
