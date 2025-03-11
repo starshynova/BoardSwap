@@ -5,7 +5,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchBar from "./SearchBar";
 import PropTypes from "prop-types";
-import SearchBar from "./searchBar";
 import { useUIContext } from "../context/UIContext";
 import { Link } from "react-router-dom";
 
