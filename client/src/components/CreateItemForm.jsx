@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import { uploadImage } from "../util/uploadImage";
 
 const CreateItemForm = () => {
   const itemType = [
@@ -73,6 +74,14 @@ const CreateItemForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const imageUrl = await uploadImage(file);
+    console.log("Загруженный URL:", imageUrl);
+  };
+
   const handleSubmit = async () => {
     if (!validate()) return;
 
@@ -81,8 +90,10 @@ const CreateItemForm = () => {
       console.error("No token. User not authorised.");
       return;
     }
+    const requestData = { item: formData };
+    console.log("Отправляемые данные:", JSON.stringify(requestData));
     try {
-      const response = await fetch("/api/items", {
+      const response = await fetch("http://localhost:3000/api/items/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -210,7 +221,19 @@ const CreateItemForm = () => {
         onChange={handleChange}
         value={formData.photo}
       />
-
+      <Button
+        variant="contained"
+        size="large"
+        sx={{
+          width: "200px",
+          mt: 2,
+          backgroundColor: "#47CAD1",
+          borderRadius: "10px",
+        }}
+        onClick={handleFileChange}
+      >
+        Upload image
+      </Button>
       <TextField
         id="outlined-multiline-description"
         name="description"
