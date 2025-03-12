@@ -152,7 +152,7 @@ export const updateUser = async (req, res) => {
     });
   }
 
-  if (req.user.id !== id) {
+  if (req.user._id !== id) {
     return res
       .status(403)
       .json({ success: false, msg: "You can only update your own profile" });

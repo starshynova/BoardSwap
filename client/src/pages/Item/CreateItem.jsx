@@ -1,9 +1,17 @@
 import CreateItemForm from "../../components/CreateItemForm";
 
 const CreateItem = () => {
+  const token = localStorage.getItem("authToken");
+
   return (
     <>
-      <CreateItemForm />
+      {!token ? (
+        <div>
+          <p>You should be logged in</p>
+        </div>
+      ) : (
+        <CreateItemForm />
+      )}
     </>
   );
 };
