@@ -1,110 +1,38 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
-import useFetch from "../../hooks/useFetch";
 
 const CreateUser = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const { isLoading, error, performFetch } = useFetch("/users", () => {
-    setSuccessMessage("Account created successfully!");
-    setFormData({
-      name: "",
-      email: "",
-      password: "",
-    });
-
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
-  });
-
   const navigate = useNavigate();
+  const timeoutRef = useRef(null);
 
-  const validateField = (fieldName, value) => {
-    let errorMessage = "";
-
-    switch (fieldName) {
-      case "name":
-        if (!value.trim()) {
-          errorMessage = "Name is required";
-        }
-        break;
-      case "email":
-        if (!value.trim() || !/\S+@\S+\.\S+/.test(value)) {
-          errorMessage = "Invalid email format";
-        }
-        break;
-      case "password":
-        if (!value.trim() || value.length < 6) {
-          errorMessage = "Password must be at least 8 characters";
-        }
-        break;
-      default:
-        break;
+  const {
+    formData,
+    errors,
+    errorMessage,
+    successMessage,
+    isLoading,
+    handleInputChange,
+    handleSubmit,
+    setErrorMessage,
+  } = useForm({ name: "", email: "", password: "" }, "/users", (response) => {
+    if (response?.success) {
+      timeoutRef.current = setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    } else {
+      setErrorMessage(response?.msg || "Registration failed.");
     }
+  });
 
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [fieldName]: errorMessage,
-    }));
-  };
-
-  const validateForm = (data) => {
-    const newErrors = {};
-    let valid = true;
-
-    // Validate required fields (frontend validation)
-    if (!data.name.trim()) {
-      newErrors.name = "Name is required";
-      valid = false;
-    }
-    if (!data.email.trim() || !/\S+@\S+\.\S+/.test(data.email)) {
-      newErrors.email = "Invalid email format";
-      valid = false;
-    }
-    if (!data.password.trim() || data.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-
-    validateField(name, value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrorMessage("");
-    setSuccessMessage("");
-
-    if (validateForm(formData)) {
-      const options = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      };
-
-      performFetch(options);
-    }
-  };
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -119,7 +47,7 @@ const CreateUser = () => {
         formData={formData}
         errors={errors}
         isLoading={isLoading}
-        errorMessage={error || errorMessage}
+        errorMessage={errorMessage}
         successMessage={successMessage}
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}

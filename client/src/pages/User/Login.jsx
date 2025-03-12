@@ -1,70 +1,34 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
-  const { performFetch, error } = useFetch("/users/login", (response) => {
-    if (response?.success && response?.token) {
-      localStorage.setItem("authToken", response.token);
-      navigate("/landing");
-    } else {
-      setErrorMessage(response?.msg || "Login failed. Please try again.");
-    }
-  });
+  const handleSuccess = (data) => {
+    if (data?.success && data?.token) {
+      localStorage.setItem("authToken", data.token);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setErrorMessage("");
-
-    if (validateForm(formData)) {
-      await performFetch({
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-    } else {
-      setIsLoading(false);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
     }
   };
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const validateForm = (data) => {
-    const newErrors = {};
-    let valid = true;
-
-    if (!data.email.trim() || !/\S+@\S+\.\S+/.test(data.email)) {
-      newErrors.email = "Invalid email format";
-      valid = false;
-    }
-
-    if (!data.password.trim()) {
-      newErrors.password = "Password is required";
-      valid = false;
-    }
-
-    setErrors(newErrors);
-    return valid;
-  };
-  useEffect(() => {
-    if (error) {
-      setErrorMessage(error);
-      setIsLoading(false);
-    }
-  }, [error]);
+  const {
+    formData,
+    errors,
+    errorMessage,
+    successMessage,
+    isLoading,
+    handleInputChange,
+    handleSubmit,
+  } = useForm(
+    { email: "", password: "" },
+    "/users/login",
+    handleSuccess,
+    "login",
+  );
 
   return (
     <div
@@ -77,10 +41,10 @@ const Login = () => {
     >
       <UserForm
         formData={formData}
-        setFormData={setFormData}
         errors={errors}
         isLoading={isLoading}
         errorMessage={errorMessage}
+        successMessage={successMessage}
         handleSubmit={handleSubmit}
         handleInputChange={handleInputChange}
         isLogin={true}

@@ -72,30 +72,37 @@ export const createUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    return res
-      .status(400)
-      .send({ error: "Please, provide your e-mail address and password" });
+    return res.status(400).json({
+      success: false,
+      msg: "Please provide your e-mail address and password.",
+    });
   }
 
   const user = await getUserByEmail(email);
   if (!user) {
-    return res.status(401).send({ error: "Invalid e-mail address of user" });
+    return res
+      .status(401)
+      .json({ success: false, msg: "Invalid e-mail address of user." });
   }
 
   const isPasswordCorrect = await bcrypt.compare(password, user.password);
   if (!isPasswordCorrect) {
     return res
       .status(401)
-      .send({ error: "Invalid e-mail / password combination" });
+      .json({ success: false, msg: "Invalid e-mail / password combination." });
   }
 
   try {
     const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
-    return res.status(200).send({ success: true, token });
+    return res.status(200).json({ success: true, token });
+
   } catch (err) {
-    return res.status(500).send({ error: "Internal server error" });
+    logError(err);
+    return res
+      .status(500)
+      .json({ success: false, msg: "Internal server error." });
   }
 };
 
