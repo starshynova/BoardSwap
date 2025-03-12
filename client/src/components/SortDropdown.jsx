@@ -38,8 +38,6 @@ function SortDropdown({ items }) {
       </FormControl>
 
       <div>
-        <h2>Sorted Items:</h2>
-        <p>This is dummy data, I will remove it after backend implementation</p>
         <ul>
           {sortedItems.map((item) => (
             <li key={item.id}>
