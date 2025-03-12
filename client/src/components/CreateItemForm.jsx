@@ -79,7 +79,15 @@ const CreateItemForm = () => {
       const response = await fetch("/api/items", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ item: formData }),
+      });
+      setFormData({
+        title: "",
+        price: "",
+        type: "",
+        condition: "",
+        photo: "",
+        description: "",
       });
 
       if (!response.ok) {
