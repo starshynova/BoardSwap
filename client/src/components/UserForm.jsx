@@ -75,13 +75,13 @@ const UserForm = ({
         {isLogin ? "Login to Your Account" : "Register"}
       </Typography>
 
-      {errorMessage && (
+      {errorMessage && typeof errorMessage === "string" && (
         <Typography color="error" variant="body2" textAlign="center">
           {errorMessage}
         </Typography>
       )}
 
-      {successMessage && !isLogin && (
+      {successMessage && typeof successMessage === "string" && (
         <Typography color="success" variant="body2" textAlign="center">
           {successMessage}
         </Typography>
