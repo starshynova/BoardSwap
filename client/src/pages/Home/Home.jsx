@@ -1,5 +1,4 @@
 import TEST_ID from "./Home.testid";
-import CenteredTabs from "../../components/Tabs";
 // import SortDropdown from "../../components/SortDropdown";
 import PropTypes from "prop-types";
 import Cart from "../../components/cart";
@@ -45,7 +44,6 @@ const Home = () => {
     <div data-testid={TEST_ID.container}>
       <Box sx={{ mt: 4 }}>
         <div>
-          <CenteredTabs />
           {/* <SortDropdown /> */}
           <div style={{ padding: "80px" }}>
             <>

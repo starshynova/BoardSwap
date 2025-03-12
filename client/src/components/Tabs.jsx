@@ -1,13 +1,15 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import { useState } from "react";
 
-export default function CenteredTabs() {
-  const [value, setValue] = React.useState(0);
+// eslint-disable-next-line react/prop-types
+export default function CenteredTabs({ onTabChange }) {
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    onTabChange(event, newValue);
   };
 
   return (
