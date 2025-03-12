@@ -20,7 +20,7 @@ const App = () => {
         <ThemeProvider theme={theme}>
           <Nav onSearch={setSearchQuery} />
           <Routes>
-            <Route path="/" element={<Home searchQuery={searchQuery} />} />
+            <Route path="/items" element={<Home searchQuery={searchQuery} />} />
             <Route path="/user" element={<UserList />} />
             <Route path="/register" element={<CreateUser />} />
             <Route path="/login" element={<Login />} />
