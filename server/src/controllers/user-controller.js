@@ -90,7 +90,7 @@ export const loginUser = async (req, res) => {
   }
 
   try {
-    const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1h",
     });
     return res.status(200).send({ success: true, token });
@@ -146,7 +146,7 @@ export const updateUser = async (req, res) => {
     });
   }
 
-  if (req.user.id !== id) {
+  if (req.user._id !== id) {
     return res
       .status(403)
       .json({ success: false, msg: "You can only update your own profile" });

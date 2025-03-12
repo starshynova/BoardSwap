@@ -44,8 +44,6 @@ const CreateItemForm = () => {
     description: "",
   });
 
-  const token = localStorage.getItem("authToken");
-
   const [errors, setErrors] = useState({});
 
   const handleChange = (event) => {
@@ -77,6 +75,12 @@ const CreateItemForm = () => {
 
   const handleSubmit = async () => {
     if (!validate()) return;
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      console.error("No token. User not authorised.");
+      return;
+    }
     try {
       const response = await fetch("/api/items", {
         method: "POST",
@@ -84,7 +88,6 @@ const CreateItemForm = () => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({ item: formData }),
       });
       setFormData({

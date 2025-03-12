@@ -1,4 +1,5 @@
 import Item, { validateItem } from "../models/item-model.js";
+import User from "../models/user-model.js";
 import { logError } from "../util/logging.js";
 import validationErrorMessage from "../util/validationErrorMessage.js";
 
@@ -51,9 +52,17 @@ export const createItem = async (req, res) => {
         .status(400)
         .json({ success: false, msg: validationErrorMessage(errorList) });
     } else {
-      const newItem = await Item.create(item);
-
-      res.status(201).json({ success: true, user: newItem });
+      const newItem = await Item.create({
+        ...item,
+        seller_id: req.user._id,
+        status: "Available",
+      });
+      await User.findByIdAndUpdate(
+        req.user._id,
+        { $push: { items: newItem._id } },
+        { new: true },
+      );
+      res.status(201).json({ success: true, item: newItem });
     }
   } catch (error) {
     logError(error);
