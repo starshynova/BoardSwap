@@ -5,6 +5,7 @@ import { useState } from "react";
  *
  * route - This is the route you want to access on the server. It should NOT include the /api part, so should be /user or /user/{id}
  * onReceived - a function that will be called with the response of the server. Will only be called if everything went well!
+ * authToken - The authorization token to be included in the request headers.
  *
  * Our hook will give you an object with the properties:
  *
@@ -13,7 +14,7 @@ import { useState } from "react";
  * performFetch - this function will trigger the fetching. It is up to the user of the hook to determine when to do this!
  * cancelFetch - this function will cancel the fetch, call it when your component is unmounted
  */
-const useFetch = (route, onReceived, searchQuery) => {
+const useFetch = (route, onReceived, searchQuery, authToken) => {
   /**
    * We use the AbortController which is supported by all modern browsers to handle cancellations
    * For more info: https://developer.mozilla.org/en-US/docs/Web/API/AbortController
@@ -46,6 +47,7 @@ const useFetch = (route, onReceived, searchQuery) => {
       method: "GET",
       headers: {
         "content-type": "application/json",
+        ...(authToken && { Authorization: `Bearer ${authToken}` }),
       },
     };
 
