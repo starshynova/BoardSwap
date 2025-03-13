@@ -93,7 +93,7 @@ const useFetch = (route, onReceived, searchQuery, authToken, type, sort) => {
     };
 
     fetchData().catch((error) => {
-      setError(error);
+      setError(error.message);
       setIsLoading(false);
     });
   };

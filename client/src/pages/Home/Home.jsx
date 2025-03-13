@@ -14,19 +14,22 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const { cart, setCart } = useUIContext();
   const { searchQuery } = useSearch();
+  const [type, setType] = useState("All");
   const { isLoading, error, performFetch } = useFetch(
-    "/items",
+    `/items`,
     (data) => {
       if (data.success) {
         setProducts(data.result);
       }
     },
-    searchQuery,
+    null,
+    null,
+    type === "All" ? "" : type,
   );
 
   useEffect(() => {
     performFetch();
-  }, [searchQuery]);
+  }, [searchQuery, type]);
 
   const toggleCartItem = (product) => {
     setCart((prevCart) => {
@@ -38,7 +41,7 @@ const Home = () => {
   };
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div data-testid={TEST_ID.container}>
@@ -55,6 +58,8 @@ const Home = () => {
                 products={products}
                 cart={cart}
                 toggleCartItem={toggleCartItem}
+                setType={setType}
+                selectedType={type}
               />
             </>
           </div>
