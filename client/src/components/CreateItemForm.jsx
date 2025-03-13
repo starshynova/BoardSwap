@@ -6,7 +6,9 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import AttachFileIcon from "@mui/icons-material/AttachFile";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { uploadImage } from "../util/uploadImage";
 
@@ -50,6 +52,14 @@ const CreateItemForm = () => {
 
   const [errors, setErrors] = useState({});
 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileName, setFileName] = useState("");
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const fileInputRef = useRef(null);
+  const timeoutRef = useRef(null);
+  const navigate = useNavigate();
+
   const token = localStorage.getItem("authToken");
   useEffect(() => {
     if (!token) {
@@ -92,13 +102,21 @@ const CreateItemForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFileChange = async (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const imageUrl = await uploadImage(file);
-    console.log("Downloaded image:", imageUrl);
-    setFormData((prev) => ({ ...prev, photo: imageUrl }));
+    setSelectedFile(file);
+    setFileName(file.name);
+  };
+
+  const handleUploadClick = async () => {
+    if (!selectedFile) return;
+
+    const uploadedImg = await uploadImage(selectedFile);
+    console.log("Uploaded image:", uploadedImg);
+    setFormData({ ...formData, photo: uploadedImg });
+    setUploadSuccess(true);
   };
 
   const handleSubmit = async (e) => {
@@ -107,7 +125,7 @@ const CreateItemForm = () => {
 
     console.log("Sending data:", JSON.stringify(formData));
     try {
-      const response = await fetch("/api/items/create", {
+      const response = await fetch("http://localhost:3000/api/items/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -130,6 +148,11 @@ const CreateItemForm = () => {
         status: "Available",
         seller_id: "",
       });
+      setSubmitSuccess(true);
+
+      timeoutRef.current = setTimeout(() => {
+        navigate("/");
+      }, 4000);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -146,6 +169,7 @@ const CreateItemForm = () => {
         justifyContent: "center",
         alignItems: "center",
         marginTop: "80px",
+        marginBottom: "40px",
         boxShadow: 3,
         borderRadius: 2,
         padding: "40px",
@@ -154,7 +178,7 @@ const CreateItemForm = () => {
       autoComplete="off"
     >
       <Typography variant="h5" textAlign="center" mb={2}>
-        Add a new announcement
+        Add a new advert
       </Typography>
       <TextField
         required
@@ -230,27 +254,63 @@ const CreateItemForm = () => {
         ))}
       </TextField>
 
-      <TextField
-        id="outlined-photo"
-        name="photo"
-        label="Photo"
-        sx={inputStyles}
-        onChange={handleChange}
-        value={formData.photo}
-      />
-      <Button
-        variant="contained"
-        size="large"
-        sx={{
-          width: "200px",
-          mt: 2,
-          backgroundColor: "#47CAD1",
-          borderRadius: "10px",
-        }}
-        onClick={handleFileChange}
-      >
-        Upload image
-      </Button>
+      <div style={{ width: "100%" }}>
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 2,
+          }}
+        >
+          <TextField
+            label="Attach a file"
+            value={fileName}
+            sx={{ ...inputStyles, flex: 1 }}
+            onClick={() => fileInputRef.current.click()}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AttachFileIcon />
+                  </InputAdornment>
+                ),
+              },
+            }}
+            fullWidth
+          />
+          <Button
+            variant="contained"
+            size="medium"
+            color="black"
+            sx={{
+              width: "160px",
+              height: "40px",
+              mt: 2,
+              backgroundColor: "#47CAD1",
+              borderRadius: "10px",
+            }}
+            onClick={handleUploadClick}
+            disabled={!selectedFile}
+          >
+            Upload
+          </Button>
+        </Box>
+
+        {uploadSuccess && (
+          <Typography color="green" sx={{ mt: 2 }}>
+            Successful
+          </Typography>
+        )}
+      </div>
       <TextField
         id="outlined-multiline-description"
         name="description"
@@ -261,20 +321,34 @@ const CreateItemForm = () => {
         onChange={handleChange}
         value={formData.description}
       />
-
-      <Button
-        variant="contained"
-        size="large"
+      <Box
         sx={{
-          width: "200px",
-          mt: 2,
-          backgroundColor: "#47CAD1",
-          borderRadius: "10px",
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-        onClick={handleSubmit}
       >
-        Submit
-      </Button>
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            width: "200px",
+            mt: 2,
+            backgroundColor: "#47CAD1",
+            borderRadius: "10px",
+          }}
+          onClick={handleSubmit}
+        >
+          Submit
+        </Button>
+        {submitSuccess && (
+          <Typography color="green" sx={{ mt: 2 }}>
+            Your advert has been successfully added!
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };
