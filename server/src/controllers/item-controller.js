@@ -5,11 +5,18 @@ import validationErrorMessage from "../util/validationErrorMessage.js";
 
 export const getItems = async (req, res) => {
   try {
-    const { type, sort } = req.query;
+    const { type, sort, q } = req.query;
     const filter = {};
 
     if (type && ["Puzzle", "Board Game"].includes(type)) {
       filter.type = type;
+    }
+
+    if (q) {
+      filter.$or = [
+        { title: { $regex: q, $options: "i" } },
+        { description: { $regex: q, $options: "i" } },
+      ];
     }
 
     let sortQuery = {};
