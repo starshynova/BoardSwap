@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { uploadImage } from "../util/uploadImage";
 
-const CreateItemForm = () => {
+const CreateItemForm = (sellerId) => {
   const itemType = [
     { value: "puzzle", label: "Puzzle" },
     { value: "boardGame", label: "Board Game" },
@@ -47,8 +47,12 @@ const CreateItemForm = () => {
     photo: "",
     description: "",
     status: "Available",
-    seller_id: "",
+    seller_id: sellerId,
   });
+
+  // useEffect(() => {
+  //   setFormData((prev) => ({ ...prev, seller_id: sellerId }));
+  // }, [sellerId]);
 
   const [errors, setErrors] = useState({});
 
@@ -114,7 +118,6 @@ const CreateItemForm = () => {
     if (!selectedFile) return;
 
     const uploadedImg = await uploadImage(selectedFile);
-    console.log("Uploaded image:", uploadedImg);
     setFormData({ ...formData, photo: uploadedImg });
     setUploadSuccess(true);
   };
@@ -123,9 +126,8 @@ const CreateItemForm = () => {
     e.preventDefault();
     if (!validate()) return;
 
-    console.log("Sending data:", JSON.stringify(formData));
     try {
-      const response = await fetch("http://localhost:3000/api/items/create", {
+      const response = await fetch("/api/items/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
