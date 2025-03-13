@@ -6,7 +6,14 @@ import itemRouter from "./routes/item-route.js";
 // Create an express server
 const app = express();
 
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  }),
+);
 // Tell express to use the json middleware
 app.use(express.json());
 

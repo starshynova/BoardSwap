@@ -6,12 +6,14 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import { uploadImage } from "../util/uploadImage";
 
 const CreateItemForm = () => {
   const itemType = [
     { value: "puzzle", label: "Puzzle" },
-    { value: "boardgame", label: "Board Game" },
+    { value: "boardGame", label: "Board Game" },
   ];
 
   const itemCondition = [
@@ -42,9 +44,26 @@ const CreateItemForm = () => {
     condition: "",
     photo: "",
     description: "",
+    status: "Available",
+    seller_id: "",
   });
 
   const [errors, setErrors] = useState({});
+
+  const token = localStorage.getItem("authToken");
+  useEffect(() => {
+    if (!token) {
+      console.error("No token. User not authorised.");
+      return;
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      setFormData((prev) => ({ ...prev, seller_id: decodedToken.id }));
+    } catch (error) {
+      console.error("Token decoding error:", error);
+    }
+  }, []);
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -73,16 +92,22 @@ const CreateItemForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async () => {
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const imageUrl = await uploadImage(file);
+    console.log("Downloaded image:", imageUrl);
+    setFormData((prev) => ({ ...prev, photo: imageUrl }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!validate()) return;
 
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      console.error("No token. User not authorised.");
-      return;
-    }
+    console.log("Sending data:", JSON.stringify(formData));
     try {
-      const response = await fetch("/api/items", {
+      const response = await fetch("/api/items/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -90,6 +115,11 @@ const CreateItemForm = () => {
         },
         body: JSON.stringify({ item: formData }),
       });
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Server response:", errorData);
+        throw new Error("Data sending error");
+      }
       setFormData({
         title: "",
         price: "",
@@ -97,11 +127,9 @@ const CreateItemForm = () => {
         condition: "",
         photo: "",
         description: "",
+        status: "Available",
+        seller_id: "",
       });
-
-      if (!response.ok) {
-        throw new Error("Data sending error");
-      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -210,7 +238,19 @@ const CreateItemForm = () => {
         onChange={handleChange}
         value={formData.photo}
       />
-
+      <Button
+        variant="contained"
+        size="large"
+        sx={{
+          width: "200px",
+          mt: 2,
+          backgroundColor: "#47CAD1",
+          borderRadius: "10px",
+        }}
+        onClick={handleFileChange}
+      >
+        Upload image
+      </Button>
       <TextField
         id="outlined-multiline-description"
         name="description"

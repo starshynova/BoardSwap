@@ -8,7 +8,12 @@ const userSchema = new mongoose.Schema({
   post_code: { type: String, minLength: 6, maxLength: 6, required: false },
   city: { type: String, required: false },
   created_date: { type: Date, default: Date.now },
-  items: [{ type: String }],
+  items: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "items",
+    },
+  ],
 });
 
 export const validateUser = (userObject) => {

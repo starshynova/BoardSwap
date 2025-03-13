@@ -32,7 +32,7 @@ export const getItems = async (req, res) => {
 
 export const createItem = async (req, res) => {
   try {
-    const { item } = req.body;
+    const item = req.body.item;
 
     if (typeof item !== "object") {
       res.status(400).json({
@@ -52,16 +52,13 @@ export const createItem = async (req, res) => {
         .status(400)
         .json({ success: false, msg: validationErrorMessage(errorList) });
     } else {
-      const newItem = await Item.create({
-        ...item,
-        seller_id: req.user._id,
-        status: "Available",
-      });
+      const newItem = await Item.create(item);
       await User.findByIdAndUpdate(
-        req.user._id,
+        item.seller_id,
         { $push: { items: newItem._id } },
         { new: true },
       );
+
       res.status(201).json({ success: true, item: newItem });
     }
   } catch (error) {

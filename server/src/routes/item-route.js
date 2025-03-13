@@ -11,7 +11,7 @@ import { authMiddleware } from "../middleware/authMiddleware.js";
 
 const itemRouter = express.Router();
 
-itemRouter.post("/", authMiddleware, createItem);
+itemRouter.post("/create", authMiddleware, createItem);
 itemRouter.get("/", getItems);
 itemRouter.get("/search", searchItems);
 itemRouter.get("/:id", getItemById);
