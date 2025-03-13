@@ -1,5 +1,4 @@
 import { ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
 import Nav from "./components/Nav";
 import theme from "./components/theme";
 import UIProvider from "./context/UIProvider";

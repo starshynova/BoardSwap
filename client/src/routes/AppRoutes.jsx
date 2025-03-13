@@ -7,10 +7,10 @@ import UserList from "../pages/User/UserList";
 import CreateItem from "../pages/Item/CreateItem";
 import NotFound from "../pages/NotFound/NotFound";
 
-const AppRoutes = ({ searchQuery }) => {
+const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home searchQuery={searchQuery} />} />
+      <Route path="/" element={<Home />} />
       <Route path="/user" element={<UserList />} />
       <Route path="/register" element={<CreateUser />} />
       <Route path="/login" element={<Login />} />
