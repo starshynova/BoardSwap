@@ -1,7 +1,7 @@
 export const uploadImage = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", "BoardSwap"); // Твой Upload Preset
+  formData.append("upload_preset", "BoardSwap");
   formData.append("cloud_name", "dogm5xki5");
 
   const response = await fetch(
@@ -14,5 +14,5 @@ export const uploadImage = async (file) => {
 
   const data = await response.json();
   const imgUrl = data.secure_url;
-  return imgUrl; // URL изображения
+  return imgUrl;
 };
