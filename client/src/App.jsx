@@ -7,20 +7,17 @@ import UserList from "./pages/User/UserList";
 import CreateItem from "./pages/Item/CreateItem";
 import theme from "./components/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
 import UIProvider from "./context/UIProvider";
 import { SearchProvider } from "./context/SearchContext";
 
 const App = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-
   return (
     <SearchProvider>
       <UIProvider>
         <ThemeProvider theme={theme}>
-          <Nav onSearch={setSearchQuery} />
+          <Nav />
           <Routes>
-            <Route path="/" element={<Home searchQuery={searchQuery} />} />
+            <Route path="/" element={<Home />} />
             <Route path="/user" element={<UserList />} />
             <Route path="/register" element={<CreateUser />} />
             <Route path="/login" element={<Login />} />

@@ -1,27 +1,10 @@
 import PropTypes from "prop-types";
 import { Grid } from "@mui/material";
 import ProductCard from "./ProductCard";
-import CenteredTabs from "./Tabs";
-import { useNavigate } from "react-router-dom";
 
-const ProductList = ({
-  products,
-  cart,
-  toggleCartItem,
-  setType,
-  selectedType,
-}) => {
-  const navigate = useNavigate();
-
-  const handleTabChange = (event, newType) => {
-    setType(newType);
-    navigate(`/?type=${newType}`);
-  };
-
+const ProductList = ({ products, cart, toggleCartItem }) => {
   return (
     <div>
-      <CenteredTabs onTabChange={handleTabChange} selectedType={selectedType} />
-
       <Grid container spacing={6}>
         {products.map((product) => (
           <ProductCard

@@ -54,17 +54,17 @@ const useFetch = (route, onReceived, searchQuery, authToken, type, sort) => {
     const fetchData = async () => {
       // We add the /api subsection here to make it a single point of change if our configuration changes
       let url = `/api${route}`;
-      if (searchQuery) {
-        url += `/search?q=${searchQuery}`;
-      }
 
       const params = [];
-      if (type) params.push(`type=${type}`);
-      if (sort) params.push(`sort=${sort}`);
+      if (searchQuery) params.push(`q=${encodeURIComponent(searchQuery)}`);
+      if (type) params.push(`type=${encodeURIComponent(type)}`);
+      if (sort) params.push(`sort=${encodeURIComponent(sort)}`);
 
       if (params.length > 0) {
         url += `?${params.join("&")}`;
       }
+
+      console.log("Fetching from:", url);
 
       const res = await fetch(url, { ...baseOptions, ...options, signal });
 
@@ -80,6 +80,7 @@ const useFetch = (route, onReceived, searchQuery, authToken, type, sort) => {
 
       if (jsonResult.success === true) {
         onReceived(jsonResult);
+        console.log(jsonResult);
       } else {
         setError(
           jsonResult.msg ||

@@ -7,7 +7,7 @@ import SearchBar from "./searchBar";
 import PropTypes from "prop-types";
 import { useUIContext } from "../context/UIContext";
 import { Link } from "react-router-dom";
-import { useSearch } from "../context/SearchContext";
+// import { useSearch } from "../context/SearchContext";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -31,17 +31,12 @@ const Logo = styled("img")({
 
 const Nav = () => {
   const { cart, setShowCart } = useUIContext();
-  const { setSearchQuery } = useSearch();
-
-  const handleSearch = (query) => {
-    setSearchQuery(query);
-  };
 
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <StyledToolbar>
         <Logo src="/Logo.png" alt="Logo" />
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar />
         <Icons>
           <Link to={"/items/create"}>
             <IconButton aria-label="create">

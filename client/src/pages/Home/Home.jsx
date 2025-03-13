@@ -9,6 +9,7 @@ import { useUIContext } from "../../context/UIContext";
 import { useSearch } from "../../context/SearchContext";
 import ProductList from "../../components/ProductList";
 import SearchResultsHeader from "../../components/SearchResultsHeader";
+import CenteredTabs from "../../components/Tabs";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -22,12 +23,14 @@ const Home = () => {
         setProducts(data.result);
       }
     },
-    null,
+    searchQuery,
     null,
     type === "All" ? "" : type,
+    null,
   );
 
   useEffect(() => {
+    console.log("Fetching items with:", { searchQuery, type });
     performFetch();
   }, [searchQuery, type]);
 
@@ -38,6 +41,10 @@ const Home = () => {
         ? prevCart.filter((item) => item._id !== product._id)
         : [...prevCart, product];
     });
+  };
+
+  const handleTabChange = (event, newType) => {
+    setType(newType);
   };
 
   if (isLoading) return <p>Loading...</p>;
@@ -54,12 +61,11 @@ const Home = () => {
                 searchQuery={searchQuery}
                 products={products}
               />
+              <CenteredTabs onTabChange={handleTabChange} selectedType={type} />
               <ProductList
                 products={products}
                 cart={cart}
                 toggleCartItem={toggleCartItem}
-                setType={setType}
-                selectedType={type}
               />
             </>
           </div>
