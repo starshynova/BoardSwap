@@ -5,11 +5,11 @@ import validateAllowedFields from "../util/validateAllowedFields.js";
 const itemSchema = new mongoose.Schema({
   title: { type: String, required: true },
   price: { type: Number, required: true, min: 0 },
-  type: { type: String, required: true, enum: ["Puzzle", "Board Game"] },
+  type: { type: String, required: true, enum: ["puzzle", "boardGame"] },
   condition: {
     type: String,
     required: true,
-    enum: ["New", "Like New", "Used"],
+    enum: ["new", "likeNew", "used"],
   },
   photo: { type: String, required: false },
   description: { type: String, required: false },
@@ -44,19 +44,19 @@ export const validateItem = (itemObject) => {
     errorList.push(validatedKeysMessage);
   }
 
-  if (itemObject.title == null) {
+  if (!itemObject.title) {
     errorList.push("Title is a required field");
   }
 
-  if (itemObject.price == undefined) {
+  if (!itemObject.price) {
     errorList.push("Price is a required field");
   }
 
-  if (itemObject.type == null) {
+  if (!itemObject.type) {
     errorList.push("Type is a required field");
   }
 
-  if (itemObject.condition == null) {
+  if (!itemObject.condition) {
     errorList.push("Condition is a required field");
   }
 
@@ -67,7 +67,7 @@ export const validateItem = (itemObject) => {
     errorList.push("Seller ID is a required field");
   }
 
-  if (itemObject.status == null) {
+  if (!itemObject.status) {
     errorList.push("Status is a required field");
   }
 
