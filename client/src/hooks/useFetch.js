@@ -14,7 +14,7 @@ import { useState } from "react";
  * performFetch - this function will trigger the fetching. It is up to the user of the hook to determine when to do this!
  * cancelFetch - this function will cancel the fetch, call it when your component is unmounted
  */
-const useFetch = (route, onReceived, searchQuery, authToken) => {
+const useFetch = (route, onReceived, searchQuery, authToken, type) => {
   /**
    * We use the AbortController which is supported by all modern browsers to handle cancellations
    * For more info: https://developer.mozilla.org/en-US/docs/Web/API/AbortController
@@ -54,9 +54,17 @@ const useFetch = (route, onReceived, searchQuery, authToken) => {
     const fetchData = async () => {
       // We add the /api subsection here to make it a single point of change if our configuration changes
       let url = `/api${route}`;
-      if (searchQuery) {
-        url += `/search?q=${searchQuery}`;
+
+      const params = [];
+      if (searchQuery) params.push(`q=${encodeURIComponent(searchQuery)}`);
+
+      if (type) params.push(`type=${encodeURIComponent(type)}`);
+      // if (sort) params.push(`sort=${encodeURIComponent(sort)}`);
+
+      if (params.length > 0) {
+        url += `?${params.join("&")}`;
       }
+
       const res = await fetch(url, { ...baseOptions, ...options, signal });
 
       if (!res.ok) {
@@ -84,7 +92,7 @@ const useFetch = (route, onReceived, searchQuery, authToken) => {
     };
 
     fetchData().catch((error) => {
-      setError(error);
+      setError(error.message);
       setIsLoading(false);
     });
   };

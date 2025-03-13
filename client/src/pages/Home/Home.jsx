@@ -1,5 +1,4 @@
 import TEST_ID from "./Home.testid";
-import CenteredTabs from "../../components/Tabs";
 // import SortDropdown from "../../components/SortDropdown";
 import PropTypes from "prop-types";
 import Cart from "../../components/cart";
@@ -10,24 +9,30 @@ import { useUIContext } from "../../context/UIContext";
 import { useSearch } from "../../context/SearchContext";
 import ProductList from "../../components/ProductList";
 import SearchResultsHeader from "../../components/SearchResultsHeader";
+import CenteredTabs from "../../components/Tabs";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const { cart, setCart } = useUIContext();
   const { searchQuery } = useSearch();
+  const [type, setType] = useState("All");
   const { isLoading, error, performFetch } = useFetch(
-    "/items",
+    `/items`,
     (data) => {
       if (data.success) {
         setProducts(data.result);
       }
     },
     searchQuery,
+    null,
+    type === "All" ? "" : type,
+    null,
   );
 
   useEffect(() => {
+    console.log("Fetching items with:", { searchQuery, type });
     performFetch();
-  }, [searchQuery]);
+  }, [searchQuery, type]);
 
   const toggleCartItem = (product) => {
     setCart((prevCart) => {
@@ -38,14 +43,17 @@ const Home = () => {
     });
   };
 
+  const handleTabChange = (event, newType) => {
+    setType(newType);
+  };
+
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div data-testid={TEST_ID.container}>
       <Box sx={{ mt: 4 }}>
         <div>
-          <CenteredTabs />
           {/* <SortDropdown /> */}
           <div style={{ padding: "80px" }}>
             <>
@@ -53,6 +61,7 @@ const Home = () => {
                 searchQuery={searchQuery}
                 products={products}
               />
+              <CenteredTabs onTabChange={handleTabChange} selectedType={type} />
               <ProductList
                 products={products}
                 cart={cart}

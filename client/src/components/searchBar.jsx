@@ -1,6 +1,6 @@
 import { InputBase, InputAdornment, styled, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSearch } from "../context/SearchContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -35,10 +35,14 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const SearchBar = () => {
-  const [query, setQuery] = useState("");
-  const { setSearchQuery } = useSearch();
+  const { searchQuery, setSearchQuery } = useSearch();
+  const [query, setQuery] = useState(searchQuery);
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setQuery(searchQuery);
+  }, [searchQuery]);
 
   const handleSearch = () => {
     setSearchQuery(query.trim());
