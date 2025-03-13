@@ -65,8 +65,6 @@ const useFetch = (route, onReceived, searchQuery, authToken, type) => {
         url += `?${params.join("&")}`;
       }
 
-      console.log("Fetching from:", url);
-
       const res = await fetch(url, { ...baseOptions, ...options, signal });
 
       if (!res.ok) {
@@ -81,7 +79,6 @@ const useFetch = (route, onReceived, searchQuery, authToken, type) => {
 
       if (jsonResult.success === true) {
         onReceived(jsonResult);
-        console.log(jsonResult);
       } else {
         setError(
           jsonResult.msg ||
