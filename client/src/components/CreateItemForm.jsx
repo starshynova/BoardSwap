@@ -107,7 +107,7 @@ const CreateItemForm = () => {
 
     console.log("Sending data:", JSON.stringify(formData));
     try {
-      const response = await fetch("http://localhost:3000/api/items/create", {
+      const response = await fetch("/api/items/create", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
