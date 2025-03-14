@@ -31,7 +31,6 @@ const Home = () => {
   );
 
   useEffect(() => {
-    console.log("Fetching items with:", { searchQuery, type, sort });
     performFetch();
   }, [searchQuery, type, sort]);
 
