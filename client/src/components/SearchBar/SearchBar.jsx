@@ -1,38 +1,16 @@
-import { InputBase, InputAdornment, styled, Button } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useSearch } from "../context/SearchContext";
+import { useSearch } from "../../context/SearchContext";
 import { useLocation, useNavigate } from "react-router-dom";
-
-const SearchContainer = styled("div")(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
-  borderRadius: theme.shape.borderRadius,
-  width: "40%",
-  color: theme.palette.text.secondary,
-  display: "flex",
-  alignItems: "center",
-  border: "1.5px solid ",
-  borderColor: theme.palette.secondary.main,
-  flex: 1,
-}));
-
-const Wrapper = styled("div")({
-  display: "flex",
-  alignItems: "center",
-  gap: "8px",
-  width: "50%",
-});
-
-const StyledButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  borderColor: theme.palette.secondary.main,
-  backgroundColor: theme.palette.text.primary,
-  "&:hover": {
-    backgroundColor: theme.palette.action.hover,
-    color: theme.palette.text.primary,
-  },
-}));
+import {
+  SearchContainer,
+  StyledButton,
+  StyledInputBase,
+  Wrapper,
+} from "./SearchBar.styles";
+import { IconButton, InputAdornment } from "@mui/material";
 
 const SearchBar = () => {
   const { searchQuery, setSearchQuery } = useSearch();
@@ -58,16 +36,29 @@ const SearchBar = () => {
     }
   };
 
+  const handleClear = () => {
+    setQuery("");
+    setSearchQuery("");
+  };
+
   return (
     <Wrapper>
       <SearchContainer>
-        <InputBase
+        <StyledInputBase
           placeholder="Search ..."
-          sx={{ color: "gray", flex: 1 }}
           startAdornment={
             <InputAdornment position="start">
               <SearchIcon />
             </InputAdornment>
+          }
+          endAdornment={
+            query && (
+              <InputAdornment position="end">
+                <IconButton onClick={handleClear} size="small">
+                  <ClearIcon />
+                </IconButton>
+              </InputAdornment>
+            )
           }
           type="text"
           value={query}
