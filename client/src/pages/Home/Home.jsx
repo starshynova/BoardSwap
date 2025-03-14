@@ -58,7 +58,7 @@ const Home = () => {
     <div data-testid={TEST_ID.container}>
       <Box sx={{ mt: 4 }}>
         <div>
-          <div style={{ padding: "80px" }}>
+          <div style={{ padding: "20px 80px" }}>
             <>
               <CenteredTabs onTabChange={handleTabChange} selectedType={type} />
               <SortDropdown sortValue={sort} onSortChange={handleSortChange} />
