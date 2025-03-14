@@ -1,5 +1,5 @@
 import TEST_ID from "./Home.testid";
-// import SortDropdown from "../../components/SortDropdown";
+import SortDropdown from "../../components/SortDropdown";
 import PropTypes from "prop-types";
 import Cart from "../../components/cart";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ const Home = () => {
   const { cart, setCart } = useUIContext();
   const { searchQuery } = useSearch();
   const [type, setType] = useState("All");
+  const [sort, setSort] = useState("");
   const { isLoading, error, performFetch } = useFetch(
     `/items`,
     (data) => {
@@ -26,13 +27,16 @@ const Home = () => {
     searchQuery,
     null,
     type === "All" ? "" : type,
-    null,
+    sort,
   );
 
   useEffect(() => {
-    console.log("Fetching items with:", { searchQuery, type });
     performFetch();
-  }, [searchQuery, type]);
+  }, [searchQuery, type, sort]);
+
+  const handleSortChange = (selectedSort) => {
+    setSort(selectedSort);
+  };
 
   const toggleCartItem = (product) => {
     setCart((prevCart) => {
@@ -54,14 +58,16 @@ const Home = () => {
     <div data-testid={TEST_ID.container}>
       <Box sx={{ mt: 4 }}>
         <div>
-          {/* <SortDropdown /> */}
           <div style={{ padding: "80px" }}>
             <>
+              <CenteredTabs onTabChange={handleTabChange} selectedType={type} />
+              <SortDropdown sortValue={sort} onSortChange={handleSortChange} />
+              <br />
+              <br />
               <SearchResultsHeader
                 searchQuery={searchQuery}
                 products={products}
               />
-              <CenteredTabs onTabChange={handleTabChange} selectedType={type} />
               <ProductList
                 products={products}
                 cart={cart}

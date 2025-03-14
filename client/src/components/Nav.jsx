@@ -7,7 +7,6 @@ import SearchBar from "./searchBar";
 import PropTypes from "prop-types";
 import { useUIContext } from "../context/UIContext";
 import { Link } from "react-router-dom";
-// import { useSearch } from "../context/SearchContext";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
