@@ -1,53 +1,46 @@
-import { useState } from "react";
-import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  useTheme,
+} from "@mui/material";
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
-function SortDropdown({ items }) {
-  const [sortOrder, setSortOrder] = useState("lowToHigh");
-  const [sortedItems, setSortedItems] = useState(items);
-
-  const handleChange = (event) => {
-    const selectedSortOrder = event.target.value;
-    setSortOrder(selectedSortOrder);
-
-    let sortedArray = [...items];
-
-    if (selectedSortOrder === "lowToHigh") {
-      sortedArray.sort((a, b) => a.price - b.price);
-    } else if (selectedSortOrder === "highToLow") {
-      sortedArray.sort((a, b) => b.price - a.price);
-    }
-
-    setSortedItems(sortedArray);
-  };
-
+const SortDropdown = ({ onSortChange, sortValue }) => {
+  const theme = useTheme();
   return (
-    <div>
-      <FormControl sx={{ width: 200 }}>
-        <InputLabel id="sort-label">Sort by Price</InputLabel>
-        <Select
-          labelId="sort-label"
-          id="sort-dropdown"
-          value={sortOrder}
-          label="Sort by Price"
-          onChange={handleChange}
+    <FormControl sx={{ minWidth: 200 }}>
+      <InputLabel id="sort-label">Sort by</InputLabel>
+      <Select
+        labelId="sort-label"
+        value={sortValue}
+        onChange={(e) => onSortChange(e.target.value)}
+        sx={{ color: theme.palette.text.secondary }}
+      >
+        <MenuItem value="" sx={{ color: theme.palette.text.secondary }}>
+          Default
+        </MenuItem>
+        <MenuItem
+          value="price_asc"
+          sx={{ color: theme.palette.text.secondary }}
         >
-          <MenuItem value="lowToHigh">Lowest Price</MenuItem>
-          <MenuItem value="highToLow">Highest Price</MenuItem>
-        </Select>
-      </FormControl>
-
-      <div>
-        <ul>
-          {sortedItems.map((item) => (
-            <li key={item.id}>
-              {item.name} - ${item.price}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+          Price: Low to High
+        </MenuItem>
+        <MenuItem
+          value="price_desc"
+          sx={{ color: theme.palette.text.secondary }}
+        >
+          Price: High to Low
+        </MenuItem>
+      </Select>
+    </FormControl>
   );
-}
+};
+
+SortDropdown.propTypes = {
+  onSortChange: PropTypes.func.isRequired,
+  sortValue: PropTypes.string.isRequired,
+};
 
 export default SortDropdown;
