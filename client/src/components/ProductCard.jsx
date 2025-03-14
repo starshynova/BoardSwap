@@ -7,8 +7,10 @@ import {
   Button,
   Grid,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product, isInCart, toggleCartItem }) => {
+  const navigate = useNavigate();
   return (
     <Grid item xs={12} sm={6} md={3}>
       <Card sx={{ boxShadow: 2, textAlign: "center" }}>
@@ -17,7 +19,8 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
           height="200"
           image={product.photo}
           alt={product.title}
-          sx={{ objectFit: "contain" }}
+          sx={{ objectFit: "contain", cursor: "pointer" }}
+          onClick={() => navigate(`/items/${product._id}`)}
         />
         <CardContent>
           <Typography variant="h6" color="text.secondary">

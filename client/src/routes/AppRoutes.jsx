@@ -6,6 +6,7 @@ import Login from "../pages/User/Login";
 import UserList from "../pages/User/UserList";
 import CreateItem from "../pages/Item/CreateItem";
 import NotFound from "../pages/NotFound/NotFound";
+import ItemDetails from "../pages/Item/ItemDetails";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
       <Route path="/register" element={<CreateUser />} />
       <Route path="/login" element={<Login />} />
       <Route path="/items/create" element={<CreateItem />} />
+      <Route path="/items/:id" element={<ItemDetails />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

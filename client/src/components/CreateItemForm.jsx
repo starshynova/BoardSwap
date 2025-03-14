@@ -50,10 +50,6 @@ const CreateItemForm = (sellerId) => {
     seller_id: sellerId,
   });
 
-  // useEffect(() => {
-  //   setFormData((prev) => ({ ...prev, seller_id: sellerId }));
-  // }, [sellerId]);
-
   const [errors, setErrors] = useState({});
 
   const [selectedFile, setSelectedFile] = useState(null);
