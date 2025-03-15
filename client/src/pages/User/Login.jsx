@@ -6,11 +6,12 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSuccess = (data) => {
-    if (data?.success && data?.token) {
-      localStorage.setItem("authToken", data.token);
+    if (data?.success && data?.accessToken) {
+      localStorage.setItem("authToken", data.accessToken);
 
       setTimeout(() => {
         navigate("/");
+        window.location.reload(); // To update the navbar
       }, 2000);
     }
   };
