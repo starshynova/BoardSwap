@@ -16,7 +16,6 @@ const ItemDetails = () => {
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const token = localStorage.getItem("authToken");
 
-
   const toggleCartItem = (item) => {
     setCart((prevCart) => {
       const isAlreadyInCart = prevCart.some(
