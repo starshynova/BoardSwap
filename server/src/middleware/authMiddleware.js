@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const authMiddleware = (req, res, next) => {
+  // eslint-disable-next-line no-console
+  console.log("Headers:", req.headers);
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
