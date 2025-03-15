@@ -1,12 +1,25 @@
 import ItemDetailsForm from "../../components/ItemDetailsForm";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useUIContext } from "../../context/UIContext";
 
 const ItemDetails = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { cart, setCart } = useUIContext();
+
+  const toggleCartItem = (item) => {
+    setCart((prevCart) => {
+      const isAlreadyInCart = prevCart.some(
+        (product) => product._id === item._id,
+      );
+      return isAlreadyInCart
+        ? prevCart.filter((product) => product._id !== item._id)
+        : [...prevCart, item];
+    });
+  };
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -15,7 +28,6 @@ const ItemDetails = () => {
         const result = await response.json();
         if (result.success) {
           setData(result.result);
-          console.log(result.result);
         } else {
           setError("Error loading data");
         }
@@ -33,7 +45,13 @@ const ItemDetails = () => {
   if (error) return <h2>{error}</h2>;
   if (!data) return <h2>Item not found</h2>;
 
-  return <ItemDetailsForm data={data} />;
+  return (
+    <ItemDetailsForm
+      data={data}
+      isInCart={cart.some((item) => item._id === data._id)}
+      toggleCartItem={toggleCartItem}
+    />
+  );
 };
 
 export default ItemDetails;

@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Divider,
   List,
   ListItem,
@@ -7,7 +8,10 @@ import {
   Typography,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
+const token = localStorage.getItem("authToken");
 const style = {
   width: "100%",
   display: "flex",
@@ -29,7 +33,21 @@ const styleListItem = {
   gap: "40px",
 };
 
-const ItemDetailsForm = ({ data }) => {
+const ItemDetailsForm = ({ data, isInCart, toggleCartItem }) => {
+  const [isSeller, setIsSeller] = useState(false);
+
+  useEffect(() => {
+    try {
+      const decodedToken = jwtDecode(token);
+      console.log("decodedToken", decodedToken);
+      if (decodedToken.id === data.seller_id) {
+        setIsSeller(true);
+      }
+    } catch (error) {
+      console.error("Token decoding error:", error);
+    }
+  }, []);
+
   return (
     <Box
       sx={{
@@ -117,6 +135,34 @@ const ItemDetailsForm = ({ data }) => {
           </div>
         )}
       </List>
+
+      {!isSeller ? (
+        <Button
+          variant="contained"
+          color={isInCart ? "error" : "primary"}
+          onClick={() => toggleCartItem(data)}
+          sx={{ mt: 2, width: "200px", borderRadius: "10px" }}
+        >
+          {isInCart ? "Remove from Cart" : "Add to Cart"}
+        </Button>
+      ) : (
+        <div style={{ display: "flex", gap: "40px" }}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2, width: "200px", borderRadius: "10px" }}
+          >
+            Delete
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2, width: "200px", borderRadius: "10px" }}
+          >
+            Edit
+          </Button>
+        </div>
+      )}
     </Box>
   );
 };
@@ -129,7 +175,10 @@ ItemDetailsForm.propTypes = {
     type: PropTypes.string.isRequired,
     condition: PropTypes.string.isRequired,
     description: PropTypes.string,
+    seller_id: PropTypes.string.isRequired,
   }).isRequired,
+  isInCart: PropTypes.bool.isRequired,
+  toggleCartItem: PropTypes.func.isRequired,
 };
 
 export default ItemDetailsForm;

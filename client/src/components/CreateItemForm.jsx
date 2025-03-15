@@ -331,10 +331,10 @@ const CreateItemForm = (sellerId) => {
         <Button
           variant="contained"
           size="large"
+          color="primary"
           sx={{
             width: "200px",
             mt: 2,
-            backgroundColor: "#47CAD1",
             borderRadius: "10px",
           }}
           onClick={handleSubmit}

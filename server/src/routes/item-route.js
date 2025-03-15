@@ -13,7 +13,7 @@ const itemRouter = express.Router();
 itemRouter.post("/create", authMiddleware, createItem);
 itemRouter.get("/", getItems);
 itemRouter.get("/search", getItems);
-itemRouter.get("/:id", getItemById);
+itemRouter.get("/:id", authMiddleware, getItemById);
 itemRouter.put("/:id", authMiddleware, updateItem);
 itemRouter.delete("/:id", authMiddleware, deleteItem);
 
