@@ -9,6 +9,7 @@ const ItemDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { cart, setCart } = useUIContext();
+  const token = localStorage.getItem("authToken");
 
   const toggleCartItem = (item) => {
     setCart((prevCart) => {
@@ -26,6 +27,10 @@ const ItemDetails = () => {
       try {
         const response = await fetch(`/api/items/${id}`, {
           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         });
         const result = await response.json();
         if (result.success) {
