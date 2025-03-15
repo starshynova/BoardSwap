@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 
 const token = localStorage.getItem("authToken");
+
 const style = {
   width: "100%",
   display: "flex",
@@ -33,7 +34,7 @@ const styleListItem = {
   gap: "40px",
 };
 
-const ItemDetailsForm = ({ data, isInCart, toggleCartItem }) => {
+const ItemDetailsForm = ({ data, isInCart, toggleCartItem, handleDelete }) => {
   const [isSeller, setIsSeller] = useState(false);
 
   useEffect(() => {
@@ -151,6 +152,7 @@ const ItemDetailsForm = ({ data, isInCart, toggleCartItem }) => {
             variant="contained"
             color="primary"
             sx={{ mt: 2, width: "200px", borderRadius: "10px" }}
+            onClick={handleDelete}
           >
             Delete
           </Button>
@@ -179,6 +181,7 @@ ItemDetailsForm.propTypes = {
   }).isRequired,
   isInCart: PropTypes.bool.isRequired,
   toggleCartItem: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
 };
 
 export default ItemDetailsForm;
