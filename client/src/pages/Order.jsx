@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useUIContext } from "../context/UIContext";
-import { PaymentForm } from "../../components/PaymentForm";
 import ProductCard from "../components/ProductCard";
+import PaymentForm from "../components/PaymentForm/PaymentForm";
 
 export const Order = () => {
   const { cart, toggleCartItem } = useUIContext();
