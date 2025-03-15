@@ -12,6 +12,8 @@ const ItemDetails = () => {
   const { cart, setCart } = useUIContext();
   const navigate = useNavigate();
   const timeoutRef = useRef(null);
+  const token = localStorage.getItem("authToken");
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
 
   const toggleCartItem = (item) => {
     setCart((prevCart) => {
@@ -27,7 +29,13 @@ const ItemDetails = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/items/${id}`);
+        const response = await fetch(`/api/items/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const result = await response.json();
         if (result.success) {
           setData(result.result);
@@ -46,12 +54,12 @@ const ItemDetails = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/items/${id}`, {
+      const response = await fetch(`/api/items/${id}`, {
         method: "DELETE",
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        //   "Content-Type": "application/json",
-        // },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
       console.log("delete");
       if (!response.ok) {
@@ -59,6 +67,7 @@ const ItemDetails = () => {
         console.error("Server response:", errorData);
         throw new Error("Data deleting error");
       }
+      setDeleteSuccess(true);
       timeoutRef.current = setTimeout(() => {
         navigate("/");
       }, 2000);
@@ -77,6 +86,7 @@ const ItemDetails = () => {
       isInCart={cart.some((item) => item._id === data._id)}
       toggleCartItem={toggleCartItem}
       handleDelete={handleDelete}
+      deleteSuccess={deleteSuccess}
     />
   );
 };

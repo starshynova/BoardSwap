@@ -34,7 +34,13 @@ const styleListItem = {
   gap: "40px",
 };
 
-const ItemDetailsForm = ({ data, isInCart, toggleCartItem, handleDelete }) => {
+const ItemDetailsForm = ({
+  data,
+  isInCart,
+  toggleCartItem,
+  handleDelete,
+  deleteSuccess,
+}) => {
   const [isSeller, setIsSeller] = useState(false);
 
   useEffect(() => {
@@ -156,6 +162,7 @@ const ItemDetailsForm = ({ data, isInCart, toggleCartItem, handleDelete }) => {
           >
             Delete
           </Button>
+
           <Button
             variant="contained"
             color="primary"
@@ -164,6 +171,11 @@ const ItemDetailsForm = ({ data, isInCart, toggleCartItem, handleDelete }) => {
             Edit
           </Button>
         </div>
+      )}
+      {deleteSuccess && (
+        <Typography color="green" sx={{ mt: 2 }}>
+          Item was successfully deleted
+        </Typography>
       )}
     </Box>
   );
@@ -182,6 +194,7 @@ ItemDetailsForm.propTypes = {
   isInCart: PropTypes.bool.isRequired,
   toggleCartItem: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
+  deleteSuccess: PropTypes.bool.isRequired,
 };
 
 export default ItemDetailsForm;
