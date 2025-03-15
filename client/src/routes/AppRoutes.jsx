@@ -7,6 +7,7 @@ import UserList from "../pages/User/UserList";
 import CreateItem from "../pages/Item/CreateItem";
 import NotFound from "../pages/NotFound/NotFound";
 import ItemDetails from "../pages/Item/ItemDetails";
+import EditItem from "../pages/Item/EditItem";
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/items/create" element={<CreateItem />} />
       <Route path="/items/:id" element={<ItemDetails />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="items/edit/:id" element={<EditItem />} />
     </Routes>
   );
 };

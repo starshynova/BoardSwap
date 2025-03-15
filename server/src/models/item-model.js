@@ -11,6 +11,7 @@ const itemSchema = new mongoose.Schema({
     required: true,
     enum: ["new", "likeNew", "used"],
   },
+  photo_name: { type: String, required: false },
   photo: { type: String, required: false },
   description: { type: String, required: false },
   created_date: { type: Date, default: Date.now },
@@ -27,15 +28,18 @@ const Item = mongoose.model("items", itemSchema);
 export const validateItem = (itemObject) => {
   const errorList = [];
   const allowedKeys = [
+    "_id",
     "title",
     "price",
     "type",
     "condition",
+    "photo_name",
     "photo",
     "description",
     "created_date",
     "seller_id",
     "status",
+    "__v",
   ];
 
   const validatedKeysMessage = validateAllowedFields(itemObject, allowedKeys);

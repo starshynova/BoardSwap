@@ -40,13 +40,13 @@ const ItemDetailsForm = ({
   toggleCartItem,
   handleDelete,
   deleteSuccess,
+  handleEdit,
 }) => {
   const [isSeller, setIsSeller] = useState(false);
 
   useEffect(() => {
     try {
       const decodedToken = jwtDecode(token);
-      console.log("decodedToken", decodedToken);
       if (decodedToken.id === data.seller_id) {
         setIsSeller(true);
       }
@@ -167,6 +167,7 @@ const ItemDetailsForm = ({
             variant="contained"
             color="primary"
             sx={{ mt: 2, width: "200px", borderRadius: "10px" }}
+            onClick={handleEdit}
           >
             Edit
           </Button>
@@ -195,6 +196,7 @@ ItemDetailsForm.propTypes = {
   toggleCartItem: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   deleteSuccess: PropTypes.bool.isRequired,
+  handleEdit: PropTypes.func.isRequired,
 };
 
 export default ItemDetailsForm;

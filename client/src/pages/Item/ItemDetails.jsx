@@ -33,7 +33,6 @@ const ItemDetails = () => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
           },
         });
         const result = await response.json();
@@ -61,7 +60,6 @@ const ItemDetails = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log("delete");
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Server response:", errorData);
@@ -76,6 +74,10 @@ const ItemDetails = () => {
     }
   };
 
+  const handleEdit = () => {
+    navigate(`/items/edit/${id}`);
+  };
+
   if (loading) return <h2>Loading...</h2>;
   if (error) return <h2>{error}</h2>;
   if (!data) return <h2>Item not found</h2>;
@@ -87,6 +89,7 @@ const ItemDetails = () => {
       toggleCartItem={toggleCartItem}
       handleDelete={handleDelete}
       deleteSuccess={deleteSuccess}
+      handleEdit={handleEdit}
     />
   );
 };
