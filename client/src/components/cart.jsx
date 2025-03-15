@@ -13,6 +13,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CloseIcon from "@mui/icons-material/Close";
 import { useUIContext } from "../context/UIContext";
 import theme from "./theme";
+import { Link } from "react-router-dom";
 
 const DrawerCard = styled(Drawer)(({ theme }) => ({
   "& .MuiDrawer-paper": {
@@ -178,10 +179,11 @@ const Cart = () => {
           >
             Clear Cart
           </Button>
-
-          <Button variant="contained" fullWidth>
-            Checkout
-          </Button>
+          <Link to={`/order`}>
+            <Button variant="contained" fullWidth>
+              Order Now
+            </Button>
+          </Link>
         </>
       )}
     </DrawerCard>
