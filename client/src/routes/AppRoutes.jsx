@@ -10,7 +10,6 @@ import EditItem from "../pages/Item/EditItem";
 import PrivateRoute from "./PrivateRoute";
 import Profile from "../pages/User/Profile";
 
-
 const AppRoutes = () => {
   return (
     <Routes>
