@@ -24,7 +24,7 @@ const ItemDetails = () => {
   useEffect(() => {
     const fetchItem = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/items/${id}`);
+        const response = await fetch(`/api/items/${id}`);
         const result = await response.json();
         if (result.success) {
           setData(result.result);
