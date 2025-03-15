@@ -14,7 +14,6 @@ const ItemDetails = () => {
   const timeoutRef = useRef(null);
   const token = localStorage.getItem("authToken");
   const [deleteSuccess, setDeleteSuccess] = useState(false);
-  const token = localStorage.getItem("authToken");
 
   const toggleCartItem = (item) => {
     setCart((prevCart) => {
