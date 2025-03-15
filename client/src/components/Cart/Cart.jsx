@@ -1,50 +1,12 @@
-import Drawer from "@mui/material/Drawer";
-import {
-  Box,
-  styled,
-  Typography,
-  Button,
-  IconButton,
-  Divider,
-} from "@mui/material";
+import { Box, Typography, Button, IconButton, Divider } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import CloseIcon from "@mui/icons-material/Close";
-import { useUIContext } from "../context/UIContext";
-import theme from "./theme";
+import { useUIContext } from "../../context/UIContext";
+import theme from "../theme";
 import { Link } from "react-router-dom";
-
-const DrawerCard = styled(Drawer)(({ theme }) => ({
-  "& .MuiDrawer-paper": {
-    width: 450,
-    background: theme.palette.background.default,
-    color: theme.palette.text.primary,
-    padding: "20px",
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-    display: "flex",
-    flexDirection: "column",
-  },
-}));
-
-const CartItem = styled(Box)(({ theme }) => ({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  padding: "15px",
-  borderRadius: "10px",
-  backgroundColor: theme.palette.background.paper,
-  boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-  marginBottom: "10px",
-}));
-
-const ProductImage = styled("img")({
-  width: 70,
-  height: 70,
-  borderRadius: 8,
-  objectFit: "cover",
-  marginRight: 15,
-});
+import { CartItem, DrawerCard, ProductImage } from "./CartUI.styles";
 
 const Cart = () => {
   const { cart, setCart, setShowCart, showCart } = useUIContext();

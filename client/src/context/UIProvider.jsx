@@ -15,8 +15,19 @@ const UIProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  const toggleCartItem = (product) => {
+    setCart((prevCart) => {
+      const isAlreadyInCart = prevCart.some((item) => item._id === product._id);
+      return isAlreadyInCart
+        ? prevCart.filter((item) => item._id !== product._id)
+        : [...prevCart, product];
+    });
+  };
+
   return (
-    <UIContext.Provider value={{ cart, setCart, showCart, setShowCart }}>
+    <UIContext.Provider
+      value={{ cart, setCart, showCart, setShowCart, toggleCartItem }}
+    >
       {children}
     </UIContext.Provider>
   );
