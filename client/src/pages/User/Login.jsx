@@ -14,6 +14,7 @@ const Login = () => {
 
       setTimeout(() => {
         navigate("/");
+        window.location.reload(); // To update the navbar
       }, 2000);
     }
   };
