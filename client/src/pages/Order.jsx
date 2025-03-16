@@ -5,7 +5,6 @@ import PaymentForm from "../components/PaymentForm/PaymentForm";
 
 export const Order = () => {
   const { cart, toggleCartItem } = useUIContext();
-  console.log(cart);
   return (
     <>
       <h1>Order</h1>

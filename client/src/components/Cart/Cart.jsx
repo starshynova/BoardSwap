@@ -7,6 +7,7 @@ import { useUIContext } from "../../context/UIContext";
 import theme from "../theme";
 import { Link } from "react-router-dom";
 import { CartItem, DrawerCard, ProductImage } from "./CartUI.styles";
+import { useMemo } from "react";
 
 const Cart = () => {
   const { cart, setCart, setShowCart, showCart } = useUIContext();
@@ -19,7 +20,10 @@ const Cart = () => {
     setCart([]);
   };
 
-  const totalPrice = cart.reduce((acc, item) => acc + (item.price || 0), 0);
+  const totalPrice = useMemo(
+    () => cart.reduce((acc, item) => acc + (item.price || 0), 0),
+    [cart],
+  );
   const finalTotal = totalPrice;
 
   return (
