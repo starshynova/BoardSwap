@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import {
   Box,
   styled,
@@ -44,20 +44,27 @@ const Nav = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
-    if (token) {
-      setAnchorEl(event.currentTarget);
-    }
-  };
+  const handleClick = useCallback(
+    (event) => {
+      if (token) {
+        setAnchorEl(event.currentTarget);
+      }
+    },
+    [token],
+  );
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
-  const handleProfile = () => {
+  const handleProfile = useCallback(() => {
     navigate("/profile");
     handleClose();
-  };
+  }, [navigate, handleClose]);
+
+  const handleCartClick = useCallback(() => {
+    setShowCart(true);
+  }, [setShowCart]);
 
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
@@ -72,7 +79,7 @@ const Nav = () => {
               <AddCircleIcon sx={{ color: "white" }} />
             </IconButton>
           </Link>
-          <IconButton aria-label="cart" onClick={() => setShowCart(true)}>
+          <IconButton aria-label="cart" onClick={handleCartClick}>
             <Badge badgeContent={cart.length} color="error">
               <AddShoppingCartIcon sx={{ color: "white" }} />
             </Badge>
