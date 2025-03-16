@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import TEST_ID from "./Home.testid";
 import SortDropdown from "../../components/SortDropdown";
 import PropTypes from "prop-types";
-import Cart from "../../components/cart";
-import { useEffect, useState } from "react";
+import Cart from "../../components/Cart/Cart";
 import { Box } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
 import { useUIContext } from "../../context/UIContext";
@@ -13,7 +13,7 @@ import CenteredTabs from "../../components/Tabs";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
-  const { cart, setCart } = useUIContext();
+  const { cart, toggleCartItem } = useUIContext();
   const { searchQuery } = useSearch();
   const [type, setType] = useState("All");
   const [sort, setSort] = useState("");
@@ -36,15 +36,6 @@ const Home = () => {
 
   const handleSortChange = (selectedSort) => {
     setSort(selectedSort);
-  };
-
-  const toggleCartItem = (product) => {
-    setCart((prevCart) => {
-      const isAlreadyInCart = prevCart.some((item) => item._id === product._id);
-      return isAlreadyInCart
-        ? prevCart.filter((item) => item._id !== product._id)
-        : [...prevCart, product];
-    });
   };
 
   const handleTabChange = (event, newType) => {

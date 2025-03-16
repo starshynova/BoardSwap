@@ -1,4 +1,13 @@
-import { Box, styled, Toolbar, IconButton, Badge } from "@mui/material";
+import { useState, useContext } from "react";
+import {
+  Box,
+  styled,
+  Toolbar,
+  IconButton,
+  Badge,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
@@ -6,7 +15,9 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchBar from "./SearchBar/SearchBar";
 import PropTypes from "prop-types";
 import { useUIContext } from "../context/UIContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import Logout from "./Logout";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -28,16 +39,36 @@ const Logo = styled("img")({
   width: "auto",
 });
 
-const Nav = () => {
+const Nav = ({ onSearch }) => {
   const { cart, setShowCart } = useUIContext();
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    if (token) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleProfile = () => {
+    navigate("/profile");
+    handleClose();
+  };
 
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <StyledToolbar>
-        <Logo src="/Logo.png" alt="Logo" />
-        <SearchBar />
+        <Link to="/">
+          <Logo src="/Logo.png" alt="Logo" />
+        </Link>
+        <SearchBar onSearch={onSearch} />
         <Icons>
-          <Link to={"/items/create"}>
+          <Link to="/items/create">
             <IconButton aria-label="create">
               <AddCircleIcon sx={{ color: "white" }} />
             </IconButton>
@@ -47,14 +78,43 @@ const Nav = () => {
               <AddShoppingCartIcon sx={{ color: "white" }} />
             </Badge>
           </IconButton>
-          <IconButton aria-label="user">
-            <PersonIcon sx={{ color: "white" }} />
-          </IconButton>
+
+          {token ? (
+            <>
+              <IconButton
+                aria-label="user"
+                onClick={handleClick}
+                sx={{ color: "white" }}
+              >
+                <PersonIcon />
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                MenuListProps={{ "aria-labelledby": "user-button" }}
+              >
+                <MenuItem onClick={handleProfile} sx={{ color: "black" }}>
+                  Profile
+                </MenuItem>
+                <MenuItem sx={{ color: "black" }}>
+                  <Logout />
+                </MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <Link to="/login">
+              <IconButton aria-label="login" sx={{ color: "gray" }}>
+                <PersonIcon />
+              </IconButton>
+            </Link>
+          )}
         </Icons>
       </StyledToolbar>
     </AppBar>
   );
 };
+
 Nav.propTypes = {
   onSearch: PropTypes.func.isRequired,
 };

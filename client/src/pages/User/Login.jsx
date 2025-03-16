@@ -1,16 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSuccess = (data) => {
     if (data?.success && data?.token) {
-      localStorage.setItem("authToken", data.token);
+      login(data.token);
 
       setTimeout(() => {
         navigate("/");
+        window.location.reload(); // To update the navbar
       }, 2000);
     }
   };

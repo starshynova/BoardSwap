@@ -46,7 +46,6 @@ const ItemDetailsForm = ({
   useEffect(() => {
     try {
       const decodedToken = jwtDecode(token);
-      console.log("decodedToken", decodedToken);
       if (decodedToken.id === data.seller_id) {
         setIsSeller(true);
       }
