@@ -9,12 +9,12 @@ const ItemDetails = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
   const { cart, setCart } = useUIContext();
   const navigate = useNavigate();
   const timeoutRef = useRef(null);
   const token = localStorage.getItem("authToken");
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
-
+  
   const toggleCartItem = (item) => {
     setCart((prevCart) => {
       const isAlreadyInCart = prevCart.some(
