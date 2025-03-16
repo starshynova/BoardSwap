@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import {
   Box,
   styled,
@@ -45,12 +45,6 @@ const Nav = ({ onSearch }) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  useEffect(() => {
-    if (!token) {
-      setAnchorEl(null);
-    }
-  }, [token]);
-
   const handleClick = (event) => {
     if (token) {
       setAnchorEl(event.currentTarget);
@@ -69,7 +63,9 @@ const Nav = ({ onSearch }) => {
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <StyledToolbar>
-        <Logo src="/Logo.png" alt="Logo" />
+        <Link to="/">
+          <Logo src="/Logo.png" alt="Logo" />
+        </Link>
         <SearchBar onSearch={onSearch} />
         <Icons>
           <Link to="/items/create">

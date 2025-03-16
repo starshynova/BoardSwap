@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { AuthContext } from "./AuthContext";
 
 const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(() => localStorage.getItem("authToken"));
+  const [token, setToken] = useState(localStorage.getItem("authToken") || null);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
