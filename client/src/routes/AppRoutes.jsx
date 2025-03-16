@@ -6,7 +6,7 @@ import UserList from "../pages/User/UserList";
 import CreateItem from "../pages/Item/CreateItem";
 import NotFound from "../pages/NotFound/NotFound";
 import PrivateRoute from "./PrivateRoute";
-import Profile from "../pages/User/Profile";
+import UserProfile from "../pages/User/Profile";
 
 const AppRoutes = () => {
   return (
@@ -30,7 +30,7 @@ const AppRoutes = () => {
         path="/profile"
         element={
           <PrivateRoute>
-            <Profile />
+            <UserProfile />
           </PrivateRoute>
         }
       />

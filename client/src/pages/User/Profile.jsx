@@ -1,39 +1,53 @@
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { Box, Typography } from "@mui/material";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
+import UserProfileUI from "../../components/UserProfileUI";
 
-const ProfilePage = () => {
-  const { token } = useContext(AuthContext);
+const UserProfile = ({ initialUserData }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [user, setUser] = useState(initialUserData);
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  if (!token) {
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <Typography variant="h4">
-          Please log in to view your profile.
-        </Typography>
-      </Box>
-    );
-  }
+  useEffect(() => {
+    setUser(initialUserData);
+  }, [initialUserData]);
+
+  const onSubmit = (formData) => {
+    setShowConfirm(true);
+    setUser(formData);
+  };
+
+  const confirmUpdate = () => {
+    console.log("Updated user data:", user);
+    setShowConfirm(false);
+  };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <Typography variant="h4"> Profile Page!</Typography>
-    </Box>
+    <UserProfileUI
+      errors={errors}
+      register={register}
+      handleSubmit={handleSubmit}
+      isLoading={false}
+      showConfirm={showConfirm}
+      onSubmit={onSubmit}
+      confirmUpdate={confirmUpdate}
+      setShowConfirm={setShowConfirm}
+      user={user}
+    />
   );
 };
 
-export default ProfilePage;
+UserProfile.propTypes = {
+  initialUserData: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    city: PropTypes.string.isRequired,
+    post_code: PropTypes.string.isRequired,
+  }).isRequired,
+};
+
+export default UserProfile;
