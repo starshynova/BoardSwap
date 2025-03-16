@@ -5,6 +5,7 @@ import Login from "../pages/User/Login";
 import UserList from "../pages/User/UserList";
 import CreateItem from "../pages/Item/CreateItem";
 import NotFound from "../pages/NotFound/NotFound";
+import { Order } from "../pages/Order";
 import ItemDetails from "../pages/Item/ItemDetails";
 import PrivateRoute from "./PrivateRoute";
 import Profile from "../pages/User/Profile";
@@ -16,6 +17,7 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/items/create" element={<CreateItem />} />
+      <Route path="/order" element={<Order />} />
       <Route path="/items/:id" element={<ItemDetails />} />
       <Route path="/register" element={<CreateUser />} />
       <Route path="/user" element={<UserList />} />
