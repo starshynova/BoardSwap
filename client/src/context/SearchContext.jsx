@@ -1,5 +1,5 @@
-/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext } from "react";
+import PropTypes from "prop-types";
 
 const SearchContext = createContext();
 
@@ -7,7 +7,6 @@ export const useSearch = () => {
   return useContext(SearchContext);
 };
 
-// eslint-disable-next-line react/prop-types
 export const SearchProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -16,4 +15,8 @@ export const SearchProvider = ({ children }) => {
       {children}
     </SearchContext.Provider>
   );
+};
+
+SearchProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
