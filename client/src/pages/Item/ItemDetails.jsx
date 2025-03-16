@@ -14,7 +14,7 @@ const ItemDetails = () => {
   const navigate = useNavigate();
   const timeoutRef = useRef(null);
   const token = localStorage.getItem("authToken");
-  
+
   const toggleCartItem = (item) => {
     setCart((prevCart) => {
       const isAlreadyInCart = prevCart.some(
@@ -60,6 +60,7 @@ const ItemDetails = () => {
           "Content-Type": "application/json",
         },
       });
+
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Server response:", errorData);
