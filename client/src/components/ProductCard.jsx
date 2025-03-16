@@ -8,9 +8,19 @@ import {
   Grid,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useCallback } from "react";
 
 const ProductCard = ({ product, isInCart, toggleCartItem }) => {
   const navigate = useNavigate();
+
+  const handleNavigate = useCallback(() => {
+    navigate(`/items/${product._id}`);
+  }, [navigate, product._id]);
+
+  const handleToggleCart = useCallback(() => {
+    toggleCartItem(product);
+  }, [toggleCartItem, product]);
+
   return (
     <Grid item xs={12} sm={6} md={3}>
       <Card sx={{ boxShadow: 2, textAlign: "center" }}>
@@ -20,7 +30,7 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
           image={product.photo}
           alt={product.title}
           sx={{ objectFit: "contain", cursor: "pointer" }}
-          onClick={() => navigate(`/items/${product._id}`)}
+          onClick={handleNavigate}
         />
         <CardContent>
           <Typography variant="h6" color="text.secondary">
@@ -35,7 +45,7 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
           <Button
             variant="contained"
             color={isInCart ? "error" : "primary"}
-            onClick={() => toggleCartItem(product)}
+            onClick={handleToggleCart}
             sx={{ mt: 2 }}
             fullWidth
           >

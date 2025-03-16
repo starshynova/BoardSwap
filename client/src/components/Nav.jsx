@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import {
   Box,
   styled,
@@ -13,7 +13,6 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchBar from "./SearchBar/SearchBar";
-import PropTypes from "prop-types";
 import { useUIContext } from "../context/UIContext";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -39,26 +38,33 @@ const Logo = styled("img")({
   width: "auto",
 });
 
-const Nav = ({ onSearch }) => {
+const Nav = () => {
   const { cart, setShowCart } = useUIContext();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClick = (event) => {
-    if (token) {
-      setAnchorEl(event.currentTarget);
-    }
-  };
+  const handleClick = useCallback(
+    (event) => {
+      if (token) {
+        setAnchorEl(event.currentTarget);
+      }
+    },
+    [token],
+  );
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
-  const handleProfile = () => {
+  const handleProfile = useCallback(() => {
     navigate("/profile");
     handleClose();
-  };
+  }, [navigate, handleClose]);
+
+  const handleCartClick = useCallback(() => {
+    setShowCart(true);
+  }, [setShowCart]);
 
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
@@ -66,14 +72,14 @@ const Nav = ({ onSearch }) => {
         <Link to="/">
           <Logo src="/Logo.png" alt="Logo" />
         </Link>
-        <SearchBar onSearch={onSearch} />
+        <SearchBar />
         <Icons>
           <Link to="/items/create">
             <IconButton aria-label="create">
               <AddCircleIcon sx={{ color: "white" }} />
             </IconButton>
           </Link>
-          <IconButton aria-label="cart" onClick={() => setShowCart(true)}>
+          <IconButton aria-label="cart" onClick={handleCartClick}>
             <Badge badgeContent={cart.length} color="error">
               <AddShoppingCartIcon sx={{ color: "white" }} />
             </Badge>
@@ -113,10 +119,6 @@ const Nav = ({ onSearch }) => {
       </StyledToolbar>
     </AppBar>
   );
-};
-
-Nav.propTypes = {
-  onSearch: PropTypes.func.isRequired,
 };
 
 export default Nav;

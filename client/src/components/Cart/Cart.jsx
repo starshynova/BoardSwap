@@ -7,27 +7,34 @@ import { useUIContext } from "../../context/UIContext";
 import theme from "../theme";
 import { Link } from "react-router-dom";
 import { CartItem, DrawerCard, ProductImage } from "./CartUI.styles";
+import { useCallback, useMemo } from "react";
 
 const Cart = () => {
   const { cart, setCart, setShowCart, showCart } = useUIContext();
 
-  const removeFromCart = (id) => {
-    setCart(cart.filter((item) => item._id !== id));
-  };
+  const removeFromCart = useCallback(
+    (id) => {
+      setCart((prevCart) => prevCart.filter((item) => item._id !== id));
+    },
+    [setCart],
+  );
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([]);
-  };
+  }, [setCart]);
 
-  const totalPrice = cart.reduce((acc, item) => acc + (item.price || 0), 0);
+  const handleCloseCart = useCallback(() => {
+    setShowCart(false);
+  }, [setShowCart]);
+
+  const totalPrice = useMemo(
+    () => cart.reduce((acc, item) => acc + (item.price || 0), 0),
+    [cart],
+  );
   const finalTotal = totalPrice;
 
   return (
-    <DrawerCard
-      anchor="right"
-      open={showCart}
-      onClose={() => setShowCart(false)}
-    >
+    <DrawerCard anchor="right" open={showCart} onClose={handleCloseCart}>
       <Box
         display="flex"
         justifyContent="space-between"
@@ -40,7 +47,7 @@ const Cart = () => {
             sx={{ color: theme.palette.primary.main, mr: 1 }}
           />
         </Typography>
-        <IconButton onClick={() => setShowCart(false)} color="primary">
+        <IconButton onClick={handleCloseCart} color="primary">
           <CloseIcon />
         </IconButton>
       </Box>

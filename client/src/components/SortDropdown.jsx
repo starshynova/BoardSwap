@@ -6,16 +6,23 @@ import {
   useTheme,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { useCallback } from "react";
 
 const SortDropdown = ({ onSortChange, sortValue }) => {
   const theme = useTheme();
+
+  const handleSortChange = useCallback(
+    (e) => onSortChange(e.target.value),
+    [onSortChange],
+  );
+
   return (
     <FormControl sx={{ minWidth: 200 }}>
       <InputLabel id="sort-label">Sort by</InputLabel>
       <Select
         labelId="sort-label"
         value={sortValue}
-        onChange={(e) => onSortChange(e.target.value)}
+        onChange={handleSortChange}
         sx={{ color: theme.palette.text.secondary }}
       >
         <MenuItem value="" sx={{ color: theme.palette.text.secondary }}>
