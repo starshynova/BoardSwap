@@ -5,6 +5,7 @@ import UIProvider from "./context/UIProvider";
 import { SearchProvider } from "./context/SearchContext";
 import AuthProvider from "./context/AuthProvider";
 import AppRoutes from "./routes/AppRoutes";
+import Cart from "./components/Cart/Cart";
 import Footer from "./components/Footer";
 
 const App = () => {
@@ -14,6 +15,7 @@ const App = () => {
         <UIProvider>
           <ThemeProvider theme={theme}>
             <Nav />
+            <Cart />
             <AppRoutes />
             <Footer />
           </ThemeProvider>

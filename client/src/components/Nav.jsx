@@ -64,7 +64,7 @@ const Nav = () => {
 
   const handleCartClick = useCallback(() => {
     setShowCart(true);
-  }, [setShowCart]);
+  }, []);
 
   return (
     <AppBar position="sticky" sx={{ width: "100%" }}>
@@ -84,7 +84,6 @@ const Nav = () => {
               <AddShoppingCartIcon sx={{ color: "white" }} />
             </Badge>
           </IconButton>
-
           {token ? (
             <>
               <IconButton
