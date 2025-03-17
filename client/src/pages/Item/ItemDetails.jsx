@@ -14,7 +14,7 @@ const ItemDetails = () => {
   const token = localStorage.getItem("authToken");
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const { isLoading, error, performFetch, cancelFetch } = useFetch(
-    `/items${id}`,
+    `/items/${id}`,
     (response) => {
       setData(response.result);
     },
