@@ -5,7 +5,7 @@ import Login from "../pages/User/Login";
 import UserList from "../pages/User/UserList";
 import CreateItem from "../pages/Item/CreateItem";
 import NotFound from "../pages/NotFound/NotFound";
-import { Order } from "../pages/Order";
+import { Order } from "../pages/Order/Order";
 import ItemDetails from "../pages/Item/ItemDetails";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/User/Profile";
