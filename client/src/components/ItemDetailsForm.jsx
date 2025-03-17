@@ -40,6 +40,7 @@ const ItemDetailsForm = ({
   toggleCartItem,
   handleDelete,
   deleteSuccess,
+  handleEdit,
 }) => {
   const [isSeller, setIsSeller] = useState(false);
 
@@ -166,6 +167,7 @@ const ItemDetailsForm = ({
             variant="contained"
             color="primary"
             sx={{ mt: 2, width: "200px", borderRadius: "10px" }}
+            onClick={handleEdit}
           >
             Edit
           </Button>
@@ -194,6 +196,7 @@ ItemDetailsForm.propTypes = {
   toggleCartItem: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   deleteSuccess: PropTypes.bool.isRequired,
+  handleEdit: PropTypes.func.isRequired,
 };
 
 export default ItemDetailsForm;
