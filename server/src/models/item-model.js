@@ -5,12 +5,13 @@ import validateAllowedFields from "../util/validateAllowedFields.js";
 const itemSchema = new mongoose.Schema({
   title: { type: String, required: true },
   price: { type: Number, required: true, min: 0 },
-  type: { type: String, required: true, enum: ["puzzle", "boardGame"] },
+  type: { type: String, required: true, enum: ["Puzzle", "Board Game"] },
   condition: {
     type: String,
     required: true,
-    enum: ["new", "likeNew", "used"],
+    enum: ["New", "Like New", "Used"],
   },
+  photo_name: { type: String, required: false },
   photo: { type: String, required: false },
   description: { type: String, required: false },
   created_date: { type: Date, default: Date.now },
@@ -27,15 +28,18 @@ const Item = mongoose.model("items", itemSchema);
 export const validateItem = (itemObject) => {
   const errorList = [];
   const allowedKeys = [
+    "_id",
     "title",
     "price",
     "type",
     "condition",
+    "photo_name",
     "photo",
     "description",
     "created_date",
     "seller_id",
     "status",
+    "__v",
   ];
 
   const validatedKeysMessage = validateAllowedFields(itemObject, allowedKeys);

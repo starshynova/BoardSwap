@@ -6,6 +6,7 @@ import { SearchProvider } from "./context/SearchContext";
 import AuthProvider from "./context/AuthProvider";
 import AppRoutes from "./routes/AppRoutes";
 import Cart from "./components/Cart/Cart";
+import Footer from "./components/Footer";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
             <Nav />
             <Cart />
             <AppRoutes />
+            <Footer />
           </ThemeProvider>
         </UIProvider>
       </SearchProvider>

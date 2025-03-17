@@ -9,19 +9,19 @@ import {
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import { uploadImage } from "../util/uploadImage";
+import { useParams } from "react-router-dom";
 
-const CreateItemForm = (sellerId) => {
+const EditItemForm = () => {
   const itemType = [
-    { value: "Puzzle", label: "Puzzle" },
-    { value: "Board Game", label: "Board Game" },
+    { value: "puzzle", label: "Puzzle" },
+    { value: "boardGame", label: "Board Game" },
   ];
 
   const itemCondition = [
-    { value: "New", label: "New" },
-    { value: "Like New", label: "Like New" },
-    { value: "Used", label: "Used" },
+    { value: "new", label: "New" },
+    { value: "likeNew", label: "Like New" },
+    { value: "used", label: "Used" },
   ];
 
   const inputStyles = {
@@ -39,7 +39,10 @@ const CreateItemForm = (sellerId) => {
     },
   };
 
+  const { id } = useParams();
+
   const [formData, setFormData] = useState({
+    _id: "",
     title: "",
     price: "",
     type: "",
@@ -47,12 +50,12 @@ const CreateItemForm = (sellerId) => {
     photo_name: "",
     photo: "",
     description: "",
-    status: "Available",
-    seller_id: sellerId,
+    status: "",
+    seller_id: "",
   });
 
   const [errors, setErrors] = useState({});
-
+  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -62,19 +65,33 @@ const CreateItemForm = (sellerId) => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("authToken");
-  useEffect(() => {
-    if (!token) {
-      console.error("No token. User not authorised.");
-      return;
-    }
 
-    try {
-      const decodedToken = jwtDecode(token);
-      setFormData((prev) => ({ ...prev, seller_id: decodedToken.id }));
-    } catch (error) {
-      console.error("Token decoding error:", error);
-    }
-  }, []);
+  useEffect(() => {
+    const fetchItem = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/items/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const result = await response.json();
+        if (result.success) {
+          setFormData(result.result);
+        } else {
+          setErrors("Error loading data");
+        }
+      } catch (error) {
+        setErrors("Request error", error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItem();
+  }, [id]);
 
   const handleChange = (event) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -119,13 +136,13 @@ const CreateItemForm = (sellerId) => {
     setUploadSuccess(true);
   };
 
-  const handleSubmit = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     try {
-      const response = await fetch("/api/items/create", {
-        method: "POST",
+      const response = await fetch(`/api/items/${id}`, {
+        method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -137,17 +154,6 @@ const CreateItemForm = (sellerId) => {
         console.error("Server response:", errorData);
         throw new Error("Data sending error");
       }
-      setFormData({
-        title: "",
-        price: "",
-        type: "",
-        condition: "",
-        photo_name: "",
-        photo: "",
-        description: "",
-        status: "Available",
-        seller_id: "",
-      });
       setSubmitSuccess(true);
 
       timeoutRef.current = setTimeout(() => {
@@ -158,7 +164,11 @@ const CreateItemForm = (sellerId) => {
     }
   };
 
-  return (
+  if (loading) return <h2>Loading...</h2>;
+
+  return !formData ? (
+    <Typography variant="h5">Loading...</Typography>
+  ) : (
     <Box
       sx={{
         display: "flex",
@@ -178,7 +188,7 @@ const CreateItemForm = (sellerId) => {
       autoComplete="off"
     >
       <Typography variant="h5" textAlign="center" mb={2}>
-        Add a new advert
+        Edit an advert
       </Typography>
       <TextField
         required
@@ -253,7 +263,9 @@ const CreateItemForm = (sellerId) => {
           </MenuItem>
         ))}
       </TextField>
-
+      <Box width="100%">
+        <Typography align="left">{formData.photo_name}</Typography>
+      </Box>
       <div style={{ width: "100%" }}>
         <input
           type="file"
@@ -311,6 +323,7 @@ const CreateItemForm = (sellerId) => {
           </Typography>
         )}
       </div>
+
       <TextField
         id="outlined-multiline-description"
         name="description"
@@ -339,13 +352,13 @@ const CreateItemForm = (sellerId) => {
             mt: 2,
             borderRadius: "10px",
           }}
-          onClick={handleSubmit}
+          onClick={handleEdit}
         >
-          Submit
+          Edit
         </Button>
         {submitSuccess && (
           <Typography color="green" sx={{ mt: 2 }}>
-            Your advert has been successfully added!
+            Your advert has been successfully edited!
           </Typography>
         )}
       </Box>
@@ -353,4 +366,4 @@ const CreateItemForm = (sellerId) => {
   );
 };
 
-export default CreateItemForm;
+export default EditItemForm;

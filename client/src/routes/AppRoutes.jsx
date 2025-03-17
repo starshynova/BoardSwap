@@ -7,6 +7,7 @@ import CreateItem from "../pages/Item/CreateItem";
 import NotFound from "../pages/NotFound/NotFound";
 import { Order } from "../pages/Order/Order";
 import ItemDetails from "../pages/Item/ItemDetails";
+import EditItem from "../pages/Item/EditItem";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/User/Profile";
 
@@ -41,6 +42,7 @@ const AppRoutes = () => {
       />
 
       <Route path="*" element={<NotFound />} />
+      <Route path="items/edit/:id" element={<EditItem />} />
     </Routes>
   );
 };
