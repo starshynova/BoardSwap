@@ -86,7 +86,11 @@ const CreateItemForm = (sellerId) => {
     if (!formData.title.trim()) {
       newErrors.title = "Title is required field";
     }
-    if (!formData.price.trim()) {
+    if (
+      formData.price === "" ||
+      formData.price === null ||
+      formData.price === undefined
+    ) {
       newErrors.price = "Price is required field";
     }
     if (formData.price < 0) {

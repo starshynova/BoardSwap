@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadImage } from "../util/uploadImage";
 import { useParams } from "react-router-dom";
+import useFetch from "../../hooks/useFetch.js";
 
 const EditItemForm = () => {
   const itemType = [
@@ -55,7 +56,6 @@ const EditItemForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -66,31 +66,16 @@ const EditItemForm = () => {
 
   const token = localStorage.getItem("authToken");
 
-  useEffect(() => {
-    const fetchItem = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/items/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const result = await response.json();
-        if (result.success) {
-          setFormData(result.result);
-        } else {
-          setErrors("Error loading data");
-        }
-      } catch (error) {
-        setErrors("Request error", error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { isLoading, error, performFetch, cancelFetch } = useFetch(
+    `/items/${id}`,
+    (response) => {
+      setFormData(response.result);
+    },
+  );
 
-    fetchItem();
+  useEffect(() => {
+    performFetch();
+    return cancelFetch;
   }, [id]);
 
   const handleChange = (event) => {
@@ -103,7 +88,11 @@ const EditItemForm = () => {
     if (!formData.title.trim()) {
       newErrors.title = "Title is required field";
     }
-    if (!formData.price.trim()) {
+    if (
+      formData.price === "" ||
+      formData.price === null ||
+      formData.price === undefined
+    ) {
       newErrors.price = "Price is required field";
     }
     if (formData.price < 0) {
@@ -164,7 +153,8 @@ const EditItemForm = () => {
     }
   };
 
-  if (loading) return <h2>Loading...</h2>;
+  if (isLoading) return <h2>Loading...</h2>;
+  if (error) return <h2>{error}</h2>;
 
   return !formData ? (
     <Typography variant="h5">Loading...</Typography>
