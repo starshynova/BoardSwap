@@ -11,7 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadImage } from "../util/uploadImage";
 import { useParams } from "react-router-dom";
-import useFetch from "../../hooks/useFetch.js";
+import useFetch from "../hooks/useFetch.js";
 
 const EditItemForm = () => {
   const itemType = [
