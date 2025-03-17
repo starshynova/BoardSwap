@@ -29,7 +29,7 @@ const CartItemComponent = ({ item, removeFromCart }) => (
           fontWeight="bold"
           sx={{ color: theme.palette.primary.main }}
         >
-          ${item.price?.toFixed(2) || "N/A"}
+          €{item.price?.toFixed(2) || "N/A"}
         </Typography>
       </Box>
     </Box>
