@@ -4,7 +4,7 @@ import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import Grid from "@mui/material/Grid";
 import PaymentForm from "../../components/PaymentForm/PaymentForm";
 import ProductCard from "../../components/ProductCard";
@@ -45,6 +45,9 @@ export default function OrderStepper({ cart, toggleCartItem }) {
     setActiveStep(0);
     setCompleted({});
   };
+  const totalAmount = useMemo(() => {
+    return cart.reduce((total, product) => total + product.price, 0).toFixed(2);
+  }, [cart]);
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -84,6 +87,9 @@ export default function OrderStepper({ cart, toggleCartItem }) {
                 <Fragment>
                   <Typography variant="h6">
                     Items in cart: {cart.length}
+                  </Typography>
+                  <Typography variant="h6">
+                    Total amount: €{totalAmount}
                   </Typography>
                   <Grid container spacing={2}>
                     {cart.map((product) => (

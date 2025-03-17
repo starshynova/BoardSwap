@@ -1,13 +1,22 @@
 import { Box, Divider, Typography } from "@mui/material";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useUIContext } from "../../context/UIContext";
 import { DrawerCard } from "./CartUI.styles";
 import CartHeader from "./CartHeader";
 import CartItemComponent from "./CartItem";
 import CartSummary from "./CartSummary";
+import { useLocation } from "react-router-dom";
 
 const Cart = () => {
   const { cart, setCart, setShowCart, showCart } = useUIContext();
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/order") {
+      setShowCart(false);
+    }
+  }, [location, setShowCart]);
 
   const removeFromCart = useCallback(
     (id) => setCart((prevCart) => prevCart.filter((item) => item._id !== id)),

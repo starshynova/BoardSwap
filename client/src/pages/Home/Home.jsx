@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import TEST_ID from "./Home.testid";
 import SortDropdown from "../../components/SortDropdown";
 import PropTypes from "prop-types";
-import Cart from "../../components/Cart/Cart";
 import { Box } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
 import { useUIContext } from "../../context/UIContext";
@@ -66,8 +65,6 @@ const Home = () => {
               />
             </>
           </div>
-
-          <Cart />
         </div>
       </Box>
     </div>
