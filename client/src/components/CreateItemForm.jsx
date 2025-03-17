@@ -86,7 +86,11 @@ const CreateItemForm = (sellerId) => {
     if (!formData.title.trim()) {
       newErrors.title = "Title is required field";
     }
-    if (!formData.price.trim()) {
+    if (
+      formData.price === "" ||
+      formData.price === null ||
+      formData.price === undefined
+    ) {
       newErrors.price = "Price is required field";
     }
     if (formData.price < 0) {
@@ -158,6 +162,11 @@ const CreateItemForm = (sellerId) => {
     }
   };
 
+  const requiredFields = ["title", "price", "type", "condition"];
+  const hasEmptyFields = requiredFields.some((field) => !formData[field]);
+
+  const hasErrors = Object.values(errors).some((error) => error);
+
   return (
     <Box
       sx={{
@@ -186,11 +195,29 @@ const CreateItemForm = (sellerId) => {
         name="title"
         label="Title"
         sx={inputStyles}
-        onChange={handleChange}
+        onChange={(e) => {
+          const value = e.target.value;
+
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            title:
+              value.length > 100
+                ? "The title should not exceed 100 characters"
+                : "",
+          }));
+
+          handleChange(e);
+        }}
         value={formData.title}
         error={!!errors.title}
         helperText={errors.title}
+        slotProps={{
+          input: {
+            maxLength: 100,
+          },
+        }}
       />
+
       <TextField
         required
         id="outlined-price"
@@ -203,11 +230,20 @@ const CreateItemForm = (sellerId) => {
           },
         }}
         onChange={handleChange}
+        onInput={(e) => {
+          const value = e.target.value;
+          if (isNaN(value)) {
+            setErrors({ ...errors, price: "Please enter a valid number" });
+          } else if (Number(value) > 99999) {
+            setErrors({ ...errors, price: "The number is too large" });
+          } else {
+            setErrors({ ...errors, price: "" });
+          }
+        }}
         value={formData.price}
         error={!!errors.price}
         helperText={errors.price}
       />
-
       <TextField
         required
         id="outlined-select-category"
@@ -318,8 +354,26 @@ const CreateItemForm = (sellerId) => {
         sx={inputStyles}
         multiline
         rows={4}
-        onChange={handleChange}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value.length > 300) {
+            setErrors({
+              ...errors,
+              description: "The description should not exceed 300 characters",
+            });
+          } else {
+            setErrors({ ...errors, description: "" });
+          }
+          handleChange(e);
+        }}
+        slotProps={{
+          input: {
+            maxLength: 300,
+          },
+        }}
         value={formData.description}
+        error={!!errors.description}
+        helperText={errors.description}
       />
       <Box
         sx={{
@@ -340,9 +394,11 @@ const CreateItemForm = (sellerId) => {
             borderRadius: "10px",
           }}
           onClick={handleSubmit}
+          disabled={hasEmptyFields || hasErrors}
         >
           Submit
         </Button>
+
         {submitSuccess && (
           <Typography color="green" sx={{ mt: 2 }}>
             Your advert has been successfully added!

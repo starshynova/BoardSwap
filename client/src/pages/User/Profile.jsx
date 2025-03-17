@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import useForm from "../../hooks/useFetch";
 import PropTypes from "prop-types";
 import UserProfileUI from "../../components/UserProfileUI";
 

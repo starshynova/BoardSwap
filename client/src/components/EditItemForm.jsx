@@ -11,6 +11,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { uploadImage } from "../util/uploadImage";
 import { useParams } from "react-router-dom";
+import useFetch from "../hooks/useFetch.js";
 
 const EditItemForm = () => {
   const itemType = [
@@ -55,7 +56,6 @@ const EditItemForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
@@ -66,31 +66,16 @@ const EditItemForm = () => {
 
   const token = localStorage.getItem("authToken");
 
-  useEffect(() => {
-    const fetchItem = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`/api/items/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const result = await response.json();
-        if (result.success) {
-          setFormData(result.result);
-        } else {
-          setErrors("Error loading data");
-        }
-      } catch (error) {
-        setErrors("Request error", error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { isLoading, error, performFetch, cancelFetch } = useFetch(
+    `/items/${id}`,
+    (response) => {
+      setFormData(response.result);
+    },
+  );
 
-    fetchItem();
+  useEffect(() => {
+    performFetch();
+    return cancelFetch;
   }, [id]);
 
   const handleChange = (event) => {
@@ -103,7 +88,11 @@ const EditItemForm = () => {
     if (!formData.title.trim()) {
       newErrors.title = "Title is required field";
     }
-    if (!formData.price.trim()) {
+    if (
+      formData.price === "" ||
+      formData.price === null ||
+      formData.price === undefined
+    ) {
       newErrors.price = "Price is required field";
     }
     if (formData.price < 0) {
@@ -164,7 +153,13 @@ const EditItemForm = () => {
     }
   };
 
-  if (loading) return <h2>Loading...</h2>;
+  if (isLoading) return <h2>Loading...</h2>;
+  if (error) return <h2>{error}</h2>;
+
+  const requiredFields = ["title", "price", "type", "condition"];
+  const hasEmptyFields = requiredFields.some((field) => !formData[field]);
+
+  const hasErrors = Object.values(errors).some((error) => error);
 
   return !formData ? (
     <Typography variant="h5">Loading...</Typography>
@@ -196,7 +191,24 @@ const EditItemForm = () => {
         name="title"
         label="Title"
         sx={inputStyles}
-        onChange={handleChange}
+        onChange={(e) => {
+          const value = e.target.value;
+
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            title:
+              value.length > 100
+                ? "The title should not exceed 100 characters"
+                : "",
+          }));
+
+          handleChange(e);
+        }}
+        slotProps={{
+          input: {
+            maxLength: 100,
+          },
+        }}
         value={formData.title}
         error={!!errors.title}
         helperText={errors.title}
@@ -213,6 +225,16 @@ const EditItemForm = () => {
           },
         }}
         onChange={handleChange}
+        onInput={(e) => {
+          const value = e.target.value;
+          if (isNaN(value)) {
+            setErrors({ ...errors, price: "Please enter a valid number" });
+          } else if (Number(value) > 99999) {
+            setErrors({ ...errors, price: "The number is too large" });
+          } else {
+            setErrors({ ...errors, price: "" });
+          }
+        }}
         value={formData.price}
         error={!!errors.price}
         helperText={errors.price}
@@ -331,8 +353,26 @@ const EditItemForm = () => {
         sx={inputStyles}
         multiline
         rows={4}
-        onChange={handleChange}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value.length > 300) {
+            setErrors({
+              ...errors,
+              description: "The description should not exceed 300 characters",
+            });
+          } else {
+            setErrors({ ...errors, description: "" });
+          }
+          handleChange(e);
+        }}
+        slotProps={{
+          input: {
+            maxLength: 300,
+          },
+        }}
         value={formData.description}
+        error={!!errors.description}
+        helperText={errors.description}
       />
       <Box
         sx={{
@@ -353,6 +393,7 @@ const EditItemForm = () => {
             borderRadius: "10px",
           }}
           onClick={handleEdit}
+          disabled={hasEmptyFields || hasErrors}
         >
           Edit
         </Button>

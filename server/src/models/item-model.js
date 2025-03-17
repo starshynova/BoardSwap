@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 import validateAllowedFields from "../util/validateAllowedFields.js";
 
 const itemSchema = new mongoose.Schema({
@@ -13,7 +12,7 @@ const itemSchema = new mongoose.Schema({
   },
   photo_name: { type: String, required: false },
   photo: { type: String, required: false },
-  description: { type: String, required: false },
+  description: { type: String, required: false, maxLength: 300 },
   created_date: { type: Date, default: Date.now },
   seller_id: {
     type: mongoose.Schema.Types.ObjectId,
