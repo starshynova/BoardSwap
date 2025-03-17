@@ -13,6 +13,7 @@ import OrderForm from "./OrderForm";
 const steps = ["Order summary", "Details", "Order Payment"];
 
 import PropTypes from "prop-types";
+import { StepLabel } from "@mui/material";
 
 export default function OrderStepper({ cart, toggleCartItem }) {
   const [activeStep, setActiveStep] = useState(0);
@@ -50,8 +51,17 @@ export default function OrderStepper({ cart, toggleCartItem }) {
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label} completed={completed[index]}>
-            <StepButton color="black" onClick={handleStep(index)}>
-              {label}
+            <StepButton onClick={handleStep(index)}>
+              <StepLabel
+                sx={{
+                  "& .MuiStepLabel-label.Mui-active": {
+                    color: "black !important",
+                    fontWeight: "bold !important",
+                  },
+                }}
+              >
+                {label}
+              </StepLabel>
             </StepButton>
           </Step>
         ))}
