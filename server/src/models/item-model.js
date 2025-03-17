@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import validateAllowedFields from "../util/validateAllowedFields.js";
 
 const itemSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  price: { type: Number, required: true, min: 0 },
+  title: { type: String, required: true, maxLength: 100 },
+  price: { type: Number, required: true, min: 0, maxLength: 5 },
   type: { type: String, required: true, enum: ["puzzle", "boardGame"] },
   condition: {
     type: String,
@@ -13,7 +13,7 @@ const itemSchema = new mongoose.Schema({
   },
   photo_name: { type: String, required: false },
   photo: { type: String, required: false },
-  description: { type: String, required: false },
+  description: { type: String, required: false, maxLength: 300 },
   created_date: { type: Date, default: Date.now },
   seller_id: {
     type: mongoose.Schema.Types.ObjectId,

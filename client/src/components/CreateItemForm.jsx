@@ -194,6 +194,11 @@ const CreateItemForm = (sellerId) => {
         value={formData.title}
         error={!!errors.title}
         helperText={errors.title}
+        slotProps={{
+          input: {
+            maxLength: 100,
+          },
+        }}
       />
       <TextField
         required
@@ -207,11 +212,20 @@ const CreateItemForm = (sellerId) => {
           },
         }}
         onChange={handleChange}
+        onInput={(e) => {
+          const value = e.target.value;
+          if (isNaN(value)) {
+            setErrors({ ...errors, price: "Please enter a valid number" });
+          } else if (Number(value) > 99999) {
+            setErrors({ ...errors, price: "The number is too large" });
+          } else {
+            setErrors({ ...errors, price: "" });
+          }
+        }}
         value={formData.price}
         error={!!errors.price}
         helperText={errors.price}
       />
-
       <TextField
         required
         id="outlined-select-category"
@@ -323,6 +337,11 @@ const CreateItemForm = (sellerId) => {
         multiline
         rows={4}
         onChange={handleChange}
+        slotProps={{
+          input: {
+            maxLength: 300,
+          },
+        }}
         value={formData.description}
       />
       <Box
