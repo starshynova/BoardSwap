@@ -3,17 +3,22 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useUIContext } from "../../context/UIContext";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../../hooks/useFetch.js";
 
 const ItemDetails = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [deleteSuccess, setDeleteSuccess] = useState(false);
   const { cart, setCart } = useUIContext();
   const navigate = useNavigate();
   const timeoutRef = useRef(null);
   const token = localStorage.getItem("authToken");
+  const [deleteSuccess, setDeleteSuccess] = useState(false);
+  const { isLoading, error, performFetch, cancelFetch } = useFetch(
+    `/items${id}`,
+    (response) => {
+      setData(response.result);
+    },
+  );
 
   const toggleCartItem = (item) => {
     setCart((prevCart) => {
@@ -27,28 +32,8 @@ const ItemDetails = () => {
   };
 
   useEffect(() => {
-    const fetchItem = async () => {
-      try {
-        const response = await fetch(`/api/items/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const result = await response.json();
-        if (result.success) {
-          setData(result.result);
-        } else {
-          setError("Error loading data");
-        }
-      } catch (error) {
-        setError("Request error", error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchItem();
+    performFetch();
+    return cancelFetch;
   }, [id]);
 
   const handleDelete = async () => {
@@ -79,7 +64,7 @@ const ItemDetails = () => {
     navigate(`/items/edit/${id}`);
   };
 
-  if (loading) return <h2>Loading...</h2>;
+  if (isLoading) return <h2>Loading...</h2>;
   if (error) return <h2>{error}</h2>;
   if (!data) return <h2>Item not found</h2>;
 
