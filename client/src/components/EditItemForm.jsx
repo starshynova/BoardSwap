@@ -156,6 +156,11 @@ const EditItemForm = () => {
   if (isLoading) return <h2>Loading...</h2>;
   if (error) return <h2>{error}</h2>;
 
+  const requiredFields = ["title", "price", "type", "condition"];
+  const hasEmptyFields = requiredFields.some((field) => !formData[field]);
+
+  const hasErrors = Object.values(errors).some((error) => error);
+
   return !formData ? (
     <Typography variant="h5">Loading...</Typography>
   ) : (
@@ -186,7 +191,19 @@ const EditItemForm = () => {
         name="title"
         label="Title"
         sx={inputStyles}
-        onChange={handleChange}
+        onChange={(e) => {
+          const value = e.target.value;
+
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            title:
+              value.length > 100
+                ? "The title should not exceed 100 characters"
+                : "",
+          }));
+
+          handleChange(e);
+        }}
         slotProps={{
           input: {
             maxLength: 100,
@@ -336,13 +353,26 @@ const EditItemForm = () => {
         sx={inputStyles}
         multiline
         rows={4}
-        onChange={handleChange}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value.length > 300) {
+            setErrors({
+              ...errors,
+              description: "The description should not exceed 300 characters",
+            });
+          } else {
+            setErrors({ ...errors, description: "" });
+          }
+          handleChange(e);
+        }}
         slotProps={{
           input: {
             maxLength: 300,
           },
         }}
         value={formData.description}
+        error={!!errors.description}
+        helperText={errors.description}
       />
       <Box
         sx={{
@@ -363,6 +393,7 @@ const EditItemForm = () => {
             borderRadius: "10px",
           }}
           onClick={handleEdit}
+          disabled={hasEmptyFields || hasErrors}
         >
           Edit
         </Button>
