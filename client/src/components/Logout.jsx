@@ -9,6 +9,7 @@ const Logout = () => {
   const handleLogout = () => {
     logout();
     navigate("/login");
+    window.location.reload();
   };
 
   return (

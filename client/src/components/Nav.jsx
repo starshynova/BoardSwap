@@ -40,7 +40,7 @@ const Logo = styled("img")({
 
 const Nav = () => {
   const { cart, setShowCart } = useUIContext();
-  const { token } = useContext(AuthContext);
+  const { token, userId } = useContext(AuthContext); // Use the context directly
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -58,9 +58,15 @@ const Nav = () => {
   }, []);
 
   const handleProfile = useCallback(() => {
-    navigate("/profile");
-    handleClose();
-  }, [navigate, handleClose]);
+    if (userId) {
+      console.log("Navigating to user profile:", `/users/${userId}`);
+      navigate(`/users/${userId}`);
+      handleClose();
+    } else {
+      console.error("User ID is not available. Redirecting to login.");
+      navigate("/login");
+    }
+  }, [navigate, userId, handleClose]);
 
   const handleCartClick = useCallback(() => {
     setShowCart(true);
