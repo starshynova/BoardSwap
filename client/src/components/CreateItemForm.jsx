@@ -58,6 +58,7 @@ const CreateItemForm = (sellerId) => {
   const [fileName, setFileName] = useState("");
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
   const fileInputRef = useRef(null);
   const timeoutRef = useRef(null);
   const navigate = useNavigate();
@@ -139,6 +140,8 @@ const CreateItemForm = (sellerId) => {
     if (!validate()) return;
 
     try {
+      setSubmitSuccess(false);
+      setSubmitError(false);
       const response = await fetch("/api/items/create", {
         method: "POST",
         headers: {
@@ -148,10 +151,12 @@ const CreateItemForm = (sellerId) => {
         body: JSON.stringify({ item: formData }),
       });
       if (!response.ok) {
+        setSubmitError(true);
         const errorData = await response.json();
         console.error("Server response:", errorData);
         throw new Error("Data sending error");
       }
+
       setFormData({
         title: "",
         price: "",
@@ -163,12 +168,14 @@ const CreateItemForm = (sellerId) => {
         status: "Available",
         seller_id: "",
       });
+      const createdItem = await response.json();
       setSubmitSuccess(true);
 
       timeoutRef.current = setTimeout(() => {
-        navigate("/");
+        navigate(`/items/${createdItem.item._id}`);
       }, 4000);
     } catch (error) {
+      setSubmitError(true);
       console.error("Error:", error);
     }
   };
@@ -421,6 +428,12 @@ const CreateItemForm = (sellerId) => {
         {submitSuccess && (
           <Typography color="green" sx={{ mt: 2 }}>
             Your advert has been successfully added!
+          </Typography>
+        )}
+
+        {submitError && (
+          <Typography color="red" sx={{ mt: 2 }}>
+            Oops! Something went wrong. Please, try again later!
           </Typography>
         )}
       </Box>

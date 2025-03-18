@@ -157,7 +157,7 @@ const EditItemForm = () => {
       setSubmitSuccess(true);
 
       timeoutRef.current = setTimeout(() => {
-        navigate("/");
+        navigate(`/items/${id}`);
       }, 4000);
     } catch (error) {
       console.error("Error:", error);
