@@ -5,6 +5,7 @@ import {
   MenuItem,
   Button,
   Typography,
+  FormHelperText,
 } from "@mui/material";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import { useState, useEffect, useRef } from "react";
@@ -113,8 +114,18 @@ const EditItemForm = () => {
     const file = event.target.files[0];
     if (!file) return;
 
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    if (!allowedTypes.includes(file.type)) {
+      setErrors((prev) => ({
+        ...prev,
+        photo: "You can upload only images (*.jpg, *.png, *.webp, *.gif)",
+      }));
+      return;
+    }
+
     setSelectedFile(file);
     setFileName(file.name);
+    setErrors((prev) => ({ ...prev, photo: "" }));
   };
 
   const handleUploadClick = async () => {
@@ -296,47 +307,55 @@ const EditItemForm = () => {
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
-
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
-          <TextField
-            label="Attach a file"
-            value={fileName}
-            sx={{ ...inputStyles, flex: 1 }}
-            onClick={() => fileInputRef.current.click()}
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <AttachFileIcon />
-                  </InputAdornment>
-                ),
-              },
-            }}
-            fullWidth
-          />
-          <Button
-            variant="contained"
-            size="medium"
-            color="black"
+        <Box>
+          <Box
             sx={{
-              width: "160px",
-              height: "40px",
-              mt: 2,
-              backgroundColor: "#47CAD1",
-              borderRadius: "10px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
             }}
-            onClick={handleUploadClick}
-            disabled={!selectedFile}
           >
-            Upload
-          </Button>
+            <TextField
+              label="Attach a file"
+              value={fileName}
+              sx={{ ...inputStyles, flex: 1 }}
+              onClick={() => fileInputRef.current.click()}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AttachFileIcon />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              fullWidth
+            />
+            <Button
+              variant="contained"
+              size="medium"
+              color="black"
+              sx={{
+                width: "160px",
+                height: "40px",
+                mt: 2,
+                backgroundColor: "#47CAD1",
+                borderRadius: "10px",
+              }}
+              onClick={handleUploadClick}
+              disabled={!selectedFile}
+            >
+              Upload
+            </Button>
+          </Box>
+          {!errors.photo ? (
+            <FormHelperText>
+              * Choose a file and then click Upload
+            </FormHelperText>
+          ) : (
+            <FormHelperText error>{errors.photo}</FormHelperText>
+          )}
         </Box>
 
         {uploadSuccess && (
