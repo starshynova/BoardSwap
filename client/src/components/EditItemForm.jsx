@@ -16,14 +16,14 @@ import useFetch from "../hooks/useFetch.js";
 
 const EditItemForm = () => {
   const itemType = [
-    { value: "puzzle", label: "Puzzle" },
-    { value: "boardGame", label: "Board Game" },
+    { value: "Puzzle", label: "Puzzle" },
+    { value: "Board Game", label: "Board Game" },
   ];
 
   const itemCondition = [
-    { value: "new", label: "New" },
-    { value: "likeNew", label: "Like New" },
-    { value: "used", label: "Used" },
+    { value: "New", label: "New" },
+    { value: "Like New", label: "Like New" },
+    { value: "Used", label: "Used" },
   ];
 
   const inputStyles = {
