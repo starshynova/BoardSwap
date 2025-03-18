@@ -9,10 +9,28 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const ProductCard = ({ product, isInCart, toggleCartItem }) => {
   const navigate = useNavigate();
+  const [validToken, setValidToken] = useState("");
+
+  const token = localStorage.getItem("authToken");
+  useEffect(() => {
+    if (!token) {
+      console.error("No token. User not authorised.");
+      setValidToken("");
+      return;
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      setValidToken(decodedToken.id);
+    } catch (error) {
+      console.error("Token decoding error:", error);
+    }
+  }, [token]);
 
   const handleNavigate = useCallback(() => {
     navigate(`/items/${product._id}`);
@@ -56,15 +74,28 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
               €{product.price}
             </Typography>
           </Box>
-          <Button
-            variant="contained"
-            color={isInCart ? "error" : "primary"}
-            onClick={handleToggleCart}
-            sx={{ mt: 2 }}
-            fullWidth
-          >
-            {isInCart ? "Remove from Cart" : "Add to Cart"}
-          </Button>
+
+          {validToken === product.seller_id ? (
+            <Button
+              variant="contained"
+              color="green"
+              onClick={handleNavigate}
+              sx={{ mt: 2 }}
+              fullWidth
+            >
+              View details
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color={isInCart ? "error" : "primary"}
+              onClick={handleToggleCart}
+              sx={{ mt: 2 }}
+              fullWidth
+            >
+              {isInCart ? "Remove from Cart" : "Add to Cart"}
+            </Button>
+          )}
         </CardContent>
       </Card>
     </Grid>
