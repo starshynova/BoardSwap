@@ -17,34 +17,26 @@ import { StepLabel } from "@mui/material";
 
 export default function OrderStepper({ cart, toggleCartItem }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [completed, setCompleted] = useState({});
+  const [isOrderValid, setIsOrderValid] = useState(false);
 
   const totalSteps = () => steps.length;
-  const completedSteps = () => Object.keys(completed).length;
   const isLastStep = () => activeStep === totalSteps() - 1;
-  const allStepsCompleted = () => completedSteps() === totalSteps();
 
   const handleNext = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? steps.findIndex((_, i) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
+    if (activeStep === 1 && !isOrderValid) return;
+    if (!isLastStep()) {
+      setActiveStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
-  const handleStep = (step) => () => setActiveStep(step);
-
-  const handleComplete = () => {
-    setCompleted((prev) => ({ ...prev, [activeStep]: true }));
-    handleNext();
+  const handleStep = (step) => () => {
+    if (activeStep === 1 && !isOrderValid) return;
+    setActiveStep(step);
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setCompleted({});
-  };
+  console.log(activeStep);
   const totalAmount = useMemo(() => {
     return cart.reduce((total, product) => total + product.price, 0).toFixed(2);
   }, [cart]);
@@ -53,7 +45,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
     <Box sx={{ width: "100%" }}>
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
-          <Step key={label} completed={completed[index]}>
+          <Step key={label}>
             <StepButton onClick={handleStep(index)}>
               <StepLabel
                 sx={{
@@ -70,65 +62,51 @@ export default function OrderStepper({ cart, toggleCartItem }) {
         ))}
       </Stepper>
       <div>
-        {allStepsCompleted() ? (
-          <Fragment>
-            <Typography sx={{ mt: 2, mb: 1 }}>
-              All steps completed - your order is confirmed!
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleReset}>Reset</Button>
-            </Box>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <Box sx={{ mt: 2, mb: 1, py: 1 }}>
-              {activeStep === 0 && (
-                <Fragment>
-                  <Typography variant="h6">
-                    Items in cart: {cart.length}
-                  </Typography>
-                  <Typography variant="h6">
-                    Total amount: €{totalAmount}
-                  </Typography>
-                  <Grid container spacing={2}>
-                    {cart.map((product) => (
-                      <ProductCard
-                        key={product._id}
-                        product={product}
-                        isInCart={cart.some((item) => item._id === product._id)}
-                        toggleCartItem={toggleCartItem}
-                      />
-                    ))}
-                  </Grid>
-                </Fragment>
-              )}
-              {activeStep === 1 && <OrderForm />}
-              {activeStep === 2 && <PaymentForm />}
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-              <Box sx={{ flex: "1 1 auto" }} />
-              <Button onClick={handleNext} sx={{ mr: 1 }}>
-                Next
-              </Button>
-              {activeStep !== steps.length && !completed[activeStep] && (
-                <Button onClick={handleComplete}>
-                  {completedSteps() === totalSteps() - 1
-                    ? "Finish"
-                    : "Complete Step"}
-                </Button>
-              )}
-            </Box>
-          </Fragment>
-        )}
+        <Fragment>
+          <Box sx={{ mt: 2, mb: 1, py: 1 }}>
+            {activeStep === 0 && (
+              <Fragment>
+                <Typography variant="h6">
+                  Items in cart: {cart.length}
+                </Typography>
+                <Typography variant="h6">
+                  Total amount: €{totalAmount}
+                </Typography>
+                <Grid container spacing={2}>
+                  {cart.map((product) => (
+                    <ProductCard
+                      key={product._id}
+                      product={product}
+                      isInCart={cart.some((item) => item._id === product._id)}
+                      toggleCartItem={toggleCartItem}
+                    />
+                  ))}
+                </Grid>
+              </Fragment>
+            )}
+            {activeStep === 1 && (
+              <OrderForm setIsOrderValid={setIsOrderValid} />
+            )}
+            {activeStep === 2 && <PaymentForm />}
+          </Box>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button
+              onClick={handleNext}
+              sx={{ mr: 1 }}
+              disabled={activeStep === 2}
+            >
+              Next
+            </Button>
+          </Box>
+        </Fragment>
       </div>
     </Box>
   );

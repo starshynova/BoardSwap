@@ -153,6 +153,7 @@ const PaymentForm = () => {
             label="CVV"
             variant="outlined"
             fullWidth
+            type="password"
             value={formData.cvv}
             onChange={handleChange}
             error={!!errors.cvv}
