@@ -11,6 +11,7 @@ const UserProfile = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const {
     register,
@@ -59,24 +60,19 @@ const UserProfile = () => {
     }
   };
 
-  const confirmUpdate = async () => {
+  const handleUpdate = async (updatedUserData) => {
     try {
       if (!token) {
         throw new Error("No token, please log in.");
       }
 
-      const response = await fetch(`api/users/${userId}`, {
+      const response = await fetch(`/api/users/${userId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token || localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({
-          name: user.name,
-          email: user.email,
-          city: user.city,
-          post_code: user.post_code,
-        }),
+        body: JSON.stringify(updatedUserData),
       });
 
       if (!response.ok) {
@@ -85,7 +81,7 @@ const UserProfile = () => {
 
       const updatedData = await response.json();
       if (updatedData.success) {
-        navigate("/user/profile");
+        navigate(`/users/${userId}`);
       } else {
         setError("Failed to update profile.");
       }
@@ -94,6 +90,52 @@ const UserProfile = () => {
     } finally {
       setShowConfirm(false);
     }
+  };
+
+  const confirmUpdate = async () => {
+    const updatedUserData = {
+      name: user.name,
+      email: user.email,
+      city: user.city,
+      post_code: user.post_code,
+    };
+    handleUpdate(updatedUserData);
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (!token) {
+        throw new Error("No token, please log in.");
+      }
+
+      const response = await fetch(`/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token || localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete user");
+      }
+
+      const deletedData = await response.json();
+      if (deletedData.success) {
+        console.log("Deleted profile:", deletedData.msg);
+        navigate("/login");
+      } else {
+        setError("Failed to delete profile.");
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const deleteUser = () => {
+    handleDelete();
   };
 
   let content;
@@ -112,6 +154,9 @@ const UserProfile = () => {
         onSubmit={onSubmit}
         confirmUpdate={confirmUpdate}
         setShowConfirm={setShowConfirm}
+        showDeleteConfirm={showDeleteConfirm}
+        setShowDeleteConfirm={setShowDeleteConfirm}
+        deleteUser={deleteUser}
       />
     );
   } else {
