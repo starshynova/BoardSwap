@@ -29,9 +29,11 @@ const styleDivider = {
 };
 
 const styleListItem = {
+  // width: "100%",
   display: "flex",
   position: "relative",
-  gap: "40px",
+  gap: "20px",
+  alignItems: "center",
 };
 
 const ItemDetailsForm = ({
@@ -73,7 +75,7 @@ const ItemDetailsForm = ({
       }}
     >
       <List sx={style}>
-        <Typography variant="h3" textAlign="center" mb={2}>
+        <Typography variant="h4" textAlign="center" mb={2}>
           {data.title}
         </Typography>
         {data.photo ? (
@@ -98,48 +100,52 @@ const ItemDetailsForm = ({
           </Box>
         )}
 
-        <ListItem sx={styleListItem}>
-          <Typography variant="h6" fontWeight="bold">
-            Price
-          </Typography>
-          <Typography variant="h6" sx={{ position: "absolute", left: "160px" }}>
-            {data.price} €
-          </Typography>
+        <ListItem sx={{ ...styleListItem, mt: 5 }}>
+          <Box sx={{ width: "160px" }}>
+            <Typography variant="h6" fontWeight="bold">
+              Price
+            </Typography>
+          </Box>
+          <Typography variant="h6">{data.price} €</Typography>
         </ListItem>
         <Divider component="li" sx={styleDivider} />
         <ListItem sx={styleListItem}>
-          <Typography variant="h6" fontWeight="bold">
-            Category
-          </Typography>
-          <Typography variant="h6" sx={{ position: "absolute", left: "160px" }}>
-            {data.type}
-          </Typography>
+          <Box sx={{ width: "160px" }}>
+            <Typography variant="h6" fontWeight="bold">
+              Category
+            </Typography>
+          </Box>
+
+          <Typography variant="h6">{data.type}</Typography>
         </ListItem>
         <Divider component="li" sx={styleDivider} />
         <ListItem sx={styleListItem}>
-          <Typography variant="h6" fontWeight="bold">
-            Condition
-          </Typography>
-          <Typography variant="h6" sx={{ position: "absolute", left: "160px" }}>
-            {data.condition}
-          </Typography>
+          <Box sx={{ width: "160px" }}>
+            <Typography variant="h6" fontWeight="bold">
+              Condition
+            </Typography>
+          </Box>
+          <Typography variant="h6">{data.condition}</Typography>
         </ListItem>
         <Divider component="li" sx={styleDivider} />
+
         {data.description && (
-          <div style={{ width: "100%" }}>
-            <ListItem sx={{ ...styleListItem, width: "100%" }}>
-              <Typography variant="h6" fontWeight="bold">
-                Description
-              </Typography>
+          <Box style={{ width: "100%" }}>
+            <ListItem sx={{ ...styleListItem, alignItems: "flex-start" }}>
+              <Box sx={{ width: "160px", flexShrink: 0 }}>
+                <Typography variant="h6" fontWeight="bold">
+                  Description
+                </Typography>
+              </Box>
               <Typography
                 variant="h6"
-                sx={{ position: "absolute", left: "160px" }}
+                sx={{ wordBreak: "break-word", flex: 1 }}
               >
                 {data.description}
               </Typography>
             </ListItem>
             <Divider component="li" sx={styleDivider} />
-          </div>
+          </Box>
         )}
       </List>
 

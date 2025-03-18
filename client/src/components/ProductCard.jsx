@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
   Grid,
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
@@ -24,24 +25,37 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
   return (
     <Grid item xs={12} sm={6} md={3}>
       <Card sx={{ boxShadow: 2, textAlign: "center" }}>
-        <CardMedia
-          component="img"
-          height="200"
-          image={product.photo}
-          alt={product.title}
-          sx={{ objectFit: "contain", cursor: "pointer" }}
-          onClick={handleNavigate}
-        />
         <CardContent>
-          <Typography variant="h6" color="text.secondary">
-            {product.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {product.status}
-          </Typography>
-          <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
-            ${product.price}
-          </Typography>
+          <Box sx={{ cursor: "pointer" }} onClick={handleNavigate}>
+            <CardMedia
+              component="img"
+              height="200"
+              image={product.photo}
+              alt={product.title}
+              sx={{ objectFit: "contain" }}
+            />
+
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                minHeight: "3.2em",
+                wordBreak: "break-word",
+              }}
+            >
+              {product.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {product.status}
+            </Typography>
+            <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+              €{product.price}
+            </Typography>
+          </Box>
           <Button
             variant="contained"
             color={isInCart ? "error" : "primary"}
