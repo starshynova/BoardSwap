@@ -13,19 +13,22 @@ import OrderForm from "./OrderForm";
 const steps = ["Order summary", "Details", "Order Payment"];
 
 import PropTypes from "prop-types";
-import { StepLabel } from "@mui/material";
+import { Alert, Snackbar, StepLabel } from "@mui/material";
 
 export default function OrderStepper({ cart, toggleCartItem }) {
   const [activeStep, setActiveStep] = useState(0);
   const [isOrderValid, setIsOrderValid] = useState(false);
+  const [warning, setWarning] = useState("");
 
   const totalSteps = () => steps.length;
   const isLastStep = () => activeStep === totalSteps() - 1;
 
   const handleNext = () => {
     if (activeStep === 1 && !isOrderValid) {
+      setWarning("Please fill out the order details before proceeding.");
       return;
     }
+    setWarning("");
     if (!isLastStep()) {
       setActiveStep((prevStep) => prevStep + 1);
     }
@@ -35,8 +38,10 @@ export default function OrderStepper({ cart, toggleCartItem }) {
 
   const handleStep = (step) => () => {
     if (activeStep === 1 && !isOrderValid && step > activeStep) {
+      setWarning("Please fill out the order details before proceeding.");
       return;
     }
+    setWarning("");
     setActiveStep(step);
   };
 
@@ -46,6 +51,21 @@ export default function OrderStepper({ cart, toggleCartItem }) {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Box>
+        {warning && (
+          <Snackbar
+            open={warning}
+            autoHideDuration={3000}
+            onClose={() => setWarning(false)}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          >
+            <Alert onClose={() => setWarning(false)} severity="warning">
+              Please fill out the Form before proceeding.
+            </Alert>
+          </Snackbar>
+        )}
+      </Box>
+
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label}>
