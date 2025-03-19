@@ -18,7 +18,7 @@ const OrderForm = ({ setIsOrderValid }) => {
 
   useEffect(() => {
     Object.keys(formData).forEach((key) => {
-      setValue(key, formData[key]);
+      setValue(key, formData[key], { shouldValidate: true });
     });
   }, [formData, setValue]);
 
@@ -28,6 +28,7 @@ const OrderForm = ({ setIsOrderValid }) => {
 
   const onInputChange = (e) => {
     const { name, value } = e.target;
+    setValue(name, value, { shouldValidate: true });
     setFormData((prev) => {
       const newData = { ...prev, [name]: value };
       localStorage.setItem("orderForm", JSON.stringify(newData));

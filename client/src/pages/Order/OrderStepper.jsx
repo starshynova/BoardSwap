@@ -23,7 +23,9 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const isLastStep = () => activeStep === totalSteps() - 1;
 
   const handleNext = () => {
-    if (activeStep === 1 && !isOrderValid) return;
+    if (activeStep === 1 && !isOrderValid) {
+      return;
+    }
     if (!isLastStep()) {
       setActiveStep((prevStep) => prevStep + 1);
     }
@@ -32,11 +34,12 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const handleStep = (step) => () => {
-    if (activeStep === 1 && !isOrderValid) return;
+    if (activeStep === 1 && !isOrderValid && step > activeStep) {
+      return;
+    }
     setActiveStep(step);
   };
 
-  console.log(activeStep);
   const totalAmount = useMemo(() => {
     return cart.reduce((total, product) => total + product.price, 0).toFixed(2);
   }, [cart]);
