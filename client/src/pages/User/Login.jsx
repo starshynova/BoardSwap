@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,12 +11,28 @@ const Login = () => {
 
   const handleSuccess = (data) => {
     if (data?.success && data?.token) {
-      login(data.token);
+      let user = null;
 
-      setTimeout(() => {
-        navigate("/");
-        window.location.reload(); // To update the navbar
-      }, 2000);
+      try {
+        const decoded = jwtDecode(data.token);
+        user = { id: decoded.id };
+      } catch (error) {
+        console.error("Failed to decode token:", error);
+      }
+
+      if (user) {
+        login(data.token, user);
+        localStorage.setItem("userId", user.id);
+
+        setTimeout(() => {
+          navigate("/");
+          window.location.reload();
+        }, 2000);
+      } else {
+        console.error("User ID is missing from token.");
+      }
+    } else {
+      console.error("Invalid login response:", data);
     }
   };
 

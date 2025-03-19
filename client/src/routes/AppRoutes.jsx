@@ -32,17 +32,10 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/profile"
-        element={
-          <PrivateRoute>
-            <UserProfile />
-          </PrivateRoute>
-        }
-      />
 
       <Route path="*" element={<NotFound />} />
       <Route path="items/edit/:id" element={<EditItem />} />
+      <Route path="/users/:id" element={<UserProfile />} />
     </Routes>
   );
 };

@@ -16,6 +16,9 @@ const UserProfileUI = ({
   onSubmit,
   confirmUpdate,
   setShowConfirm,
+  showDeleteConfirm,
+  setShowDeleteConfirm,
+  deleteUser,
 }) => {
   return (
     <Box
@@ -145,6 +148,52 @@ const UserProfileUI = ({
           </Button>
         </Box>
       )}
+
+      <Button
+        onClick={() => setShowDeleteConfirm(true)}
+        variant="outlined"
+        color="error"
+        fullWidth
+        sx={{
+          mt: 2,
+          borderRadius: "10px",
+        }}
+      >
+        Delete Profile
+      </Button>
+
+      {showDeleteConfirm && (
+        <Box sx={{ textAlign: "center", mt: 2 }}>
+          <Typography variant="body1" color="error">
+            Are you sure you want to permanently delete your account and data?
+            <br />
+            This action cannot be undone, and your data will be permanently
+            removed.
+          </Typography>
+
+          <Button
+            onClick={deleteUser}
+            variant="contained"
+            color="error"
+            sx={{
+              borderRadius: "10px",
+              mt: 1,
+            }}
+          >
+            Yes, Delete
+          </Button>
+          <Button
+            onClick={() => setShowDeleteConfirm(false)}
+            variant="outlined"
+            sx={{
+              mt: 1,
+              borderRadius: "10px",
+            }}
+          >
+            No, Cancel
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 };
@@ -158,6 +207,9 @@ UserProfileUI.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   confirmUpdate: PropTypes.func.isRequired,
   setShowConfirm: PropTypes.func.isRequired,
+  showDeleteConfirm: PropTypes.bool.isRequired,
+  setShowDeleteConfirm: PropTypes.func.isRequired,
+  deleteUser: PropTypes.func.isRequired,
 };
 
 export default UserProfileUI;
