@@ -6,12 +6,31 @@ import {
   Typography,
   Button,
   Grid,
+  Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const ProductCard = ({ product, isInCart, toggleCartItem }) => {
   const navigate = useNavigate();
+  const [validToken, setValidToken] = useState("");
+
+  const token = localStorage.getItem("authToken");
+  useEffect(() => {
+    if (!token) {
+      console.error("No token. User not authorised.");
+      setValidToken("");
+      return;
+    }
+
+    try {
+      const decodedToken = jwtDecode(token);
+      setValidToken(decodedToken.id);
+    } catch (error) {
+      console.error("Token decoding error:", error);
+    }
+  }, [token]);
 
   const handleNavigate = useCallback(() => {
     navigate(`/items/${product._id}`);
@@ -24,33 +43,59 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
   return (
     <Grid item xs={12} sm={6} md={3}>
       <Card sx={{ boxShadow: 2, textAlign: "center" }}>
-        <CardMedia
-          component="img"
-          height="200"
-          image={product.photo}
-          alt={product.title}
-          sx={{ objectFit: "contain", cursor: "pointer" }}
-          onClick={handleNavigate}
-        />
         <CardContent>
-          <Typography variant="h6" color="text.secondary">
-            {product.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {product.status}
-          </Typography>
-          <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
-            ${product.price}
-          </Typography>
-          <Button
-            variant="contained"
-            color={isInCart ? "error" : "primary"}
-            onClick={handleToggleCart}
-            sx={{ mt: 2 }}
-            fullWidth
-          >
-            {isInCart ? "Remove from Cart" : "Add to Cart"}
-          </Button>
+          <Box sx={{ cursor: "pointer" }} onClick={handleNavigate}>
+            <CardMedia
+              component="img"
+              height="200"
+              image={product.photo}
+              alt={product.title}
+              sx={{ objectFit: "contain" }}
+            />
+
+            <Typography
+              variant="h6"
+              color="text.secondary"
+              sx={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                minHeight: "3.2em",
+                wordBreak: "break-word",
+              }}
+            >
+              {product.title}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {product.status}
+            </Typography>
+            <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
+              €{product.price}
+            </Typography>
+          </Box>
+
+          {validToken === product.seller_id ? (
+            <Button
+              variant="contained"
+              color="green"
+              onClick={handleNavigate}
+              sx={{ mt: 2 }}
+              fullWidth
+            >
+              View details
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              color={isInCart ? "error" : "primary"}
+              onClick={handleToggleCart}
+              sx={{ mt: 2 }}
+              fullWidth
+            >
+              {isInCart ? "Remove from Cart" : "Add to Cart"}
+            </Button>
+          )}
         </CardContent>
       </Card>
     </Grid>
