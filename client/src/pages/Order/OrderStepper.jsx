@@ -4,7 +4,14 @@ import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Fragment, useMemo, useRef, useState } from "react";
+import {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Grid from "@mui/material/Grid";
 import PaymentForm from "../../components/PaymentForm/PaymentForm";
 import ProductCard from "../../components/ProductCard";
@@ -23,15 +30,20 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const [orderData, setOrderData] = useState(null);
   const formRef = useRef();
   const token = localStorage.getItem("authToken");
+  const { userId } = useContext(AuthContext);
   console.log("token", token);
-  const { userId } = AuthContext();
-  console.log(userId);
+  console.log("userId", userId);
 
-  if (token) {
-    const decodedToken = jwtDecode(token);
-    const userId = decodedToken.id;
-    localStorage.setItem("user_id", userId);
-  }
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        console.log("Decoded token:", decodedToken);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
+    }
+  }, [token]);
 
   const handleNavigation = (step) => () => {
     if (activeStep === 1 && !isOrderValid && step > activeStep) {
