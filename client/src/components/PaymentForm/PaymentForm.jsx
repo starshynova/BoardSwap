@@ -7,6 +7,7 @@ import {
   validateCardNumber,
   validateCVV,
 } from "./validators";
+import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 const initialState = {
@@ -36,7 +37,7 @@ const reducer = (state, action) => {
   }
 };
 
-const PaymentForm = () => {
+const PaymentForm = ({ onPaymentSuccess }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { formData, errors } = state;
   const [successMessage, setSuccessMessage] = useState("");
@@ -90,14 +91,16 @@ const PaymentForm = () => {
 
     if (Object.keys(tempErrors).length > 0) {
       dispatch({ type: "SET_ERRORS", errors: tempErrors });
-    } else {
-      setSuccessMessage("Payment Submitted Successfully!");
-      dispatch({ type: "RESET_FORM" });
-
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
+      return;
     }
+
+    setSuccessMessage("Payment Submitted Successfully!");
+    dispatch({ type: "RESET_FORM" });
+
+    setTimeout(() => {
+      onPaymentSuccess();
+      navigate("/");
+    }, 3000);
   };
 
   return (
@@ -176,6 +179,10 @@ const PaymentForm = () => {
       </form>
     </Card>
   );
+};
+
+PaymentForm.propTypes = {
+  onPaymentSuccess: PropTypes.func.isRequired,
 };
 
 export default PaymentForm;
