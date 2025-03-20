@@ -9,7 +9,9 @@ import { Order } from "../pages/Order/Order";
 import ItemDetails from "../pages/Item/ItemDetails";
 import EditItem from "../pages/Item/EditItem";
 import PrivateRoute from "./PrivateRoute";
-import UserProfile from "../pages/User/Profile";
+// import UserProfile from "../pages/User/Profile";
+import UserProfile from "../pages/User/UserProfile";
+import UserProfileEdit from "../pages/User/UserProfileEdit";
 
 const AppRoutes = () => {
   return (
@@ -22,6 +24,8 @@ const AppRoutes = () => {
       <Route path="/items/:id" element={<ItemDetails />} />
       <Route path="/register" element={<CreateUser />} />
       <Route path="/user" element={<UserList />} />
+      <Route path="/users/:id" element={<UserProfile />} />
+      <Route path="/users/edit/:id" element={<UserProfileEdit />} />
 
       {/* protected routes */}
       <Route
@@ -32,14 +36,14 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       />
-      <Route
-        path="/profile"
+      {/* <Route
+        path="/user/:id"
         element={
           <PrivateRoute>
             <UserProfile />
           </PrivateRoute>
         }
-      />
+      /> */}
 
       <Route path="*" element={<NotFound />} />
       <Route path="items/edit/:id" element={<EditItem />} />

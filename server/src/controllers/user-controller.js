@@ -139,18 +139,18 @@ export const updateUser = async (req, res) => {
       .json({ success: false, msg: "User not authenticated. Please log in." });
   }
 
-  const allowedFields = ["post_code", "city"];
-  const fieldsToUpdate = Object.keys(userUpdates);
-  const invalidFields = fieldsToUpdate.filter(
-    (field) => !allowedFields.includes(field),
-  );
+  // const allowedFields = ["post_code", "city"];
+  // const fieldsToUpdate = Object.keys(userUpdates);
+  // const invalidFields = fieldsToUpdate.filter(
+  //   (field) => !allowedFields.includes(field),
+  // );
 
-  if (invalidFields.length > 0) {
-    return res.status(400).json({
-      success: false,
-      msg: `You can only update the following fields: ${allowedFields.join(", ")}`,
-    });
-  }
+  // if (invalidFields.length > 0) {
+  //   return res.status(400).json({
+  //     success: false,
+  //     msg: `You can only update the following fields: ${allowedFields.join(", ")}`,
+  //   });
+  // }
 
   if (req.user._id !== id) {
     return res
