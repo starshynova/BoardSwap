@@ -1,6 +1,6 @@
-import Order, { validateOrder } from "../models/order-model";
-import { logError } from "../util/logging";
-import validationErrorMessage from "../util/validationErrorMessage";
+import Order, { validateOrder } from "../models/order-model.js";
+import { logError } from "../util/logging.js";
+import validationErrorMessage from "../util/validationErrorMessage.js";
 
 export const createOrder = async (req, res) => {
   try {

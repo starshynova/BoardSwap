@@ -2,29 +2,6 @@ import mongoose from "mongoose";
 
 import validateAllowedFields from "../util/validateAllowedFields.js";
 
-// const orderSchema = new mongoose.Schema({
-//   buyer_id: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     required: true,
-//     ref: "users",
-//   },
-//   seller_id: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     required: true,
-//     ref: "users",
-//   },
-//   item_id: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     required: true,
-//     ref: "items",
-//   },
-//   item_title: { type: String, required: true, ref: "items" },
-//   item_photo: { type: String, required: false, ref: "items" },
-//   date: { type: Date, default: Date.now },
-//   delivery_address: { type: String, required: true },
-//   price: { type: Number, required: true, ref: "items" },
-// });
-
 const orderSchema = new mongoose.Schema(
   {
     buyer_id: {
