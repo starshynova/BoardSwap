@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user-route.js";
 import itemRouter from "./routes/item-route.js";
+import orderRouter from "./routes/order-route.js";
 
 // Create an express server
 const app = express();
@@ -24,5 +25,6 @@ app.use(express.json());
  */
 app.use("/api/users", userRouter);
 app.use("/api/items", itemRouter);
+app.use("/api/orders", orderRouter);
 
 export default app;
