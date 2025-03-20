@@ -20,6 +20,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const [warning, setWarning] = useState("");
   const [orderData, setOrderData] = useState(null);
   const formRef = useRef();
+  const token = localStorage.getItem("authToken");
 
   const handleNavigation = (step) => () => {
     if (activeStep === 1 && !isOrderValid && step > activeStep) {
@@ -59,14 +60,14 @@ export default function OrderStepper({ cart, toggleCartItem }) {
       console.log("Submitting Order:", orderPayload);
 
       try {
-        const response = await fetch("/api/orders", {
+        const response = await fetch("/api/orders/create", {
           method: "POST",
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           body: JSON.stringify(orderPayload),
         });
-
         if (!response.ok) {
           throw new Error("Failed to submit order");
         }
