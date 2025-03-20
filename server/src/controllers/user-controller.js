@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import User, { validateUser } from "../models/user-model.js";
 import { logError } from "../util/logging.js";
 import validationErrorMessage from "../util/validationErrorMessage.js";
+import Item from "../models/item-model.js";
+import order from "../models/order-model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -131,7 +133,7 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const { id } = req.params;
-  const userUpdates = req.body;
+  let userUpdates = req.body;
 
   if (!req.user) {
     return res
@@ -139,23 +141,14 @@ export const updateUser = async (req, res) => {
       .json({ success: false, msg: "User not authenticated. Please log in." });
   }
 
-  const allowedFields = ["post_code", "city"];
-  const fieldsToUpdate = Object.keys(userUpdates);
-  const invalidFields = fieldsToUpdate.filter(
-    (field) => !allowedFields.includes(field),
-  );
-
-  if (invalidFields.length > 0) {
-    return res.status(400).json({
-      success: false,
-      msg: `You can only update the following fields: ${allowedFields.join(", ")}`,
-    });
-  }
-
-  if (req.user._id !== id) {
+  if (req.user.id !== id) {
     return res
       .status(403)
       .json({ success: false, msg: "You can only update your own profile" });
+  }
+
+  if (userUpdates._id) {
+    delete userUpdates._id;
   }
 
   try {
@@ -169,22 +162,52 @@ export const updateUser = async (req, res) => {
       return res.status(404).json({ success: false, msg: "User not found" });
     }
 
-    return res.status(200).json({
-      success: true,
-      user: {
-        name: updatedUser.name,
-        email: updatedUser.email,
-        post_code: updatedUser.post_code,
-        city: updatedUser.city,
-        created_date: updatedUser.created_date,
-      },
-    });
+    return res.status(200).json({ success: true, user: updatedUser });
   } catch (error) {
     logError(error);
-    return res.status(500).json({
-      success: false,
-      msg: "Unable to update user, try again later",
-    });
+    return res
+      .status(500)
+      .json({ success: false, msg: "Unable to update user, try again later" });
+  }
+};
+
+export const updateUserPatch = async (req, res) => {
+  const { id } = req.params;
+  const userUpdates = req.body; // partial updates
+
+  if (!req.user) {
+    return res
+      .status(401)
+      .json({ success: false, msg: "User not authenticated. Please log in." });
+  }
+
+  if (req.user.id !== id) {
+    return res
+      .status(403)
+      .json({ success: false, msg: "You can only update your own profile" });
+  }
+
+  if (userUpdates._id) {
+    delete userUpdates._id;
+  }
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: userUpdates },
+      { new: true, runValidators: true },
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, msg: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, result: updatedUser });
+  } catch (error) {
+    logError(error);
+    return res
+      .status(500)
+      .json({ success: false, msg: "Unable to update user, try again later" });
   }
 };
 
@@ -202,14 +225,18 @@ export const deleteUser = async (req, res) => {
     if (!deletedUser) {
       return res.status(404).json({ success: false, msg: "User not found" });
     }
+
+    if (deletedUser.items && deletedUser.items.length > 0) {
+      await Item.deleteMany({ _id: { $in: deletedUser.items } });
+    }
+
+    if (deletedUser.orders && deletedUser.orders.length > 0) {
+      await order.deleteMany({ _id: { $in: deletedUser.orders } });
+    }
+
     return res.status(200).json({
       success: true,
-      user: {
-        email: deletedUser.email,
-        name: deletedUser.name,
-        post_code: deletedUser.post_code,
-        city: deletedUser.city,
-      },
+      msg: "User and associated items and orders deleted successfully",
     });
   } catch (error) {
     logError(error);
