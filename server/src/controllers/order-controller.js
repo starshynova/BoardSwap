@@ -1,4 +1,4 @@
-import Order, { validateOrder } from "../controllers/order-model";
+import Order, { validateOrder } from "../models/order-model";
 import { logError } from "../util/logging";
 import validationErrorMessage from "../util/validationErrorMessage";
 
