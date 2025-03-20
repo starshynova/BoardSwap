@@ -11,6 +11,7 @@ import ProductCard from "../../components/ProductCard";
 import OrderForm from "./OrderForm";
 import PropTypes from "prop-types";
 import { Alert, Snackbar, StepLabel } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
 
 const steps = ["Order summary", "Details", "Order Payment"];
 
@@ -21,6 +22,13 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const [orderData, setOrderData] = useState(null);
   const formRef = useRef();
   const token = localStorage.getItem("authToken");
+  console.log("token", token);
+
+  if (token) {
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.id;
+    localStorage.setItem("user_id", userId);
+  }
 
   const handleNavigation = (step) => () => {
     if (activeStep === 1 && !isOrderValid && step > activeStep) {
