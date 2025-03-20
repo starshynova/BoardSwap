@@ -41,13 +41,49 @@ export default function OrderStepper({ cart, toggleCartItem }) {
     return cart.reduce((total, product) => total + product.price, 0).toFixed(2);
   }, [cart]);
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
     if (orderData) {
       console.log("Submitting Order:", orderData);
+      console.log("local storage", localStorage);
       // Send orderData to backend API !!!!!!!!!!!!!!!!!!!!!!
-      localStorage.removeItem("orderForm");
-      setOrderData(null);
-      setIsOrderValid(false);
+
+      const userId = localStorage.getItem("user_id");
+      const orderPayload = {
+        user_id: userId,
+        items: cart.map((item) => ({
+          ...item,
+        })),
+        total_price: totalAmount,
+        ...orderData,
+      };
+
+      console.log("Submitting Order:", orderPayload);
+
+      try {
+        // Send the data to the backend
+        const response = await fetch("/api/orders", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderPayload),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to submit order");
+        }
+
+        const result = await response.json();
+        console.log("Order submitted successfully:", result);
+
+        // Send orderData to backend API !!!!!!!!!!!!!!!!!!!!!!
+        localStorage.removeItem("orderForm");
+        setOrderData(null);
+        setIsOrderValid(false);
+      } catch (error) {
+        console.error("Error submitting order:", error);
+        alert("Failed to submit order. Please try again.");
+      }
     }
   };
 
