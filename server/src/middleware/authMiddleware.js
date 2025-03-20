@@ -4,12 +4,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const authMiddleware = (req, res, next) => {
-  // eslint-disable-next-line no-console
-  console.log("Headers:", req.headers);
   const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ msg: "No token, authorization denied" });
+    return res.status(401).json({ success: false, msg: "No token provided" });
   }
 
   try {
@@ -17,6 +15,6 @@ export const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(401).json({ msg: "Invalid token" });
+    return res.status(401).json({ success: false, msg: "Invalid token" });
   }
 };

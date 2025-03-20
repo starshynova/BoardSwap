@@ -4,6 +4,11 @@ import {
   Box,
   Typography,
   LinearProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -13,17 +18,20 @@ const UserProfileUI = ({
   handleSubmit,
   isLoading,
   showConfirm,
-  onSubmit,
-  confirmUpdate,
   setShowConfirm,
   showDeleteConfirm,
   setShowDeleteConfirm,
-  deleteUser,
+  updateProfile,
+  handleDelete,
+  feedbackMessage,
 }) => {
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(() => {
+        // Remove 'data' since it's not being used
+        setShowConfirm(true);
+      })}
       sx={{
         width: "350px",
         mx: "auto",
@@ -33,9 +41,28 @@ const UserProfileUI = ({
         borderRadius: 2,
       }}
     >
-      <Typography variant="h5" textAlign="center" mb={2}>
+      <Typography
+        variant="h5"
+        textAlign="center"
+        mb={2}
+        sx={{ fontWeight: "bold" }}
+      >
         Update Profile
       </Typography>
+
+      {feedbackMessage && (
+        <Typography
+          variant="body2"
+          textAlign="center"
+          color={feedbackMessage.includes("Error") ? "error" : "success"}
+          sx={{
+            mb: 2,
+            fontWeight: "bold",
+          }}
+        >
+          {feedbackMessage}
+        </Typography>
+      )}
 
       <TextField
         label="Name"
@@ -120,18 +147,23 @@ const UserProfileUI = ({
 
       {isLoading && <LinearProgress sx={{ mt: 2 }} />}
 
-      {showConfirm && (
-        <Box sx={{ textAlign: "center", mt: 2 }}>
-          <Typography variant="body1">
+      <Dialog open={showConfirm} onClose={() => setShowConfirm(false)}>
+        <DialogTitle>Confirm Update</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
             Are you sure you want to update your profile?
-          </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
           <Button
-            onClick={confirmUpdate}
-            variant="contained"
+            onClick={() => {
+              setShowConfirm(false);
+              handleSubmit(updateProfile)(); // Pass 'updateProfile' as callback here
+            }}
             sx={{
               backgroundColor: "#47CAD1",
               borderRadius: "10px",
-              mt: 1,
+              color: "#000000",
             }}
           >
             Yes
@@ -139,15 +171,12 @@ const UserProfileUI = ({
           <Button
             onClick={() => setShowConfirm(false)}
             variant="outlined"
-            sx={{
-              mt: 1,
-              borderRadius: "10px",
-            }}
+            sx={{ borderRadius: "10px", color: "#000000" }}
           >
             No
           </Button>
-        </Box>
-      )}
+        </DialogActions>
+      </Dialog>
 
       <Button
         onClick={() => setShowDeleteConfirm(true)}
@@ -162,38 +191,35 @@ const UserProfileUI = ({
         Delete Profile
       </Button>
 
-      {showDeleteConfirm && (
-        <Box sx={{ textAlign: "center", mt: 2 }}>
-          <Typography variant="body1" color="error">
+      <Dialog
+        open={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+      >
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText color="error">
             Are you sure you want to permanently delete your account and data?
-            <br />
-            This action cannot be undone, and your data will be permanently
-            removed.
-          </Typography>
-
+            This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
           <Button
-            onClick={deleteUser}
+            onClick={handleDelete}
             variant="contained"
             color="error"
-            sx={{
-              borderRadius: "10px",
-              mt: 1,
-            }}
+            sx={{ borderRadius: "10px" }}
           >
             Yes, Delete
           </Button>
           <Button
             onClick={() => setShowDeleteConfirm(false)}
             variant="outlined"
-            sx={{
-              mt: 1,
-              borderRadius: "10px",
-            }}
+            sx={{ borderRadius: "10px" }}
           >
             No, Cancel
           </Button>
-        </Box>
-      )}
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
@@ -204,12 +230,12 @@ UserProfileUI.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   showConfirm: PropTypes.bool.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  confirmUpdate: PropTypes.func.isRequired,
   setShowConfirm: PropTypes.func.isRequired,
   showDeleteConfirm: PropTypes.bool.isRequired,
   setShowDeleteConfirm: PropTypes.func.isRequired,
-  deleteUser: PropTypes.func.isRequired,
+  updateProfile: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
+  feedbackMessage: PropTypes.string,
 };
 
 export default UserProfileUI;
