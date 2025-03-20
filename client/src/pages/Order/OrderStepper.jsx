@@ -21,6 +21,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const [orderData, setOrderData] = useState(null);
   const formRef = useRef();
   const token = localStorage.getItem("authToken");
+  console.log(token);
 
   const handleNavigation = (step) => () => {
     if (activeStep === 1 && !isOrderValid && step > activeStep) {
