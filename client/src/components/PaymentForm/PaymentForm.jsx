@@ -1,5 +1,5 @@
-import { useReducer } from "react";
-import { TextField, Button, Box, Typography, Card } from "@mui/material";
+import { useReducer, useState } from "react";
+import { TextField, Button, Box, Typography, Card, Alert } from "@mui/material";
 import theme from "../theme";
 import {
   validateCardholderName,
@@ -7,6 +7,7 @@ import {
   validateCardNumber,
   validateCVV,
 } from "./validators";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   formData: {
@@ -38,6 +39,8 @@ const reducer = (state, action) => {
 const PaymentForm = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { formData, errors } = state;
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     dispatch({
@@ -88,8 +91,12 @@ const PaymentForm = () => {
     if (Object.keys(tempErrors).length > 0) {
       dispatch({ type: "SET_ERRORS", errors: tempErrors });
     } else {
-      alert("Payment Submitted Successfully!");
+      setSuccessMessage("Payment Submitted Successfully!");
       dispatch({ type: "RESET_FORM" });
+
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     }
   };
 
@@ -104,6 +111,7 @@ const PaymentForm = () => {
         color: theme.palette.text.secondary,
       }}
     >
+      {successMessage && <Alert severity="success">{successMessage}</Alert>}
       <Typography variant="h5" align="center" gutterBottom>
         Payment Details
       </Typography>
