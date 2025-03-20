@@ -3,8 +3,11 @@ import { TextField, Container, Typography, Box } from "@mui/material";
 import theme from "../../components/theme";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { AuthContext } from "../../context/AuthContext";
 
 const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
+  const { userId } = AuthContext();
+  console.log(userId);
   const {
     register,
     handleSubmit,

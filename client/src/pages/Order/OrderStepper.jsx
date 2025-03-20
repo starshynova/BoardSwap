@@ -12,6 +12,7 @@ import OrderForm from "./OrderForm";
 import PropTypes from "prop-types";
 import { Alert, Snackbar, StepLabel } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
+import { AuthContext } from "../../context/AuthContext";
 
 const steps = ["Order summary", "Details", "Order Payment"];
 
@@ -23,6 +24,8 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const formRef = useRef();
   const token = localStorage.getItem("authToken");
   console.log("token", token);
+  const { userId } = AuthContext();
+  console.log(userId);
 
   if (token) {
     const decodedToken = jwtDecode(token);
@@ -55,7 +58,6 @@ export default function OrderStepper({ cart, toggleCartItem }) {
       console.log("Submitting Order:", orderData);
       console.log("local storage", localStorage);
 
-      const userId = localStorage.getItem("user_id");
       const orderPayload = {
         buyer_id: userId,
         items: cart.map((item) => ({
@@ -77,6 +79,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           body: JSON.stringify(orderPayload),
         });
         if (!response.ok) {
+          console.log(response);
           throw new Error("Failed to submit order");
         }
 
