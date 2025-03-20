@@ -45,11 +45,10 @@ export default function OrderStepper({ cart, toggleCartItem }) {
     if (orderData) {
       console.log("Submitting Order:", orderData);
       console.log("local storage", localStorage);
-      // Send orderData to backend API !!!!!!!!!!!!!!!!!!!!!!
 
       const userId = localStorage.getItem("user_id");
       const orderPayload = {
-        user_id: userId,
+        buyer_id: userId,
         items: cart.map((item) => ({
           ...item,
         })),
@@ -60,7 +59,6 @@ export default function OrderStepper({ cart, toggleCartItem }) {
       console.log("Submitting Order:", orderPayload);
 
       try {
-        // Send the data to the backend
         const response = await fetch("/api/orders", {
           method: "POST",
           headers: {
@@ -76,7 +74,6 @@ export default function OrderStepper({ cart, toggleCartItem }) {
         const result = await response.json();
         console.log("Order submitted successfully:", result);
 
-        // Send orderData to backend API !!!!!!!!!!!!!!!!!!!!!!
         localStorage.removeItem("orderForm");
         setOrderData(null);
         setIsOrderValid(false);
