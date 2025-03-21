@@ -34,7 +34,7 @@ const Home = () => {
 
   useEffect(() => {
     performFetch();
-  }, [searchQuery, type, sort]);
+  }, [searchQuery, type, sort, cart]);
 
   const handleSortChange = (selectedSort) => {
     setSort(selectedSort);
