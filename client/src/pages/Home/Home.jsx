@@ -20,7 +20,10 @@ const Home = () => {
     `/items`,
     (data) => {
       if (data.success) {
-        setProducts(data.result);
+        const availableProducts = data.result.filter(
+          (product) => product.status === "Available",
+        );
+        setProducts(availableProducts);
       }
     },
     searchQuery,
