@@ -9,6 +9,7 @@ import { useSearch } from "../../context/SearchContext";
 import ProductList from "../../components/ProductList";
 import SearchResultsHeader from "../../components/SearchResultsHeader";
 import CenteredTabs from "../../components/Tabs";
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -16,6 +17,7 @@ const Home = () => {
   const { searchQuery } = useSearch();
   const [type, setType] = useState("All");
   const [sort, setSort] = useState("");
+  const location = useLocation();
 
   const { isLoading, error, performFetch } = useFetch(
     `/items`,
@@ -35,7 +37,7 @@ const Home = () => {
 
   useEffect(() => {
     performFetch();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     performFetch();
