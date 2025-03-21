@@ -99,7 +99,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
 
     setTimeout(() => {
       onPaymentSuccess();
-      navigate("/");
+      navigate("/", { state: { fromOrder: true } });
     }, 3000);
   };
 
