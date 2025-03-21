@@ -104,19 +104,37 @@ export default function OrderStepper({ cart, toggleCartItem }) {
         console.log("Order submitted successfully:", result);
 
         for (const item of cart) {
-          console.log("item - debug", item);
-          const updateResponse = await fetch(`/api/items/${item._id}`, {
+          // Fetch the full item details
+          const itemResponse = await fetch(`/api/items/${item._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!itemResponse.ok) {
+            throw new Error(`Failed to fetch item ${item._id}`);
+          }
+
+          const fullItem = await itemResponse.json();
+
+          // Update the status
+          const updateUrl = `/api/items/${item._id}`;
+          const updatePayload = { item: { ...fullItem, status: "Sold" } };
+
+          console.log("Updating item:", updateUrl, updatePayload);
+
+          const updateResponse = await fetch(updateUrl, {
             method: "PUT",
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ item: { status: "Sold" } }),
+            body: JSON.stringify(updatePayload),
           });
 
           if (!updateResponse.ok) {
             const errorData = await updateResponse.json();
-            console.error("Server response:", errorData);
+            console.error("Failed to update item:", errorData);
             throw new Error(`Failed to update item ${item._id}`);
           }
 
