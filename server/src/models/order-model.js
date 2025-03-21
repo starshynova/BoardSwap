@@ -11,24 +11,7 @@ const orderSchema = new mongoose.Schema(
     },
     items: [
       {
-        _id: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: "items",
-        },
-        title: { type: String, required: true },
-        price: { type: Number, required: true },
-        type: { type: String, required: true },
-        condition: { type: String, required: true },
-        description: { type: String },
-        photo: { type: String },
-        seller_id: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          ref: "users",
-        },
-        status: { type: String, required: true },
-        created_date: { type: Date, required: true },
+        type: mongoose.Schema.Types.Mixed,
       },
     ],
     total_price: {
@@ -91,27 +74,6 @@ export const validateOrder = (orderObject) => {
 
   if (!Array.isArray(orderObject.items) || orderObject.items.length === 0) {
     errorList.push("Items must be a non-empty array");
-  } else {
-    orderObject.items.forEach((item, index) => {
-      if (!item._id || !mongoose.isValidObjectId(item._id)) {
-        errorList.push(
-          `Item ${index + 1}: _id is a required field and must be a valid ObjectId`,
-        );
-      }
-      if (!item.title) {
-        errorList.push(`Item ${index + 1}: Title is a required field`);
-      }
-      if (!item.price || typeof item.price !== "number") {
-        errorList.push(
-          `Item ${index + 1}: Price is a required field and must be a number`,
-        );
-      }
-      if (!item.seller_id || !mongoose.isValidObjectId(item.seller_id)) {
-        errorList.push(
-          `Item ${index + 1}: Seller ID is a required field and must be a valid ObjectId`,
-        );
-      }
-    });
   }
 
   if (!orderObject.total_price || typeof orderObject.total_price !== "number") {

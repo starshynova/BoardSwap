@@ -66,6 +66,18 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   }, [cart]);
 
   const handlePaymentSuccess = async () => {
+    if (!orderData) {
+      console.error("Order data is missing.");
+      alert("Please fill out the order details before proceeding.");
+      return;
+    }
+
+    if (!userId) {
+      console.error("User ID is missing. Please log in again.");
+      alert("User ID is missing. Please log in again.");
+      return;
+    }
+
     if (orderData) {
       console.log("Submitting Order:", orderData);
       console.log("local storage", localStorage);
@@ -75,8 +87,13 @@ export default function OrderStepper({ cart, toggleCartItem }) {
         items: cart.map((item) => ({
           ...item,
         })),
-        total_price: totalAmount,
-        ...orderData,
+        total_price: parseFloat(totalAmount),
+        address: orderData.address,
+        city: orderData.city,
+        email: orderData.email,
+        firstName: orderData.firstName,
+        lastName: orderData.lastName,
+        postcode: orderData.postcode,
       };
 
       console.log("Submitting Order:", orderPayload);
@@ -92,6 +109,8 @@ export default function OrderStepper({ cart, toggleCartItem }) {
         });
         if (!response.ok) {
           console.log(response);
+          const errorData = await response.json();
+          console.error("Server error:", errorData);
           throw new Error("Failed to submit order");
         }
 
