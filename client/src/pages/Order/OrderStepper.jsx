@@ -103,6 +103,24 @@ export default function OrderStepper({ cart, toggleCartItem }) {
         const result = await response.json();
         console.log("Order submitted successfully:", result);
 
+        for (const item of cart) {
+          const updateResponse = await fetch(`/api/items/${item._id}`, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ item: { status: "Sold" } }),
+          });
+
+          if (!updateResponse.ok) {
+            throw new Error(`Failed to update item ${item._id}`);
+          }
+
+          const updateResult = await updateResponse.json();
+          console.log(`Item ${item._id} updated successfully:`, updateResult);
+        }
+
         localStorage.removeItem("orderForm");
         setOrderData(null);
         setIsOrderValid(false);
