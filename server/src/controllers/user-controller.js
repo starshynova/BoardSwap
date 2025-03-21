@@ -194,7 +194,9 @@ export const updateUserPatch = async (req, res) => {
   if (userUpdates.post_code === "") {
     userUpdates.post_code = null;
   }
-
+  if (userUpdates.city === "") {
+    userUpdates.city = null;
+  }
   try {
     const updatedUser = await User.findByIdAndUpdate(id, userUpdates, {
       new: true,

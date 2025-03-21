@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength: 8 },
   post_code: { type: String, minLength: 6, maxLength: 6, required: false },
-  city: { type: String, required: false },
+  city: { type: String, minLength: 2, maxLength: 15, required: false },
   created_date: { type: Date, default: Date.now },
   items: [
     {
