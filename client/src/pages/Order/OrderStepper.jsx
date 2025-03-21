@@ -108,6 +108,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           const itemResponse = await fetch(`/api/items/${item._id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
             },
           });
 
@@ -117,9 +118,24 @@ export default function OrderStepper({ cart, toggleCartItem }) {
 
           const fullItem = await itemResponse.json();
 
+          // Extract the item data from the response
+          const itemData = fullItem.result; // Assuming the item data is nested under `result`
+
+          // Ensure all required fields are present
+          if (
+            !itemData.title ||
+            !itemData.price ||
+            !itemData.type ||
+            !itemData.condition ||
+            !itemData.seller_id
+          ) {
+            console.error("Missing required fields in item data:", itemData);
+            throw new Error(`Item ${item._id} is missing required fields`);
+          }
+
           // Update the status
           const updateUrl = `/api/items/${item._id}`;
-          const updatePayload = { item: { ...fullItem, status: "Sold" } };
+          const updatePayload = { item: { ...itemData, status: "Sold" } };
 
           console.log("Updating item:", updateUrl, updatePayload);
 
