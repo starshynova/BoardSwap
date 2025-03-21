@@ -16,7 +16,6 @@ const Home = () => {
   const { searchQuery } = useSearch();
   const [type, setType] = useState("All");
   const [sort, setSort] = useState("");
-  const [refreshKey, setRefreshKey] = useState(0);
 
   const { isLoading, error, performFetch } = useFetch(
     `/items`,
@@ -36,15 +35,11 @@ const Home = () => {
 
   useEffect(() => {
     performFetch();
-  }, [searchQuery, type, sort, refreshKey]);
-
-  const refreshData = () => {
-    setRefreshKey((prev) => prev + 1);
-  };
+  }, []);
 
   useEffect(() => {
-    refreshData();
-  }, [cart]);
+    performFetch();
+  }, [searchQuery, type, sort]);
 
   const handleSortChange = (selectedSort) => {
     setSort(selectedSort);
