@@ -191,12 +191,15 @@ export const updateUserPatch = async (req, res) => {
     delete userUpdates._id;
   }
 
+  if (userUpdates.post_code === "") {
+    userUpdates.post_code = null;
+  }
+
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { $set: userUpdates },
-      { new: true, runValidators: true },
-    );
+    const updatedUser = await User.findByIdAndUpdate(id, userUpdates, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ success: false, msg: "User not found" });
@@ -205,9 +208,10 @@ export const updateUserPatch = async (req, res) => {
     return res.status(200).json({ success: true, result: updatedUser });
   } catch (error) {
     logError(error);
-    return res
-      .status(500)
-      .json({ success: false, msg: "Unable to update user, try again later" });
+    return res.status(500).json({
+      success: false,
+      msg: "Unable to update user, please try again later.",
+    });
   }
 };
 

@@ -24,14 +24,21 @@ const UserProfileUI = ({
   updateProfile,
   handleDelete,
   feedbackMessage,
+  error,
 }) => {
+  const onSubmit = () => {
+    setShowConfirm(true);
+  };
+
+  const handleConfirmUpdate = () => {
+    setShowConfirm(false);
+    handleSubmit(updateProfile)();
+  };
+
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit(() => {
-        // Remove 'data' since it's not being used
-        setShowConfirm(true);
-      })}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         width: "350px",
         mx: "auto",
@@ -50,15 +57,23 @@ const UserProfileUI = ({
         Update Profile
       </Typography>
 
+      {error && (
+        <Typography
+          variant="body2"
+          textAlign="center"
+          color="error"
+          sx={{ mb: 2, fontWeight: "bold" }}
+        >
+          {error}
+        </Typography>
+      )}
+
       {feedbackMessage && (
         <Typography
           variant="body2"
           textAlign="center"
           color={feedbackMessage.includes("Error") ? "error" : "success"}
-          sx={{
-            mb: 2,
-            fontWeight: "bold",
-          }}
+          sx={{ mb: 2, fontWeight: "bold" }}
         >
           {feedbackMessage}
         </Typography>
@@ -87,10 +102,7 @@ const UserProfileUI = ({
         type="email"
         {...register("email", {
           required: "Email is required",
-          pattern: {
-            value: /^\S+@\S+$/i,
-            message: "Invalid email",
-          },
+          pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
         })}
         error={!!errors.email}
         helperText={errors.email?.message}
@@ -107,7 +119,14 @@ const UserProfileUI = ({
         label="City"
         fullWidth
         margin="normal"
-        {...register("city")}
+        {...register("city", {
+          maxLength: {
+            value: 50,
+            message: "City name cannot exceed 15 characters",
+          },
+        })}
+        error={!!errors.city}
+        helperText={errors.city?.message}
         sx={{
           backgroundColor: "#D6F9FA",
           borderRadius: "5px",
@@ -121,7 +140,14 @@ const UserProfileUI = ({
         label="Post Code"
         fullWidth
         margin="normal"
-        {...register("post_code")}
+        {...register("post_code", {
+          validate: (value) => {
+            return value === "" || /^[0-9]{4}[a-zA-Z]{2}$/.test(value);
+          },
+          message: "Invalid post code format. Example: 1234ab",
+        })}
+        error={!!errors.post_code}
+        helperText={errors.post_code?.message}
         sx={{
           backgroundColor: "#D6F9FA",
           borderRadius: "5px",
@@ -156,10 +182,7 @@ const UserProfileUI = ({
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={() => {
-              setShowConfirm(false);
-              handleSubmit(updateProfile)(); // Pass 'updateProfile' as callback here
-            }}
+            onClick={handleConfirmUpdate}
             sx={{
               backgroundColor: "#47CAD1",
               borderRadius: "10px",
@@ -236,6 +259,7 @@ UserProfileUI.propTypes = {
   updateProfile: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
   feedbackMessage: PropTypes.string,
+  error: PropTypes.string,
 };
 
 export default UserProfileUI;
