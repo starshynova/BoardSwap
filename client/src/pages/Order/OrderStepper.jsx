@@ -104,6 +104,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
         console.log("Order submitted successfully:", result);
 
         for (const item of cart) {
+          console.log("item - debug", item);
           const updateResponse = await fetch(`/api/items/${item._id}`, {
             method: "PUT",
             headers: {
