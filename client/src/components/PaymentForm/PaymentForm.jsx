@@ -97,8 +97,9 @@ const PaymentForm = ({ onPaymentSuccess }) => {
     setSuccessMessage("Payment Submitted Successfully!");
     dispatch({ type: "RESET_FORM" });
 
+    onPaymentSuccess();
+
     setTimeout(() => {
-      onPaymentSuccess();
       navigate("/", { state: { fromOrder: true } });
     }, 3000);
   };
