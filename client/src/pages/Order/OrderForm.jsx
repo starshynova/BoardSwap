@@ -105,7 +105,16 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
 
         <TextField
           label="Postcode"
-          {...register("postcode", { required: "Postcode is required" })}
+          {...register("postcode", {
+            required: "Postcode is required",
+            validate: (value) => {
+              const regex = /^\d{4}\s?[a-zA-Z]{2}$/;
+              return (
+                regex.test(value) ||
+                "Invalid postcode format (e.g., 1111 KL or 1111KL)"
+              );
+            },
+          })}
           error={!!errors.postcode}
           helperText={errors.postcode?.message}
           fullWidth
