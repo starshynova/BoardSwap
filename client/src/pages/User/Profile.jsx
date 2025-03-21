@@ -3,16 +3,15 @@ import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import useFetch from "../../hooks/useFetch";
 import UserProfileUI from "../../components/UserProfileUI";
-import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
-  const { token, userId } = useContext(AuthContext);
-  const [user, setUser] = useState(null);
+  const { token, userId, logout } = useContext(AuthContext);
   const [error, setError] = useState(null);
+  const [feedbackMessage, setFeedbackMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [feedbackMessage, setFeedbackMessage] = useState(null);
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   const {
     register,
@@ -21,33 +20,34 @@ const UserProfile = () => {
     formState: { errors },
   } = useForm();
 
-  const navigate = useNavigate();
-
-  const onReceived = (data) => {
-    if (data.success) {
-      setUser(data.result);
-      setValue("name", data.result.name);
-      setValue("email", data.result.email);
-      setValue("city", data.result.city);
-      setValue("post_code", data.result.post_code);
-    } else {
-      setError(data.msg || "User profile not found.");
-    }
-  };
-
-  const {
-    isLoading: fetchIsLoading,
-    error: fetchError,
-    performFetch,
-  } = useFetch(`/users/${userId}`, onReceived, null, token);
+  const { isLoading: fetchIsLoading, performFetch } = useFetch(
+    `/users/${userId}`,
+    (data) => {
+      if (data.success) {
+        setValue("name", data.result.name);
+        setValue("email", data.result.email);
+        setValue("city", data.result.city);
+        setValue("post_code", data.result.post_code);
+        setIsDataFetched(true);
+      } else {
+        setError(data.msg || "User profile not found.");
+        setFeedbackMessage(null);
+      }
+    },
+    null,
+    token,
+  );
 
   useEffect(() => {
     if (!token) {
       setError("Please log in to access your profile.");
       return;
     }
-    performFetch();
-  }, [token, userId]);
+
+    if (!isDataFetched) {
+      performFetch();
+    }
+  }, [token, userId, isDataFetched, performFetch]);
 
   const updateProfile = async (data) => {
     setIsLoading(true);
@@ -64,21 +64,26 @@ const UserProfile = () => {
     };
 
     try {
-      await performFetch(options);
+      const response = await fetch(`/api/users/${userId}`, options);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update profile.");
+      }
+
+      await response.json();
       setFeedbackMessage("Profile updated successfully!");
 
       setTimeout(() => {
         setFeedbackMessage(null);
       }, 3000);
+
+      setError(null);
     } catch (err) {
       setError(
-        err.message || "Unable to update your profile. Please try again later.",
+        err.message || "Unable to update your profile. Please try again.",
       );
-      setFeedbackMessage("Error updating profile. Please try again.");
-
-      setTimeout(() => {
-        setFeedbackMessage(null);
-      }, 3000);
+      setFeedbackMessage(null);
     } finally {
       setIsLoading(false);
     }
@@ -107,8 +112,7 @@ const UserProfile = () => {
 
       const deletedData = await response.json();
       if (deletedData.success) {
-        console.log("Deleted profile:", deletedData.msg);
-        navigate("/");
+        logout();
       } else {
         setError("We couldn't delete your profile. Please try again later.");
       }
@@ -121,11 +125,7 @@ const UserProfile = () => {
 
   const content = fetchIsLoading ? (
     <div>Loading...</div>
-  ) : error || fetchError ? (
-    <div style={{ color: "red", textAlign: "center" }}>
-      {error || fetchError}
-    </div>
-  ) : user ? (
+  ) : (
     <UserProfileUI
       errors={errors}
       register={register}
@@ -138,9 +138,8 @@ const UserProfile = () => {
       updateProfile={updateProfile}
       handleDelete={handleDelete}
       feedbackMessage={feedbackMessage}
+      error={error}
     />
-  ) : (
-    <p>User not found. Please try again later.</p>
   );
 
   return <div>{content}</div>;
