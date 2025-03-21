@@ -4,7 +4,7 @@ import validateAllowedFields from "../util/validateAllowedFields.js";
 
 const orderSchema = new mongoose.Schema(
   {
-    buyer_id: {
+    user_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "users",
@@ -51,7 +51,7 @@ const Order = mongoose.model("orders", orderSchema);
 export const validateOrder = (orderObject) => {
   const errorList = [];
   const allowedKeys = [
-    "buyer_id",
+    "user_id",
     "items",
     "total_price",
     "address",

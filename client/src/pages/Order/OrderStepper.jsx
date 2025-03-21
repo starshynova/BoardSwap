@@ -83,7 +83,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
       console.log("local storage", localStorage);
 
       const orderPayload = {
-        buyer_id: userId,
+        user_id: userId,
         items: cart.map((item) => ({
           ...item,
         })),
