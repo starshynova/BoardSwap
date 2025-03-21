@@ -108,10 +108,9 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
           {...register("postcode", {
             required: "Postcode is required",
             validate: (value) => {
-              const regex = /^\d{4}\s?[a-zA-Z]{2}$/;
+              const regex = /^\d{4}[A-Z]{2}$/;
               return (
-                regex.test(value) ||
-                "Invalid postcode format (e.g., 1111 KL or 1111KL)"
+                regex.test(value) || "Invalid postcode format (e.g., 2000KL)"
               );
             },
           })}
