@@ -115,6 +115,8 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           });
 
           if (!updateResponse.ok) {
+            const errorData = await updateResponse.json();
+            console.error("Server response:", errorData);
             throw new Error(`Failed to update item ${item._id}`);
           }
 
