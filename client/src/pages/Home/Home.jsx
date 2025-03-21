@@ -28,7 +28,6 @@ const Home = () => {
           (product) => product.status === "Available",
         );
 
-        console.log("availableProducts", availableProducts);
         setProducts(availableProducts);
       }
     },
@@ -40,8 +39,6 @@ const Home = () => {
 
   useEffect(() => {
     performFetch();
-
-    console.log("render");
 
     if (location.state?.fromOrder) {
       navigate(location.pathname, { replace: true, state: {} });
