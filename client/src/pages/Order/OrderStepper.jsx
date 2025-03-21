@@ -35,8 +35,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   useEffect(() => {
     if (token) {
       try {
-        const decodedToken = jwtDecode(token);
-        console.log("Decoded token:", decodedToken);
+        jwtDecode(token);
       } catch (error) {
         console.error("Error decoding token:", error);
       }
@@ -100,11 +99,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           throw new Error("Failed to submit order");
         }
 
-        const result = await response.json();
-        console.log("Order submitted successfully:", result);
-
         for (const item of cart) {
-          // Fetch the full item details
           const itemResponse = await fetch(`/api/items/${item._id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -118,10 +113,8 @@ export default function OrderStepper({ cart, toggleCartItem }) {
 
           const fullItem = await itemResponse.json();
 
-          // Extract the item data from the response
-          const itemData = fullItem.result; // Assuming the item data is nested under `result`
+          const itemData = fullItem.result;
 
-          // Ensure all required fields are present
           if (
             !itemData.title ||
             !itemData.price ||
@@ -129,15 +122,11 @@ export default function OrderStepper({ cart, toggleCartItem }) {
             !itemData.condition ||
             !itemData.seller_id
           ) {
-            console.error("Missing required fields in item data:", itemData);
             throw new Error(`Item ${item._id} is missing required fields`);
           }
 
-          // Update the status
           const updateUrl = `/api/items/${item._id}`;
           const updatePayload = { item: { ...itemData, status: "Sold" } };
-
-          console.log("Updating item:", updateUrl, updatePayload);
 
           const updateResponse = await fetch(updateUrl, {
             method: "PUT",
@@ -149,13 +138,8 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           });
 
           if (!updateResponse.ok) {
-            const errorData = await updateResponse.json();
-            console.error("Failed to update item:", errorData);
             throw new Error(`Failed to update item ${item._id}`);
           }
-
-          const updateResult = await updateResponse.json();
-          console.log(`Item ${item._id} updated successfully:`, updateResult);
         }
 
         localStorage.removeItem("orderForm");
