@@ -37,11 +37,7 @@ const Home = () => {
 
   useEffect(() => {
     performFetch();
-  }, [location]);
-
-  useEffect(() => {
-    performFetch();
-  }, [searchQuery, type, sort]);
+  }, [location, searchQuery, type, sort]);
 
   const handleSortChange = (selectedSort) => {
     setSort(selectedSort);
