@@ -141,10 +141,10 @@ const UserProfileUI = ({
         fullWidth
         margin="normal"
         {...register("post_code", {
-          validate: (value) => {
-            return value === "" || /^[0-9]{4}[a-zA-Z]{2}$/.test(value);
-          },
-          message: "Invalid post code format. Example: 1234ab",
+          validate: (value) =>
+            value === "" ||
+            /^[0-9]{4}[a-zA-Z]{2}$/.test(value) ||
+            "Invalid post code format. Example: 1234AB",
         })}
         error={!!errors.post_code}
         helperText={errors.post_code?.message}
