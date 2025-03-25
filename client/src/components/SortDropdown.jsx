@@ -20,6 +20,7 @@ const SortDropdown = ({ onSortChange, sortValue }) => {
     <FormControl sx={{ minWidth: 200 }}>
       <InputLabel id="sort-label">Sort by</InputLabel>
       <Select
+        label="Sort by"
         labelId="sort-label"
         value={sortValue}
         onChange={handleSortChange}
