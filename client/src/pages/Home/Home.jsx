@@ -51,18 +51,32 @@ const Home = () => {
           <div style={{ padding: "20px 80px" }}>
             <>
               <CenteredTabs onTabChange={handleTabChange} selectedType={type} />
-              <SortDropdown sortValue={sort} onSortChange={handleSortChange} />
-              <br />
-              <br />
-              <SearchResultsHeader
-                searchQuery={searchQuery}
-                products={products}
-              />
-              <ProductList
-                products={products}
-                cart={cart}
-                toggleCartItem={toggleCartItem}
-              />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  gap: 2,
+                  mt: 1,
+                }}
+              >
+                <SearchResultsHeader
+                  searchQuery={searchQuery}
+                  products={products}
+                />
+                <SortDropdown
+                  sortValue={sort}
+                  onSortChange={handleSortChange}
+                />
+              </Box>
+              <Box sx={{ mt: 4 }}>
+                <ProductList
+                  products={products}
+                  cart={cart}
+                  toggleCartItem={toggleCartItem}
+                />
+              </Box>
             </>
           </div>
         </div>

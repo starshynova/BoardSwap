@@ -17,14 +17,31 @@ const SortDropdown = ({ onSortChange, sortValue }) => {
   );
 
   return (
-    <FormControl sx={{ minWidth: 200 }}>
-      <InputLabel id="sort-label">Sort by</InputLabel>
+    <FormControl sx={{ minWidth: 200, height: 40 }}>
+      <InputLabel
+        id="sort-label"
+        sx={{
+          transform: "translate(14px, 10px) scale(1)",
+          "&.Mui-focused, &.MuiFormLabel-filled": {
+            transform: "translate(14px, -9px) scale(0.75)",
+          },
+          lineHeight: "1.5",
+        }}
+      >
+        Sort by
+      </InputLabel>
       <Select
         label="Sort by"
         labelId="sort-label"
         value={sortValue}
         onChange={handleSortChange}
-        sx={{ color: theme.palette.text.secondary }}
+        sx={{
+          color: theme.palette.text.secondary,
+          height: 40,
+          "& .MuiSelect-select": {
+            padding: "8px 14px",
+          },
+        }}
       >
         <MenuItem value="" sx={{ color: theme.palette.text.secondary }}>
           Default
