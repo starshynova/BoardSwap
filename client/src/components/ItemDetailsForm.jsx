@@ -29,7 +29,6 @@ const styleDivider = {
 };
 
 const styleListItem = {
-  // width: "100%",
   display: "flex",
   position: "relative",
   gap: "20px",

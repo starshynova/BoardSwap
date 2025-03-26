@@ -46,7 +46,8 @@ const CreateItemForm = (sellerId) => {
     type: "",
     condition: "",
     photo_name: "",
-    photo: "",
+    photo:
+      "https://res.cloudinary.com/dogm5xki5/image/upload/v1742978122/qfsn7oqaob87rxurw5xq.jpg",
     description: "",
     status: "Available",
     seller_id: sellerId,
@@ -163,7 +164,8 @@ const CreateItemForm = (sellerId) => {
         type: "",
         condition: "",
         photo_name: "",
-        photo: "",
+        photo:
+          "https://res.cloudinary.com/dogm5xki5/image/upload/v1742978122/qfsn7oqaob87rxurw5xq.jpg",
         description: "",
         status: "Available",
         seller_id: "",
