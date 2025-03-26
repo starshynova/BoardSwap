@@ -10,8 +10,13 @@ const itemSchema = new mongoose.Schema({
     required: true,
     enum: ["New", "Like New", "Used"],
   },
-  photo_name: { type: String, required: false },
-  photo: { type: String, required: false },
+  photo_name: { type: String, required: false, default: "" },
+  photo: {
+    type: String,
+    required: false,
+    default:
+      "https://res.cloudinary.com/dogm5xki5/image/upload/v1742978122/qfsn7oqaob87rxurw5xq.jpg",
+  },
   description: { type: String, required: false, maxLength: 300 },
   created_date: { type: Date, default: Date.now },
   seller_id: {

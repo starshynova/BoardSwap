@@ -50,7 +50,8 @@ const EditItemForm = () => {
     type: "",
     condition: "",
     photo_name: "",
-    photo: "",
+    photo:
+      "https://res.cloudinary.com/dogm5xki5/image/upload/v1742978122/qfsn7oqaob87rxurw5xq.jpg",
     description: "",
     status: "",
     seller_id: "",
@@ -71,6 +72,12 @@ const EditItemForm = () => {
     `/items/${id}`,
     (response) => {
       setFormData(response.result);
+      if (response.result.photo_name === "no-image.png") {
+        setFormData((prev) => ({
+          ...prev,
+          photo_name: "",
+        }));
+      }
     },
   );
 
@@ -296,9 +303,11 @@ const EditItemForm = () => {
           </MenuItem>
         ))}
       </TextField>
-      <Box width="100%">
-        <Typography align="left">{formData.photo_name}</Typography>
-      </Box>
+      {formData.photo_name && (
+        <Box width="100%">
+          <Typography align="left">{formData.photo_name}</Typography>
+        </Box>
+      )}
       <div style={{ width: "100%" }}>
         <input
           type="file"
