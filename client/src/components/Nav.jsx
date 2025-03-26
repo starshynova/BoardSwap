@@ -22,6 +22,8 @@ import Logout from "./Logout";
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
+  paddingLeft: "0px",
+  paddingRight: "0px",
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.text.primary,
   fontSize: theme.typography.h5.fontSize,
@@ -76,7 +78,13 @@ const Nav = () => {
   return (
     <AppBar
       position="sticky"
-      sx={{ width: "100%", height: "80px", justifyContent: "center" }}
+      sx={{
+        width: "100%",
+        height: "80px",
+        justifyContent: "center",
+        paddingLeft: "56px",
+        paddingRight: "52px",
+      }}
     >
       <StyledToolbar>
         <Link to="/">
