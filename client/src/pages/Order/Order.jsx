@@ -5,6 +5,7 @@ import OrderStepper from "./OrderStepper";
 
 export const Order = () => {
   const { cart, toggleCartItem } = useUIContext();
+  console.log(cart);
 
   return (
     <div style={{ padding: "20px 80px" }}>

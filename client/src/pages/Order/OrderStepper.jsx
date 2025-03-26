@@ -4,43 +4,57 @@ import Step from "@mui/material/Step";
 import StepButton from "@mui/material/StepButton";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { Fragment, useMemo, useState } from "react";
+import {
+  Fragment,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Grid from "@mui/material/Grid";
 import PaymentForm from "../../components/PaymentForm/PaymentForm";
 import ProductCard from "../../components/ProductCard";
 import OrderForm from "./OrderForm";
-
-const steps = ["Order summary", "Details", "Order Payment"];
-
 import PropTypes from "prop-types";
 import { Alert, Snackbar, StepLabel } from "@mui/material";
+import { jwtDecode } from "jwt-decode";
+import { AuthContext } from "../../context/AuthContext";
+
+const steps = ["Order summary", "Details", "Order Payment"];
 
 export default function OrderStepper({ cart, toggleCartItem }) {
   const [activeStep, setActiveStep] = useState(0);
   const [isOrderValid, setIsOrderValid] = useState(false);
   const [warning, setWarning] = useState("");
+  const [orderData, setOrderData] = useState(null);
+  const formRef = useRef();
+  const token = localStorage.getItem("authToken");
+  const { userId } = useContext(AuthContext);
 
-  const totalSteps = () => steps.length;
-  const isLastStep = () => activeStep === totalSteps() - 1;
-
-  const handleNext = () => {
-    if (activeStep === 1 && !isOrderValid) {
-      setWarning("Please fill out the order details before proceeding.");
-      return;
+  useEffect(() => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token);
+        console.log("Decoded token:", decodedToken);
+      } catch (error) {
+        console.error("Error decoding token:", error);
+      }
     }
-    setWarning("");
-    if (!isLastStep()) {
-      setActiveStep((prevStep) => prevStep + 1);
-    }
-  };
+  }, [token]);
 
-  const handleBack = () => setActiveStep((prev) => prev - 1);
-
-  const handleStep = (step) => () => {
+  const handleNavigation = (step) => () => {
     if (activeStep === 1 && !isOrderValid && step > activeStep) {
       setWarning("Please fill out the order details before proceeding.");
       return;
     }
+
+    if (activeStep === 1 && step > activeStep) {
+      formRef.current.dispatchEvent(
+        new Event("submit", { cancelable: true, bubbles: true }),
+      );
+    }
+
     setWarning("");
     setActiveStep(step);
   };
@@ -48,6 +62,56 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const totalAmount = useMemo(() => {
     return cart.reduce((total, product) => total + product.price, 0).toFixed(2);
   }, [cart]);
+
+  const handlePaymentSuccess = async () => {
+    if (!orderData) {
+      return;
+    }
+
+    if (!userId) {
+      return;
+    }
+
+    if (orderData) {
+      const orderPayload = {
+        user_id: userId,
+        items: cart.map((item) => ({
+          ...item,
+        })),
+        total_price: parseFloat(totalAmount),
+        address: orderData.address,
+        city: orderData.city,
+        email: orderData.email,
+        firstName: orderData.firstName,
+        lastName: orderData.lastName,
+        postcode: orderData.postcode,
+      };
+
+      try {
+        const response = await fetch("/api/orders/create", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderPayload),
+        });
+        if (!response.ok) {
+          throw new Error("Failed to submit order");
+        }
+
+        const result = await response.json();
+        console.log("Order submitted successfully:", result);
+
+        localStorage.removeItem("orderForm");
+        setOrderData(null);
+        setIsOrderValid(false);
+        localStorage.removeItem("cart");
+      } catch (error) {
+        console.error("Error submitting order:", error);
+      }
+    }
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -69,7 +133,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label}>
-            <StepButton onClick={handleStep(index)}>
+            <StepButton onClick={handleNavigation(index)}>
               <StepLabel
                 sx={{
                   "& .MuiStepLabel-label.Mui-active": {
@@ -108,21 +172,27 @@ export default function OrderStepper({ cart, toggleCartItem }) {
               </Fragment>
             )}
             {activeStep === 1 && (
-              <OrderForm setIsOrderValid={setIsOrderValid} />
+              <OrderForm
+                setIsOrderValid={setIsOrderValid}
+                setOrderData={setOrderData}
+                formRef={formRef}
+              />
             )}
-            {activeStep === 2 && <PaymentForm />}
+            {activeStep === 2 && (
+              <PaymentForm onPaymentSuccess={handlePaymentSuccess} />
+            )}
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               disabled={activeStep === 0}
-              onClick={handleBack}
+              onClick={handleNavigation(activeStep - 1)}
               sx={{ mr: 1 }}
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button
-              onClick={handleNext}
+              onClick={handleNavigation(activeStep + 1)}
               sx={{ mr: 1 }}
               disabled={activeStep === 2}
             >

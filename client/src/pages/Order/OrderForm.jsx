@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { TextField, Container, Typography, Box } from "@mui/material";
 import theme from "../../components/theme";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-const OrderForm = ({ setIsOrderValid }) => {
+const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
   const {
     register,
     handleSubmit,
@@ -26,6 +26,12 @@ const OrderForm = ({ setIsOrderValid }) => {
     setIsOrderValid(isValid);
   }, [isValid, setIsOrderValid]);
 
+  const saveOrderData = (data) => {
+    console.log("Saving order data:", data);
+    setOrderData(data);
+    localStorage.setItem("orderForm", JSON.stringify(data));
+  };
+
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setValue(name, value, { shouldValidate: true });
@@ -36,11 +42,6 @@ const OrderForm = ({ setIsOrderValid }) => {
     });
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
-    localStorage.removeItem("orderForm");
-  };
-
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" gutterBottom>
@@ -48,7 +49,8 @@ const OrderForm = ({ setIsOrderValid }) => {
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit(onSubmit)}
+        ref={formRef}
+        onSubmit={handleSubmit(saveOrderData)}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -103,7 +105,15 @@ const OrderForm = ({ setIsOrderValid }) => {
 
         <TextField
           label="Postcode"
-          {...register("postcode", { required: "Postcode is required" })}
+          {...register("postcode", {
+            required: "Postcode is required",
+            validate: (value) => {
+              const regex = /^\d{4}[A-Z]{2}$/;
+              return (
+                regex.test(value) || "Invalid postcode format (e.g., 2000KL)"
+              );
+            },
+          })}
           error={!!errors.postcode}
           helperText={errors.postcode?.message}
           fullWidth
@@ -120,10 +130,6 @@ const OrderForm = ({ setIsOrderValid }) => {
           sx={{ input: { color: theme.palette.text.secondary } }}
           onChange={onInputChange}
         />
-
-        <Button variant="contained" color="primary" type="submit">
-          Submit
-        </Button>
       </Box>
     </Container>
   );
@@ -131,6 +137,10 @@ const OrderForm = ({ setIsOrderValid }) => {
 
 OrderForm.propTypes = {
   setIsOrderValid: PropTypes.func.isRequired,
+  setOrderData: PropTypes.func.isRequired,
+  formRef: PropTypes.shape({
+    current: PropTypes.instanceOf(Element),
+  }).isRequired,
 };
 
 export default OrderForm;

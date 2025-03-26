@@ -2,40 +2,64 @@ import mongoose from "mongoose";
 
 import validateAllowedFields from "../util/validateAllowedFields.js";
 
-const orderSchema = new mongoose.Schema({
-  buyer_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "users",
+const orderSchema = new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "users",
+    },
+    items: [
+      {
+        type: mongoose.Schema.Types.Mixed,
+      },
+    ],
+    total_price: {
+      type: Number,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    postcode: {
+      type: String,
+      required: true,
+    },
   },
-  seller_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "users",
-  },
-  item_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "items",
-  },
-  item_title: { type: String, required: true, ref: "items" },
-  item_photo: { type: String, required: false, ref: "items" },
-  date: { type: Date, default: Date.now },
-  delivery_address: { type: String, required: true },
-  price: { type: Number, required: true, ref: "items" },
-});
+  { timestamps: true },
+);
 
 const Order = mongoose.model("orders", orderSchema);
 
 export const validateOrder = (orderObject) => {
   const errorList = [];
   const allowedKeys = [
-    "buyer_id",
-    "seller_id",
-    "item_id",
-    "item_title",
-    "delivery_address",
-    "price",
+    "user_id",
+    "items",
+    "total_price",
+    "address",
+    "city",
+    "email",
+    "firstName",
+    "lastName",
+    "postcode",
   ];
 
   const validatedKeysMessage = validateAllowedFields(orderObject, allowedKeys);
@@ -44,34 +68,43 @@ export const validateOrder = (orderObject) => {
     errorList.push(validatedKeysMessage);
   }
 
-  if (
-    !orderObject.buyer_id ||
-    !mongoose.isValidObjectId(orderObject.buyer_id)
-  ) {
-    errorList.push("Buyer ID is a required field");
+  if (!orderObject.user_id || !mongoose.isValidObjectId(orderObject.user_id)) {
+    errorList.push("User ID is a required field and must be a valid ObjectId");
+  }
+
+  if (!Array.isArray(orderObject.items) || orderObject.items.length === 0) {
+    errorList.push("Items must be a non-empty array");
+  }
+
+  if (!orderObject.total_price || typeof orderObject.total_price !== "number") {
+    errorList.push("Total price is a required field and must be a number");
+  }
+
+  if (!orderObject.address) {
+    errorList.push("Address is a required field");
+  }
+
+  if (!orderObject.city) {
+    errorList.push("City is a required field");
   }
 
   if (
-    !orderObject.seller_id ||
-    !mongoose.isValidObjectId(orderObject.seller_id)
+    !orderObject.email ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(orderObject.email)
   ) {
-    errorList.push("Seller ID is a required field");
+    errorList.push("Email is a required field and must be valid");
   }
 
-  if (!orderObject.item_id || !mongoose.isValidObjectId(orderObject.item_id)) {
-    errorList.push("Product ID is a required field");
+  if (!orderObject.firstName) {
+    errorList.push("First name is a required field");
   }
 
-  if (orderObject.item_title == null) {
-    errorList.push("Product title is a required field");
+  if (!orderObject.lastName) {
+    errorList.push("Last name is a required field");
   }
 
-  if (orderObject.delivery_address == null) {
-    errorList.push("Address for delivery is a required field");
-  }
-
-  if (orderObject.price == undefined) {
-    errorList.push("Price is a required field");
+  if (!orderObject.postcode) {
+    errorList.push("Postcode is a required field");
   }
 
   return errorList;
