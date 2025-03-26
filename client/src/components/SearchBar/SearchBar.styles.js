@@ -3,7 +3,7 @@ import { InputBase, styled, Button } from "@mui/material";
 export const SearchContainer = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   borderRadius: theme.shape.borderRadius,
-  width: "40%",
+  width: "100%",
   color: theme.palette.text.secondary,
   display: "flex",
   alignItems: "center",
@@ -16,7 +16,7 @@ export const Wrapper = styled("div")({
   display: "flex",
   alignItems: "center",
   gap: "8px",
-  width: "50%",
+  width: "100%",
 });
 
 export const StyledButton = styled(Button)(({ theme }) => ({

@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSearch } from "../../context/SearchContext";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  SearchContainer,
-  StyledButton,
-  StyledInputBase,
-  Wrapper,
-} from "./SearchBar.styles";
+import { SearchContainer, StyledInputBase, Wrapper } from "./SearchBar.styles";
 import { IconButton, InputAdornment } from "@mui/material";
 
 const SearchBar = () => {
@@ -48,7 +43,7 @@ const SearchBar = () => {
           placeholder="Search ..."
           startAdornment={
             <InputAdornment position="start">
-              <SearchIcon />
+              <SearchIcon sx={{ marginLeft: "8px" }} />
             </InputAdornment>
           }
           endAdornment={
@@ -66,10 +61,6 @@ const SearchBar = () => {
           onKeyDown={handleKeyPress}
         />
       </SearchContainer>
-
-      <StyledButton variant="outlined" onClick={handleSearch}>
-        Search
-      </StyledButton>
     </Wrapper>
   );
 };

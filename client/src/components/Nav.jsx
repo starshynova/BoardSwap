@@ -7,6 +7,7 @@ import {
   Badge,
   Menu,
   MenuItem,
+  Tooltip,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -34,7 +35,7 @@ const Icons = styled(Box)(({ theme }) => ({
 }));
 
 const Logo = styled("img")({
-  height: 50,
+  height: "auto",
   width: "auto",
 });
 
@@ -73,32 +74,53 @@ const Nav = () => {
   }, []);
 
   return (
-    <AppBar position="sticky" sx={{ width: "100%" }}>
+    <AppBar
+      position="sticky"
+      sx={{ width: "100%", height: "80px", justifyContent: "center" }}
+    >
       <StyledToolbar>
         <Link to="/">
           <Logo src="/Logo.png" alt="Logo" />
         </Link>
-        <SearchBar />
-        <Icons>
+        <Box
+          sx={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "30%",
+          }}
+        >
+          <SearchBar />
+        </Box>
+        <Icons sx={{ display: "flex", columnGap: "10px" }}>
           <Link to="/items/create">
-            <IconButton aria-label="create">
-              <AddCircleIcon sx={{ color: "white" }} />
-            </IconButton>
+            <Tooltip title="Create a new item">
+              <IconButton aria-label="create">
+                <AddCircleIcon sx={{ color: "white", fontSize: "30px" }} />
+              </IconButton>
+            </Tooltip>
           </Link>
-          <IconButton aria-label="cart" onClick={handleCartClick}>
-            <Badge badgeContent={cart.length} color="error">
-              <AddShoppingCartIcon sx={{ color: "white" }} />
-            </Badge>
-          </IconButton>
+          <Tooltip title="Shopping cart">
+            <IconButton aria-label="cart" onClick={handleCartClick}>
+              <Badge badgeContent={cart.length} color="error">
+                <AddShoppingCartIcon
+                  sx={{ color: "white", fontSize: "30px" }}
+                />
+              </Badge>
+            </IconButton>
+          </Tooltip>
+
           {token ? (
             <>
-              <IconButton
-                aria-label="user"
-                onClick={handleClick}
-                sx={{ color: "white" }}
-              >
-                <PersonIcon />
-              </IconButton>
+              <Tooltip title="User profile">
+                <IconButton
+                  aria-label="user"
+                  onClick={handleClick}
+                  sx={{ color: "white" }}
+                >
+                  <PersonIcon sx={{ fontSize: "30px" }} />
+                </IconButton>
+              </Tooltip>
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
@@ -115,9 +137,11 @@ const Nav = () => {
             </>
           ) : (
             <Link to="/login">
-              <IconButton aria-label="login" sx={{ color: "gray" }}>
-                <PersonIcon />
-              </IconButton>
+              <Tooltip title="Login">
+                <IconButton aria-label="login" sx={{ color: "gray" }}>
+                  <PersonIcon sx={{ fontSize: "30px" }} />
+                </IconButton>
+              </Tooltip>
             </Link>
           )}
         </Icons>
