@@ -13,7 +13,7 @@ export default function CenteredTabs({ onTabChange, selectedType }) {
   );
 
   return (
-    <Box sx={{ width: "100%", bgcolor: "transparent", mb: 4 }}>
+    <Box sx={{ width: "100%", bgcolor: "transparent", mb: 2 }}>
       <Tabs
         value={typeToIndex[selectedType]}
         onChange={handleTabChange}
