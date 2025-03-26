@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home/Home";
-import CreateUser from "../pages/User/CreateUser";
+import Register from "../pages/User/Register";
 import Login from "../pages/User/Login";
 import UserList from "../pages/User/UserList";
 import CreateItem from "../pages/Item/CreateItem";
@@ -20,7 +20,7 @@ const AppRoutes = () => {
       <Route path="/items/create" element={<CreateItem />} />
       <Route path="/order" element={<Order />} />
       <Route path="/items/:id" element={<ItemDetails />} />
-      <Route path="/register" element={<CreateUser />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/user" element={<UserList />} />
 
       {/* protected routes */}

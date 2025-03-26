@@ -4,10 +4,13 @@ import { AuthContext } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
 import { jwtDecode } from "jwt-decode";
+import { Typography } from "@mui/material";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   const handleSuccess = (data) => {
     if (data?.success && data?.token) {
@@ -23,6 +26,7 @@ const Login = () => {
       if (user) {
         login(data.token, user);
         localStorage.setItem("userId", user.id);
+        setShowWelcome(false);
 
         setTimeout(() => {
           navigate("/");
@@ -58,8 +62,15 @@ const Login = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        flexDirection: "column",
       }}
     >
+      {showWelcome && (
+        <Typography variant="h4" component="h2" align="center">
+          Welcome Back
+        </Typography>
+      )}
+
       <UserForm
         formData={formData}
         errors={errors}
