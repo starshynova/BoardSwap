@@ -9,6 +9,7 @@ import { useSearch } from "../../context/SearchContext";
 import ProductList from "../../components/ProductList";
 import SearchResultsHeader from "../../components/SearchResultsHeader";
 import CenteredTabs from "../../components/Tabs";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -16,11 +17,18 @@ const Home = () => {
   const { searchQuery } = useSearch();
   const [type, setType] = useState("All");
   const [sort, setSort] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const { isLoading, error, performFetch } = useFetch(
     `/items`,
     (data) => {
       if (data.success) {
-        setProducts(data.result);
+        const availableProducts = data.result.filter(
+          (product) => product.status === "Available",
+        );
+
+        setProducts(availableProducts);
       }
     },
     searchQuery,
@@ -31,7 +39,11 @@ const Home = () => {
 
   useEffect(() => {
     performFetch();
-  }, [searchQuery, type, sort]);
+
+    if (location.state?.fromOrder) {
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.key, searchQuery, type, sort]);
 
   const handleSortChange = (selectedSort) => {
     setSort(selectedSort);

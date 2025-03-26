@@ -20,6 +20,7 @@ import PropTypes from "prop-types";
 import { Alert, Snackbar, StepLabel } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../../context/AuthContext";
+import { UIContext } from "../../context/UIContext";
 
 const steps = ["Order summary", "Details", "Order Payment"];
 
@@ -31,12 +32,12 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const formRef = useRef();
   const token = localStorage.getItem("authToken");
   const { userId } = useContext(AuthContext);
+  const { setCart } = useContext(UIContext);
 
   useEffect(() => {
     if (token) {
       try {
-        const decodedToken = jwtDecode(token);
-        console.log("Decoded token:", decodedToken);
+        jwtDecode(token);
       } catch (error) {
         console.error("Error decoding token:", error);
       }
@@ -100,9 +101,49 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           throw new Error("Failed to submit order");
         }
 
-        const result = await response.json();
-        console.log("Order submitted successfully:", result);
+        for (const item of cart) {
+          const itemResponse = await fetch(`/api/items/${item._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          });
 
+          if (!itemResponse.ok) {
+            throw new Error(`Failed to fetch item ${item._id}`);
+          }
+
+          const fullItem = await itemResponse.json();
+
+          const itemData = fullItem.result;
+
+          if (
+            !itemData.title ||
+            !itemData.price ||
+            !itemData.type ||
+            !itemData.condition ||
+            !itemData.seller_id
+          ) {
+            throw new Error(`Item ${item._id} is missing required fields`);
+          }
+
+          const updateUrl = `/api/items/${item._id}`;
+          const updatePayload = { item: { ...itemData, status: "Sold" } };
+
+          const updateResponse = await fetch(updateUrl, {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(updatePayload),
+          });
+
+          if (!updateResponse.ok) {
+            throw new Error(`Failed to update item ${item._id}`);
+          }
+        }
+        setCart([]);
         localStorage.removeItem("orderForm");
         setOrderData(null);
         setIsOrderValid(false);
