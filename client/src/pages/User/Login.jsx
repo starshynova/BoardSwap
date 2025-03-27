@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
 import { jwtDecode } from "jwt-decode";
 import { Typography } from "@mui/material";
-import { useState } from "react";
-
+import ExploreGamesButton from "../../components/ExploreGamesButton";
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
@@ -81,6 +80,10 @@ const Login = () => {
         handleInputChange={handleInputChange}
         isLogin={true}
       />
+
+      <div style={{ marginTop: "40px" }}>
+        <ExploreGamesButton />
+      </div>
     </div>
   );
 };

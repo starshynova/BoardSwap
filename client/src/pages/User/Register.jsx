@@ -1,10 +1,8 @@
-import { useNavigate } from "react-router-dom";
-import { Box, Typography, Button, Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import CreateUser from "./CreateUser";
+import ExploreGamesButton from "../../components/ExploreGamesButton";
 
 const Register = () => {
-  const navigate = useNavigate();
-
   return (
     <Box
       sx={{
@@ -24,6 +22,7 @@ const Register = () => {
             marginBottom: "16px",
             maxWidth: "600px",
             margin: "0 auto",
+            marginTop: "50px",
           }}
         >
           Welcome to BoarSwap! Ready to trade, buy, or sell board games and
@@ -53,15 +52,8 @@ const Register = () => {
         </Grid>
       </Grid>
 
-      <Box display="flex" justifyContent="center" gap={2} mt={2}>
-        <Button
-          onClick={() => navigate("/")}
-          variant="outlined"
-          color="secondary"
-          sx={{ px: 4, py: 1.5, fontSize: "1rem", fontWeight: "bold" }}
-        >
-          Explore Games
-        </Button>
+      <Box display="flex" justifyContent="center" gap={2} mt={-2}>
+        <ExploreGamesButton />
       </Box>
     </Box>
   );
