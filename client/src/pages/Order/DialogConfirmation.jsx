@@ -7,7 +7,7 @@ import OrderConfirmation from "./OrderConfirmation";
 import { Fragment } from "react";
 import PropTypes from "prop-types";
 
-export default function AlertDialog({ open, onClose }) {
+export default function DialogConfirmation({ open, onClose }) {
   return (
     <Fragment>
       <Dialog
@@ -33,7 +33,7 @@ export default function AlertDialog({ open, onClose }) {
   );
 }
 
-AlertDialog.propTypes = {
+DialogConfirmation.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };

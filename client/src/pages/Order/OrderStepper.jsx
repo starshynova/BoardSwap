@@ -21,8 +21,7 @@ import { Alert, Snackbar, StepLabel } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../../context/AuthContext";
 import { UIContext } from "../../context/UIContext";
-// import OrderConfirmation from "./OrderConfirmation";
-import AlertDialog from "./AlertDialogConfirmation";
+import AlertDialog from "./DialogConfirmation";
 
 const steps = ["Order summary", "Details", "Order Payment"];
 

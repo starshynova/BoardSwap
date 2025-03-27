@@ -8,7 +8,7 @@ import {
   validateCVV,
 } from "./validators";
 import PropTypes from "prop-types";
-import AlertDialog from "../../pages/Order/AlertDialogConfirmation";
+import DialogConfirmation from "../../pages/Order/DialogConfirmation";
 // import { useNavigate } from "react-router-dom";
 
 const initialState = {
@@ -185,7 +185,10 @@ const PaymentForm = ({ onPaymentSuccess }) => {
           </Button>
         </form>
       </Card>
-      <AlertDialog open={openDialog} onClose={() => setOpenDialog(false)} />
+      <DialogConfirmation
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      />
     </>
   );
 };
