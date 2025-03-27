@@ -6,6 +6,7 @@ import UserForm from "../../components/UserForm";
 import { jwtDecode } from "jwt-decode";
 import { Typography } from "@mui/material";
 import ExploreGamesButton from "../../components/ExploreGamesButton";
+
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
