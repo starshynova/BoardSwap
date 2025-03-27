@@ -8,6 +8,7 @@ import {
   validateCVV,
 } from "./validators";
 import PropTypes from "prop-types";
+import AlertDialog from "../../pages/Order/AlertDialogConfirmation";
 // import { useNavigate } from "react-router-dom";
 
 const initialState = {
@@ -42,6 +43,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
   const { formData, errors } = state;
   const [successMessage, setSuccessMessage] = useState("");
   // const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleChange = (e) => {
     dispatch({
@@ -102,83 +104,89 @@ const PaymentForm = ({ onPaymentSuccess }) => {
     // setTimeout(() => {
     //   navigate("/", { state: { fromOrder: true } });
     // }, 3000);
+    setTimeout(() => {
+      setOpenDialog(true);
+    }, 3000);
   };
 
   return (
-    <Card
-      sx={{
-        p: 4,
-        maxWidth: 400,
-        mx: "auto",
-        mt: 5,
-        boxShadow: 3,
-        color: theme.palette.text.secondary,
-      }}
-    >
-      {successMessage && <Alert severity="success">{successMessage}</Alert>}
-      <Typography variant="h5" align="center" gutterBottom>
-        Payment Details
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Box mb={2}>
-          <TextField
-            name="cardholderName"
-            label="Cardholder Name"
-            variant="outlined"
-            fullWidth
-            value={formData.cardholderName}
-            onChange={handleChange}
-            error={!!errors.cardholderName}
-            helperText={errors.cardholderName}
-            sx={{ input: { color: theme.palette.text.secondary } }}
-          />
-        </Box>
-        <Box mb={2}>
-          <TextField
-            name="cardNumber"
-            label="Card Number"
-            variant="outlined"
-            fullWidth
-            value={formData.cardNumber}
-            onChange={handleCardNumberChange}
-            error={!!errors.cardNumber}
-            helperText={errors.cardNumber}
-            inputProps={{ maxLength: 19 }}
-            sx={{ input: { color: theme.palette.text.secondary } }}
-          />
-        </Box>
-        <Box display="flex" gap={2} mb={2}>
-          <TextField
-            name="expiryDate"
-            label="MM/YY"
-            variant="outlined"
-            fullWidth
-            value={formData.expiryDate}
-            onChange={handleExpiryDateChange}
-            error={!!errors.expiryDate}
-            helperText={errors.expiryDate}
-            inputProps={{ maxLength: 5 }}
-            sx={{ input: { color: theme.palette.text.secondary } }}
-          />
-          <TextField
-            name="cvv"
-            label="CVV"
-            variant="outlined"
-            fullWidth
-            type="password"
-            value={formData.cvv}
-            onChange={handleChange}
-            error={!!errors.cvv}
-            helperText={errors.cvv}
-            inputProps={{ maxLength: 3 }}
-            sx={{ input: { color: theme.palette.text.secondary } }}
-          />
-        </Box>
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Pay Now
-        </Button>
-      </form>
-    </Card>
+    <>
+      <Card
+        sx={{
+          p: 4,
+          maxWidth: 400,
+          mx: "auto",
+          mt: 5,
+          boxShadow: 3,
+          color: theme.palette.text.secondary,
+        }}
+      >
+        {successMessage && <Alert severity="success">{successMessage}</Alert>}
+        <Typography variant="h5" align="center" gutterBottom>
+          Payment Details
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Box mb={2}>
+            <TextField
+              name="cardholderName"
+              label="Cardholder Name"
+              variant="outlined"
+              fullWidth
+              value={formData.cardholderName}
+              onChange={handleChange}
+              error={!!errors.cardholderName}
+              helperText={errors.cardholderName}
+              sx={{ input: { color: theme.palette.text.secondary } }}
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              name="cardNumber"
+              label="Card Number"
+              variant="outlined"
+              fullWidth
+              value={formData.cardNumber}
+              onChange={handleCardNumberChange}
+              error={!!errors.cardNumber}
+              helperText={errors.cardNumber}
+              inputProps={{ maxLength: 19 }}
+              sx={{ input: { color: theme.palette.text.secondary } }}
+            />
+          </Box>
+          <Box display="flex" gap={2} mb={2}>
+            <TextField
+              name="expiryDate"
+              label="MM/YY"
+              variant="outlined"
+              fullWidth
+              value={formData.expiryDate}
+              onChange={handleExpiryDateChange}
+              error={!!errors.expiryDate}
+              helperText={errors.expiryDate}
+              inputProps={{ maxLength: 5 }}
+              sx={{ input: { color: theme.palette.text.secondary } }}
+            />
+            <TextField
+              name="cvv"
+              label="CVV"
+              variant="outlined"
+              fullWidth
+              type="password"
+              value={formData.cvv}
+              onChange={handleChange}
+              error={!!errors.cvv}
+              helperText={errors.cvv}
+              inputProps={{ maxLength: 3 }}
+              sx={{ input: { color: theme.palette.text.secondary } }}
+            />
+          </Box>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Pay Now
+          </Button>
+        </form>
+      </Card>
+      <AlertDialog open={openDialog} onClose={() => setOpenDialog(false)} />
+    </>
   );
 };
 

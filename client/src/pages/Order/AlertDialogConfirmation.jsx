@@ -4,27 +4,15 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import OrderConfirmation from "./OrderConfirmation";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
+import PropTypes from "prop-types";
 
-export default function AlertDialog() {
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+export default function AlertDialog({ open, onClose }) {
   return (
     <Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open Order Confirmation
-      </Button>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={onClose}
         aria-labelledby="order-confirmation-title"
         fullWidth
         maxWidth="sm"
@@ -36,7 +24,7 @@ export default function AlertDialog() {
           <OrderConfirmation />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={onClose} color="primary">
             Close
           </Button>
         </DialogActions>
@@ -44,3 +32,8 @@ export default function AlertDialog() {
     </Fragment>
   );
 }
+
+AlertDialog.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
