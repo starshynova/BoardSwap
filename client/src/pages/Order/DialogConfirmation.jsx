@@ -1,35 +1,35 @@
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import OrderConfirmation from "./OrderConfirmation";
-import { Fragment } from "react";
 import PropTypes from "prop-types";
+import { Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function DialogConfirmation({ open, onClose }) {
+  const navigate = useNavigate();
+  const handleClose = (_, reason) => {
+    if (reason === "backdropClick") {
+      navigate("/");
+    }
+    onClose();
+  };
+
   return (
-    <Fragment>
-      <Dialog
-        open={open}
-        onClose={onClose}
-        aria-labelledby="order-confirmation-title"
-        fullWidth
-        maxWidth="sm"
-      >
-        <DialogTitle id="order-confirmation-title">
-          Order Confirmation
-        </DialogTitle>
-        <DialogContent>
-          <OrderConfirmation />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Fragment>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="order-confirmation-title"
+      fullWidth
+    >
+      <DialogTitle id="order-confirmation-title" color="black">
+        <Alert severity="success">Payment Submitted Successfully!</Alert>
+        Your Order:
+      </DialogTitle>
+      <DialogContent>
+        <OrderConfirmation />
+      </DialogContent>
+    </Dialog>
   );
 }
 
