@@ -8,7 +8,7 @@ import {
   validateCVV,
 } from "./validators";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const initialState = {
   formData: {
@@ -41,7 +41,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { formData, errors } = state;
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleChange = (e) => {
     dispatch({
@@ -99,9 +99,9 @@ const PaymentForm = ({ onPaymentSuccess }) => {
 
     onPaymentSuccess();
 
-    setTimeout(() => {
-      navigate("/", { state: { fromOrder: true } });
-    }, 3000);
+    // setTimeout(() => {
+    //   navigate("/", { state: { fromOrder: true } });
+    // }, 3000);
   };
 
   return (
