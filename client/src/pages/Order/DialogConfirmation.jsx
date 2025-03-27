@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useUIContext } from "../../context/UIContext";
 
 export default function DialogConfirmation({ open, onClose }) {
-  const { setCart } = useUIContext;
+  const { setCart } = useUIContext();
 
   const navigate = useNavigate();
   const handleClose = (_, reason) => {
