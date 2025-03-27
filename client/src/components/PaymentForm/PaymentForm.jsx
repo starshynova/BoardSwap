@@ -1,5 +1,5 @@
 import { useReducer, useState } from "react";
-import { TextField, Button, Box, Typography, Card, Alert } from "@mui/material";
+import { TextField, Button, Box, Typography, Card } from "@mui/material";
 import theme from "../theme";
 import {
   validateCardholderName,
@@ -40,7 +40,6 @@ const reducer = (state, action) => {
 const PaymentForm = ({ onPaymentSuccess }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { formData, errors } = state;
-  const [successMessage, setSuccessMessage] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleChange = (e) => {
@@ -94,14 +93,13 @@ const PaymentForm = ({ onPaymentSuccess }) => {
       return;
     }
 
-    setSuccessMessage("Payment Submitted Successfully!");
     dispatch({ type: "RESET_FORM" });
 
     onPaymentSuccess();
 
     setTimeout(() => {
       setOpenDialog(true);
-    }, 3000);
+    }, 2000);
   };
 
   return (
@@ -116,7 +114,6 @@ const PaymentForm = ({ onPaymentSuccess }) => {
           color: theme.palette.text.secondary,
         }}
       >
-        {successMessage && <Alert severity="success">{successMessage}</Alert>}
         <Typography variant="h5" align="center" gutterBottom>
           Payment Details
         </Typography>

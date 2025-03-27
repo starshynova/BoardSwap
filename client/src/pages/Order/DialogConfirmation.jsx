@@ -3,7 +3,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import OrderConfirmation from "./OrderConfirmation";
 import PropTypes from "prop-types";
-import { Alert } from "@mui/material";
+import { Alert, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useUIContext } from "../../context/UIContext";
 
@@ -29,7 +29,9 @@ export default function DialogConfirmation({ open, onClose }) {
     >
       <DialogTitle id="order-confirmation-title" color="black">
         <Alert severity="success">Payment Submitted Successfully!</Alert>
-        Your Order:
+        <Typography sx={{ mt: 2, padding: "10px 20px" }} variant="h6">
+          Your Order:
+        </Typography>
       </DialogTitle>
       <DialogContent>
         <OrderConfirmation />

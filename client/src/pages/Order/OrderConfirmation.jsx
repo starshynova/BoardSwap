@@ -33,7 +33,6 @@ const OrderConfirmation = () => {
     <Box
       sx={{
         width: "100%",
-        maxWidth: 360,
         bgcolor: "background.paper",
         color: "black",
         display: "flex",
