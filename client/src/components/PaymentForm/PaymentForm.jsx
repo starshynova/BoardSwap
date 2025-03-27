@@ -9,7 +9,6 @@ import {
 } from "./validators";
 import PropTypes from "prop-types";
 import DialogConfirmation from "../../pages/Order/DialogConfirmation";
-// import { useNavigate } from "react-router-dom";
 
 const initialState = {
   formData: {
@@ -42,7 +41,6 @@ const PaymentForm = ({ onPaymentSuccess }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { formData, errors } = state;
   const [successMessage, setSuccessMessage] = useState("");
-  // const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
 
   const handleChange = (e) => {
@@ -101,9 +99,6 @@ const PaymentForm = ({ onPaymentSuccess }) => {
 
     onPaymentSuccess();
 
-    // setTimeout(() => {
-    //   navigate("/", { state: { fromOrder: true } });
-    // }, 3000);
     setTimeout(() => {
       setOpenDialog(true);
     }, 3000);

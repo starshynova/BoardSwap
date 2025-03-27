@@ -14,7 +14,8 @@ import { Fragment, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 const OrderConfirmation = () => {
-  const { cart } = useUIContext();
+  const { cart, setCart } = useUIContext();
+
   console.log("Order confirmation, items in the cart", cart);
   const navigate = useNavigate();
 
@@ -24,6 +25,8 @@ const OrderConfirmation = () => {
 
   const navigateToHome = () => {
     navigate("/");
+    setCart([]);
+    localStorage.removeItem("cart");
   };
 
   return (

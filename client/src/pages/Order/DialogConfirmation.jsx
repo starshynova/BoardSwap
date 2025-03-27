@@ -5,14 +5,19 @@ import OrderConfirmation from "./OrderConfirmation";
 import PropTypes from "prop-types";
 import { Alert } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useUIContext } from "../../context/UIContext";
 
 export default function DialogConfirmation({ open, onClose }) {
+  const { setCart } = useUIContext;
+
   const navigate = useNavigate();
   const handleClose = (_, reason) => {
     if (reason === "backdropClick") {
       navigate("/");
     }
     onClose();
+    setCart([]);
+    localStorage.removeItem("cart");
   };
 
   return (
