@@ -99,7 +99,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
 
     setTimeout(() => {
       setOpenDialog(true);
-    }, 2000);
+    }, 500);
   };
 
   return (
