@@ -3,6 +3,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "react-hook-form";
 import useFetch from "../../hooks/useFetch";
 import UserProfileUI from "../../components/UserProfileUI";
+import Loader from "../../components/Loader";
 
 const UserProfile = () => {
   const { token, userId, logout } = useContext(AuthContext);
@@ -124,7 +125,7 @@ const UserProfile = () => {
   };
 
   const content = fetchIsLoading ? (
-    <div>Loading...</div>
+    <Loader />
   ) : (
     <UserProfileUI
       errors={errors}

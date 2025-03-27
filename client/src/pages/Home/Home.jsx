@@ -10,6 +10,7 @@ import ProductList from "../../components/ProductList";
 import SearchResultsHeader from "../../components/SearchResultsHeader";
 import CenteredTabs from "../../components/Tabs";
 import { useLocation, useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -53,7 +54,7 @@ const Home = () => {
     setType(newType);
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
   if (error) return <p>Error: {error.message}</p>;
 
   return (

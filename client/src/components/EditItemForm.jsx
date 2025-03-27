@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadImage } from "../util/uploadImage";
 import { useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
+import Loader from "./Loader.jsx";
 
 const EditItemForm = () => {
   const itemType = [
@@ -171,7 +172,7 @@ const EditItemForm = () => {
     }
   };
 
-  if (isLoading) return <h2>Loading...</h2>;
+  if (isLoading) return <Loader />;
   if (error) return <h2>{error}</h2>;
 
   const requiredFields = ["title", "price", "type", "condition"];
@@ -180,7 +181,7 @@ const EditItemForm = () => {
   const hasErrors = Object.values(errors).some((error) => error);
 
   return !formData ? (
-    <Typography variant="h5">Loading...</Typography>
+    <Loader />
   ) : (
     <Box
       sx={{
