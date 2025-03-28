@@ -1,6 +1,5 @@
 import { useReducer, useState } from "react";
 import { TextField, Button, Box, Typography, Card } from "@mui/material";
-import theme from "../theme";
 import {
   validateCardholderName,
   validateExpiryDate,
