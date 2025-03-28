@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import TEST_ID from "./Home.testid";
 import SortDropdown from "../../components/SortDropdown";
 import PropTypes from "prop-types";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import useFetch from "../../hooks/useFetch";
 import { useUIContext } from "../../context/UIContext";
 import { useSearch } from "../../context/SearchContext";
@@ -84,11 +84,22 @@ const Home = () => {
                 />
               </Box>
               <Box sx={{ mt: 4 }}>
-                <ProductList
-                  products={products}
-                  cart={cart}
-                  toggleCartItem={toggleCartItem}
-                />
+                {products.length === 0 && searchQuery ? (
+                  <Typography
+                    variant="h6"
+                    color="error"
+                    textAlign="center"
+                    sx={{ mt: 4 }}
+                  >
+                    There is no item according to your search: {searchQuery}
+                  </Typography>
+                ) : (
+                  <ProductList
+                    products={products}
+                    cart={cart}
+                    toggleCartItem={toggleCartItem}
+                  />
+                )}
               </Box>
             </>
           </div>
