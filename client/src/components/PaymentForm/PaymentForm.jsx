@@ -105,77 +105,77 @@ const PaymentForm = ({ onPaymentSuccess }) => {
 
   return (
     <>
-       <Card sx={formStyle.boxSmall}>
-          <Typography variant="h5" align="center" gutterBottom>
-            Payment Details
-          </Typography>
+      <Card sx={formStyle.boxSmall}>
+        <Typography variant="h5" align="center" gutterBottom>
+          Payment Details
+        </Typography>
         <form onSubmit={handleSubmit}>
-        <Box mb={2}>
-          <TextField
-            name="cardholderName"
-            label="Cardholder Name"
-            variant="outlined"
+          <Box mb={2}>
+            <TextField
+              name="cardholderName"
+              label="Cardholder Name"
+              variant="outlined"
+              fullWidth
+              value={formData.cardholderName}
+              onChange={handleChange}
+              error={!!errors.cardholderName}
+              helperText={errors.cardholderName}
+              sx={formStyle.input}
+            />
+          </Box>
+          <Box mb={2}>
+            <TextField
+              name="cardNumber"
+              label="Card Number"
+              variant="outlined"
+              fullWidth
+              value={formData.cardNumber}
+              onChange={handleCardNumberChange}
+              error={!!errors.cardNumber}
+              helperText={errors.cardNumber}
+              inputProps={{ maxLength: 19 }}
+              sx={formStyle.input}
+            />
+          </Box>
+          <Box sx={formStyle.boxForSmallFields}>
+            <TextField
+              name="expiryDate"
+              label="MM/YY"
+              variant="outlined"
+              fullWidth
+              value={formData.expiryDate}
+              onChange={handleExpiryDateChange}
+              error={!!errors.expiryDate}
+              helperText={errors.expiryDate}
+              inputProps={{ maxLength: 5 }}
+              sx={formStyle.inputSmall}
+            />
+            <TextField
+              name="cvv"
+              label="CVV"
+              variant="outlined"
+              fullWidth
+              type="password"
+              value={formData.cvv}
+              onChange={handleChange}
+              error={!!errors.cvv}
+              helperText={errors.cvv}
+              inputProps={{ maxLength: 3 }}
+              sx={formStyle.inputSmall}
+            />
+          </Box>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={formStyle.buttonWide}
+            size="large"
             fullWidth
-            value={formData.cardholderName}
-            onChange={handleChange}
-            error={!!errors.cardholderName}
-            helperText={errors.cardholderName}
-            sx={formStyle.input}
-          />
-        </Box>
-        <Box mb={2}>
-          <TextField
-            name="cardNumber"
-            label="Card Number"
-            variant="outlined"
-            fullWidth
-            value={formData.cardNumber}
-            onChange={handleCardNumberChange}
-            error={!!errors.cardNumber}
-            helperText={errors.cardNumber}
-            inputProps={{ maxLength: 19 }}
-            sx={formStyle.input}
-          />
-        </Box>
-        <Box sx={formStyle.boxForSmallFields}>
-          <TextField
-            name="expiryDate"
-            label="MM/YY"
-            variant="outlined"
-            fullWidth
-            value={formData.expiryDate}
-            onChange={handleExpiryDateChange}
-            error={!!errors.expiryDate}
-            helperText={errors.expiryDate}
-            inputProps={{ maxLength: 5 }}
-            sx={formStyle.inputSmall}
-          />
-          <TextField
-            name="cvv"
-            label="CVV"
-            variant="outlined"
-            fullWidth
-            type="password"
-            value={formData.cvv}
-            onChange={handleChange}
-            error={!!errors.cvv}
-            helperText={errors.cvv}
-            inputProps={{ maxLength: 3 }}
-            sx={formStyle.inputSmall}
-          />
-        </Box>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          sx={formStyle.buttonWide}
-          size="large"
-          fullWidth
-        >
-          Pay Now
-        </Button>
-      </form>
-    </Card>
+          >
+            Pay Now
+          </Button>
+        </form>
+      </Card>
       <DialogConfirmation
         open={openDialog}
         onClose={() => setOpenDialog(false)}
