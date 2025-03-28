@@ -98,7 +98,7 @@ const ItemDetailsForm = ({
       {!isSeller ? (
         <Button
           variant={isInCart ? "outlined" : "contained"}
-          color={isInCart ? "blue" : "primary"}
+          color={isInCart ? "secondary" : "primary"}
           onClick={() => toggleCartItem(data)}
           sx={formStyle.buttonMiddle}
           size="large"
