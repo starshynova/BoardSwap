@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
@@ -9,8 +9,22 @@ import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useContext(AuthContext);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [welcomeText, setWelcomeText] = useState("Welcome Back");
+
+  useEffect(() => {
+    if (location.state?.from) {
+      const fromPath = location.state.from;
+
+      if (fromPath.includes("/order")) {
+        setWelcomeText("Please login to place your Order");
+      } else if (fromPath.includes("/items/create")) {
+        setWelcomeText("Please login to create new items");
+      }
+    }
+  }, [location.state]);
 
   const handleSuccess = (data) => {
     if (data?.success && data?.token) {
@@ -29,7 +43,8 @@ const Login = () => {
         setShowWelcome(false);
 
         setTimeout(() => {
-          navigate("/");
+          const redirectPath = location.state?.from?.pathname || "/";
+          navigate(redirectPath, { replace: true });
           window.location.reload();
         }, 2000);
       } else {
@@ -67,7 +82,7 @@ const Login = () => {
     >
       {showWelcome && (
         <Typography variant="h4" component="h2" align="center">
-          Welcome Back
+          {welcomeText}
         </Typography>
       )}
 
