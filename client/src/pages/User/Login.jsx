@@ -15,14 +15,8 @@ const Login = () => {
   const [welcomeText, setWelcomeText] = useState("Welcome Back");
 
   useEffect(() => {
-    if (location.state?.from) {
-      const fromPath = location.state.from;
-
-      if (fromPath.includes("/order")) {
-        setWelcomeText("Please login to place your Order");
-      } else if (fromPath.includes("/items/create")) {
-        setWelcomeText("Please login to create new items");
-      }
+    if (location.state?.from === "/order") {
+      setWelcomeText("Please login to complete your order");
     }
   }, [location.state]);
 
@@ -43,8 +37,11 @@ const Login = () => {
         setShowWelcome(false);
 
         setTimeout(() => {
-          const redirectPath = location.state?.from?.pathname || "/";
-          navigate(redirectPath, { replace: true });
+          if (location.state?.from === "/order") {
+            navigate("/order", { replace: true });
+          } else {
+            navigate("/", { replace: true });
+          }
           window.location.reload();
         }, 2000);
       } else {
