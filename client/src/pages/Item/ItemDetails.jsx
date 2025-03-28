@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useUIContext } from "../../context/UIContext";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch.js";
+import Loader from "../../components/Loader.jsx";
 
 const ItemDetails = () => {
   const { id } = useParams();
@@ -64,7 +65,7 @@ const ItemDetails = () => {
     navigate(`/items/edit/${id}`);
   };
 
-  if (isLoading) return <h2>Loading...</h2>;
+  if (isLoading) return <Loader />;
   if (error) return <h2>{error}</h2>;
   if (!data) return <h2>Item not found</h2>;
 

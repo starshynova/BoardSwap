@@ -1,5 +1,8 @@
+
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
@@ -9,8 +12,16 @@ import ExploreGamesButton from "../../components/ExploreGamesButton";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useContext(AuthContext);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [welcomeText, setWelcomeText] = useState("Welcome Back");
+
+  useEffect(() => {
+    if (location.state?.from === "/order") {
+      setWelcomeText("Please login to complete your order");
+    }
+  }, [location.state]);
 
   const handleSuccess = (data) => {
     if (data?.success && data?.token) {
@@ -29,7 +40,11 @@ const Login = () => {
         setShowWelcome(false);
 
         setTimeout(() => {
-          navigate("/");
+          if (location.state?.from === "/order") {
+            navigate("/order", { replace: true });
+          } else {
+            navigate("/", { replace: true });
+          }
           window.location.reload();
         }, 2000);
       } else {
@@ -67,7 +82,7 @@ const Login = () => {
     >
       {showWelcome && (
         <Typography variant="h4" component="h2" align="center">
-          Welcome Back
+          {welcomeText}
         </Typography>
       )}
 
