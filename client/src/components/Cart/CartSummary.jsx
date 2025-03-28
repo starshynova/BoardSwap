@@ -2,6 +2,7 @@ import { Box, Typography, Button, Divider } from "@mui/material";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import formStyle from "../../util/formStyle";
 
 const CartSummary = ({ totalPrice, clearCart }) => (
   <>
@@ -23,14 +24,19 @@ const CartSummary = ({ totalPrice, clearCart }) => (
     <Button
       onClick={clearCart}
       variant="outlined"
-      color="error"
+      color="red"
       fullWidth
-      sx={{ mb: 2 }}
+      sx={formStyle.buttonWide}
     >
       Clear Cart
     </Button>
     <Link to={`/order`}>
-      <Button variant="contained" fullWidth>
+      <Button
+        variant="contained"
+        color="primary"
+        sx={formStyle.buttonWide}
+        fullWidth
+      >
         Order Now
       </Button>
     </Link>

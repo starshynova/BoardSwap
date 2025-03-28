@@ -33,7 +33,7 @@ const CartItemComponent = ({ item, removeFromCart }) => (
         </Typography>
       </Box>
     </Box>
-    <IconButton onClick={() => removeFromCart(item._id)} color="error">
+    <IconButton onClick={() => removeFromCart(item._id)} color="red">
       <DeleteIcon />
     </IconButton>
   </CartItem>

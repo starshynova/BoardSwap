@@ -367,14 +367,14 @@ const EditItemForm = () => {
       />
       <Box sx={formStyle.center}>
         <Button
-          variant="contained"
+          variant="outlined"
           size="large"
-          color="primary"
-          sx={formStyle.buttonSmall}
+          color="secondary"
+          sx={formStyle.buttonMiddle}
           onClick={handleEdit}
           disabled={hasEmptyFields || hasErrors}
         >
-          Edit
+          Save changes
         </Button>
         {submitSuccess && (
           <Typography color="green" sx={{ mt: 2 }}>

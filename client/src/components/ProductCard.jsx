@@ -79,7 +79,7 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
           {validToken === product.seller_id ? (
             <Button
               variant="contained"
-              color="blue"
+              color="secondary"
               onClick={handleNavigate}
               sx={formStyle.buttonWide}
             >
@@ -87,8 +87,8 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
             </Button>
           ) : (
             <Button
-              variant="contained"
-              color={isInCart ? "error" : "primary"}
+              variant={isInCart ? "outlined" : "contained"}
+              color={isInCart ? "secondary" : "primary"}
               onClick={handleToggleCart}
               sx={formStyle.buttonWide}
             >

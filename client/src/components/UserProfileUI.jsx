@@ -126,7 +126,7 @@ const UserProfileUI = ({
         <Button
           onClick={() => setShowDeleteConfirm(true)}
           variant="outlined"
-          color="error"
+          color="red"
           fullWidth
           sx={formStyle.buttonSmall}
           size="large"
@@ -141,7 +141,7 @@ const UserProfileUI = ({
           <Box sx={formStyle.dialog}>
             <DialogTitle>Confirm Deletion</DialogTitle>
             <DialogContent>
-              <DialogContentText color="error">
+              <DialogContentText color="red">
                 Are you sure you want to permanently delete your account and
                 data? This action cannot be undone.
               </DialogContentText>
@@ -150,7 +150,7 @@ const UserProfileUI = ({
               <Button
                 onClick={handleDelete}
                 variant="contained"
-                color="error"
+                color="red"
                 size="large"
                 sx={formStyle.buttonSmall}
               >
@@ -158,7 +158,8 @@ const UserProfileUI = ({
               </Button>
               <Button
                 onClick={() => setShowDeleteConfirm(false)}
-                variant="outlined"
+                variant="contained"
+                color="primary"
                 sx={formStyle.buttonSmall}
                 size="large"
               >
@@ -170,7 +171,8 @@ const UserProfileUI = ({
         <Button
           type="submit"
           size="large"
-          variant="contained"
+          variant="outlined"
+          color="secondary"
           fullWidth
           sx={formStyle.buttonSmall}
           disabled={isLoading}
@@ -191,7 +193,8 @@ const UserProfileUI = ({
             <DialogActions>
               <Button
                 onClick={() => setShowConfirm(false)}
-                variant="outlined"
+                variant="contained"
+                color="red"
                 sx={formStyle.buttonSmall}
                 size="large"
               >

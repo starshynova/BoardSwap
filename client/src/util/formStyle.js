@@ -72,10 +72,15 @@ const formStyle = {
   buttonWide: {
     width: "100%",
     borderRadius: "10px",
-    mt: 5,
+    mt: 2,
   },
   buttonSmall: {
     width: "200px",
+    borderRadius: "10px",
+    mt: 2,
+  },
+  buttonMiddle: {
+    width: "50%",
     borderRadius: "10px",
     mt: 2,
   },
@@ -115,8 +120,7 @@ const formStyle = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    padding: "20px",
-    borderRadius: 1,
+    padding: "30px",
   },
   card: {
     boxShadow: 2,
