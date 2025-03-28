@@ -17,7 +17,7 @@ const SortDropdown = ({ onSortChange, sortValue }) => {
   );
 
   return (
-    <FormControl sx={{ minWidth: 200, height: 40 }}>
+    <FormControl sx={{ minWidth: 200, height: 40, backgroundColor: "white" }}>
       <InputLabel
         id="sort-label"
         sx={{
