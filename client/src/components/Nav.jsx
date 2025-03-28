@@ -88,7 +88,7 @@ const Nav = () => {
     >
       <StyledToolbar>
         <Link to="/">
-          <Logo src="/Logo.png" alt="Logo" />
+          <Logo src="/Logo.svg" alt="Logo" />
         </Link>
         <Box
           sx={{

@@ -20,7 +20,7 @@ import PropTypes from "prop-types";
 import { Alert, Snackbar, StepLabel } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../../context/AuthContext";
-import { UIContext } from "../../context/UIContext";
+import DialogConfirmation from "./DialogConfirmation";
 
 const steps = ["Order summary", "Details", "Order Payment"];
 
@@ -32,7 +32,6 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   const formRef = useRef();
   const token = localStorage.getItem("authToken");
   const { userId } = useContext(AuthContext);
-  const { setCart } = useContext(UIContext);
 
   useEffect(() => {
     if (token) {
@@ -65,13 +64,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
   }, [cart]);
 
   const handlePaymentSuccess = async () => {
-    if (!orderData) {
-      return;
-    }
-
-    if (!userId) {
-      return;
-    }
+    if (!orderData || !userId) return;
 
     if (orderData) {
       const orderPayload = {
@@ -143,11 +136,9 @@ export default function OrderStepper({ cart, toggleCartItem }) {
             throw new Error(`Failed to update item ${item._id}`);
           }
         }
-        setCart([]);
         localStorage.removeItem("orderForm");
         setOrderData(null);
         setIsOrderValid(false);
-        localStorage.removeItem("cart");
       } catch (error) {
         console.error("Error submitting order:", error);
       }
@@ -220,7 +211,10 @@ export default function OrderStepper({ cart, toggleCartItem }) {
               />
             )}
             {activeStep === 2 && (
-              <PaymentForm onPaymentSuccess={handlePaymentSuccess} />
+              <>
+                <PaymentForm onPaymentSuccess={handlePaymentSuccess} />
+                <DialogConfirmation></DialogConfirmation>
+              </>
             )}
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>

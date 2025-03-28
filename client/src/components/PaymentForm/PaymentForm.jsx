@@ -1,5 +1,6 @@
 import { useReducer, useState } from "react";
-import { TextField, Button, Box, Typography, Card, Alert } from "@mui/material";
+import { TextField, Button, Box, Typography, Card } from "@mui/material";
+import theme from "../theme";
 import {
   validateCardholderName,
   validateExpiryDate,
@@ -7,8 +8,8 @@ import {
   validateCVV,
 } from "./validators";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
 import formStyle from "../../util/formStyle";
+import DialogConfirmation from "../../pages/Order/DialogConfirmation";
 
 const initialState = {
   formData: {
@@ -40,8 +41,7 @@ const reducer = (state, action) => {
 const PaymentForm = ({ onPaymentSuccess }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { formData, errors } = state;
-  const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleChange = (e) => {
     dispatch({
@@ -94,23 +94,22 @@ const PaymentForm = ({ onPaymentSuccess }) => {
       return;
     }
 
-    setSuccessMessage("Payment Submitted Successfully!");
     dispatch({ type: "RESET_FORM" });
 
     onPaymentSuccess();
 
     setTimeout(() => {
-      navigate("/", { state: { fromOrder: true } });
-    }, 3000);
+      setOpenDialog(true);
+    }, 500);
   };
 
   return (
-    <Card sx={formStyle.boxSmall}>
-      {successMessage && <Alert severity="success">{successMessage}</Alert>}
-      <Typography variant="h5" align="center" gutterBottom>
-        Payment Details
-      </Typography>
-      <form onSubmit={handleSubmit}>
+    <>
+       <Card sx={formStyle.boxSmall}>
+          <Typography variant="h5" align="center" gutterBottom>
+            Payment Details
+          </Typography>
+        <form onSubmit={handleSubmit}>
         <Box mb={2}>
           <TextField
             name="cardholderName"
@@ -177,6 +176,11 @@ const PaymentForm = ({ onPaymentSuccess }) => {
         </Button>
       </form>
     </Card>
+      <DialogConfirmation
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+      />
+    </>
   );
 };
 
