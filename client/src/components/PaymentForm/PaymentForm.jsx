@@ -1,6 +1,5 @@
 import { useReducer, useState } from "react";
 import { TextField, Button, Box, Typography, Card, Alert } from "@mui/material";
-import theme from "../theme";
 import {
   validateCardholderName,
   validateExpiryDate,
@@ -9,6 +8,7 @@ import {
 } from "./validators";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import formStyle from "../../util/formStyle";
 
 const initialState = {
   formData: {
@@ -105,16 +105,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
   };
 
   return (
-    <Card
-      sx={{
-        p: 4,
-        maxWidth: 400,
-        mx: "auto",
-        mt: 5,
-        boxShadow: 3,
-        color: theme.palette.text.secondary,
-      }}
-    >
+    <Card sx={formStyle.boxSmall}>
       {successMessage && <Alert severity="success">{successMessage}</Alert>}
       <Typography variant="h5" align="center" gutterBottom>
         Payment Details
@@ -130,7 +121,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
             onChange={handleChange}
             error={!!errors.cardholderName}
             helperText={errors.cardholderName}
-            sx={{ input: { color: theme.palette.text.secondary } }}
+            sx={formStyle.input}
           />
         </Box>
         <Box mb={2}>
@@ -144,10 +135,10 @@ const PaymentForm = ({ onPaymentSuccess }) => {
             error={!!errors.cardNumber}
             helperText={errors.cardNumber}
             inputProps={{ maxLength: 19 }}
-            sx={{ input: { color: theme.palette.text.secondary } }}
+            sx={formStyle.input}
           />
         </Box>
-        <Box display="flex" gap={2} mb={2}>
+        <Box sx={formStyle.boxForSmallFields}>
           <TextField
             name="expiryDate"
             label="MM/YY"
@@ -158,7 +149,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
             error={!!errors.expiryDate}
             helperText={errors.expiryDate}
             inputProps={{ maxLength: 5 }}
-            sx={{ input: { color: theme.palette.text.secondary } }}
+            sx={formStyle.inputSmall}
           />
           <TextField
             name="cvv"
@@ -171,10 +162,17 @@ const PaymentForm = ({ onPaymentSuccess }) => {
             error={!!errors.cvv}
             helperText={errors.cvv}
             inputProps={{ maxLength: 3 }}
-            sx={{ input: { color: theme.palette.text.secondary } }}
+            sx={formStyle.inputSmall}
           />
         </Box>
-        <Button type="submit" variant="contained" color="primary" fullWidth>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          sx={formStyle.buttonWide}
+          size="large"
+          fullWidth
+        >
           Pay Now
         </Button>
       </form>

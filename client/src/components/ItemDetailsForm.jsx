@@ -101,6 +101,7 @@ const ItemDetailsForm = ({
           color={isInCart ? "error" : "primary"}
           onClick={() => toggleCartItem(data)}
           sx={formStyle.buttonSmall}
+          size="large"
         >
           {isInCart ? "Remove from Cart" : "Add to Cart"}
         </Button>
@@ -108,7 +109,8 @@ const ItemDetailsForm = ({
         <div style={{ display: "flex", gap: "40px" }}>
           <Button
             variant="contained"
-            color="primary"
+            color="red"
+            size="large"
             sx={formStyle.buttonSmall}
             onClick={handleDelete}
           >
@@ -117,8 +119,9 @@ const ItemDetailsForm = ({
 
           <Button
             variant="contained"
-            color="primary"
+            color="blue"
             sx={formStyle.buttonSmall}
+            size="large"
             onClick={handleEdit}
           >
             Edit

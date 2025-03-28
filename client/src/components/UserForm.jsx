@@ -8,6 +8,7 @@ import {
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import formStyle from "../util/formStyle";
 
 const UserForm = ({
   formData,
@@ -59,18 +60,7 @@ const UserForm = ({
     passwordStrengthLabels[strength] || "Very Weak";
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{
-        width: "350px",
-        mx: "auto",
-        mt: 5,
-        p: 3,
-        boxShadow: 3,
-        borderRadius: 2,
-      }}
-    >
+    <Box component="form" onSubmit={handleSubmit} sx={formStyle.boxSmall}>
       <Typography variant="h5" textAlign="center" mb={2}>
         {isLogin ? "Login to Your Account" : "Register"}
       </Typography>
@@ -92,18 +82,11 @@ const UserForm = ({
           label="Name"
           name="name"
           fullWidth
-          margin="normal"
           value={formData.name}
           onChange={handleInputChange}
           error={!!errors.name}
           helperText={errors.name}
-          sx={{
-            backgroundColor: "#D6F9FA",
-            borderRadius: "5px",
-            "& .MuiInputBase-input": {
-              color: "#000000",
-            },
-          }}
+          sx={formStyle.input}
         />
       )}
 
@@ -112,18 +95,11 @@ const UserForm = ({
         name="email"
         type="email"
         fullWidth
-        margin="normal"
         value={formData.email}
         onChange={handleInputChange}
         error={!!errors.email}
         helperText={errors.email}
-        sx={{
-          backgroundColor: "#D6F9FA",
-          borderRadius: "5px",
-          "& .MuiInputBase-input": {
-            color: "#000000",
-          },
-        }}
+        sx={formStyle.input}
       />
 
       <TextField
@@ -131,22 +107,12 @@ const UserForm = ({
         name="password"
         type="password"
         fullWidth
-        margin="normal"
         value={formData.password}
         onChange={handleInputChange}
         error={!!errors.password}
         helperText={errors.password}
         required
-        sx={{
-          backgroundColor: "#D6F9FA",
-          borderRadius: "5px",
-          "& .MuiInputBase-input": {
-            color: "#000000",
-          },
-          "& .MuiInputLabel-asterisk": {
-            color: "red",
-          },
-        }}
+        sx={formStyle.input}
       />
 
       {!isLogin && formData.password && (
@@ -171,11 +137,8 @@ const UserForm = ({
         type="submit"
         variant="contained"
         fullWidth
-        sx={{
-          mt: 2,
-          backgroundColor: "#47CAD1",
-          borderRadius: "10px",
-        }}
+        sx={formStyle.buttonWide}
+        size="large"
         disabled={isLoading}
       >
         {isLogin ? "Login" : "Sign Up"}

@@ -8,8 +8,16 @@ const theme = createTheme({
     secondary: {
       main: "#36999F",
     },
-    green: {
-      main: "#00ff08",
+
+    blue: {
+      main: "#200AC9",
+      contrastText: "#ffffff",
+      hover: "#17097F",
+    },
+    red: {
+      main: "#BE0B0B",
+      contrastText: "#ffffff",
+      hover: "#960101",
     },
     background: {
       default: "#ffffff",
@@ -23,6 +31,28 @@ const theme = createTheme({
     h5: {
       fontSize: "1.5rem",
       fontWeight: "bold",
+    },
+  },
+  components: {
+    MuiButton: {
+      variants: [
+        {
+          props: { color: "red" },
+          style: {
+            "&:hover": {
+              backgroundColor: "#960101",
+            },
+          },
+        },
+        {
+          props: { color: "blue" },
+          style: {
+            "&:hover": {
+              backgroundColor: "#17097F",
+            },
+          },
+        },
+      ],
     },
   },
 });

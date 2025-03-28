@@ -14,29 +14,50 @@ const formStyle = {
     alignItems: "center",
     boxShadow: 3,
     borderRadius: 2,
-    backgroundColor: "#fdfdfd",
+    backgroundColor: "#ffffff",
   },
   boxSmall: {
     display: "flex",
     flexDirection: "column",
     width: "80%",
     maxWidth: "400px",
-    padding: "5%",
-    marginTop: "120px",
+    padding: 4,
+    marginTop: "60px",
     marginLeft: "auto",
     marginRight: "auto",
-    gap: "40px",
+    gap: "24px",
     justifyContent: "center",
     alignItems: "center",
     boxShadow: 3,
     borderRadius: 2,
-    backgroundColor: "#fdfdfd",
+    color: "#000000",
+    backgroundColor: "#ffffff",
   },
   input: {
     width: "100%",
     "& .MuiOutlinedInput-root": {
       backgroundColor: "#D6F9FA",
-      borderRadius: "8px",
+      borderRadius: "5px",
+      "& fieldset": {
+        borderRadius: "8px",
+      },
+    },
+    "& .MuiInputBase-input": {
+      color: "#000000",
+    },
+    "& .MuiFormHelperText-root": {
+      backgroundColor: "transparent",
+    },
+    "& .MuiInputLabel-asterisk": {
+      color: "red",
+    },
+  },
+
+  inputSmall: {
+    width: "45%",
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "#D6F9FA",
+      borderRadius: "5px",
       "& fieldset": {
         borderRadius: "8px",
       },
@@ -48,15 +69,10 @@ const formStyle = {
       backgroundColor: "transparent",
     },
   },
-
-  inputSmall: {
-    width: "45%",
-    borderRadius: "8px",
-  },
   buttonWide: {
     width: "100%",
     borderRadius: "10px",
-    mt: 2,
+    mt: 5,
   },
   buttonSmall: {
     width: "200px",
@@ -93,6 +109,21 @@ const formStyle = {
     width: "100%",
     borderBottomWidth: "2px",
     borderColor: "#47CAD1",
+  },
+  dialog: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "20px",
+    borderRadius: 1,
+  },
+  card: {
+    boxShadow: 2,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 2,
   },
 };
 
