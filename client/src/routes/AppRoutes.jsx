@@ -18,7 +18,6 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/items/create" element={<CreateItem />} />
-      <Route path="/order" element={<Order />} />
       <Route path="/items/:id" element={<ItemDetails />} />
       <Route path="/register" element={<Register />} />
       <Route path="/user" element={<UserList />} />
@@ -38,6 +37,15 @@ const AppRoutes = () => {
         element={
           <PrivateRoute>
             <UserProfile />
+          </PrivateRoute>
+        }
+      />
+
+      <Route
+        path="/order"
+        element={
+          <PrivateRoute>
+            <Order />
           </PrivateRoute>
         }
       />
