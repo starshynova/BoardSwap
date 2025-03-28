@@ -1,4 +1,4 @@
-import PacmanLoader from "react-spinners/PacmanLoader";
+import FadeLoader from "react-spinners/FadeLoader";
 
 const Loader = () => {
   return (
@@ -10,7 +10,7 @@ const Loader = () => {
         height: "100vh",
       }}
     >
-      <PacmanLoader color={"#47CAD1"} size={25} />
+      <FadeLoader color={"#47CAD1"} size={25} />
     </div>
   );
 };
