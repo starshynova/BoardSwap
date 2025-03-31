@@ -110,7 +110,7 @@ const Nav = () => {
           </Link>
           <Tooltip title="Shopping cart">
             <IconButton aria-label="cart" onClick={handleCartClick}>
-              <Badge badgeContent={cart.length} color="error">
+              <Badge badgeContent={cart.length} color="secondary">
                 <AddShoppingCartIcon
                   sx={{ color: "white", fontSize: "30px" }}
                 />

@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
+import Loader from "./Loader";
 
 const LoadingErrorMessage = ({ isLoading, error }) => {
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loader />;
   if (error) return <p>Error: {error}</p>;
   return null;
 };

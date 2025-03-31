@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import formStyle from "../util/formStyle";
 
 const UserProfileUI = ({
   errors,
@@ -39,19 +40,12 @@ const UserProfileUI = ({
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      sx={{
-        width: "350px",
-        mx: "auto",
-        mt: 5,
-        p: 3,
-        boxShadow: 3,
-        borderRadius: 2,
-      }}
+      sx={formStyle.boxSmall}
     >
       <Typography
         variant="h5"
         textAlign="center"
-        mb={2}
+        mb={1}
         sx={{ fontWeight: "bold" }}
       >
         Update Profile
@@ -62,7 +56,7 @@ const UserProfileUI = ({
           variant="body2"
           textAlign="center"
           color="error"
-          sx={{ mb: 2, fontWeight: "bold" }}
+          sx={{ mb: 1, fontWeight: "bold" }}
         >
           {error}
         </Typography>
@@ -73,7 +67,7 @@ const UserProfileUI = ({
           variant="body2"
           textAlign="center"
           color={feedbackMessage.includes("Error") ? "error" : "success"}
-          sx={{ mb: 2, fontWeight: "bold" }}
+          sx={{ mb: 1, fontWeight: "bold" }}
         >
           {feedbackMessage}
         </Typography>
@@ -82,23 +76,15 @@ const UserProfileUI = ({
       <TextField
         label="Name"
         fullWidth
-        margin="normal"
         {...register("name", { required: "Name is required" })}
         error={!!errors.name}
         helperText={errors.name?.message}
-        sx={{
-          backgroundColor: "#D6F9FA",
-          borderRadius: "5px",
-          "& .MuiInputBase-input": {
-            color: "#000000",
-          },
-        }}
+        sx={formStyle.input}
       />
 
       <TextField
         label="Email"
         fullWidth
-        margin="normal"
         type="email"
         {...register("email", {
           required: "Email is required",
@@ -106,19 +92,12 @@ const UserProfileUI = ({
         })}
         error={!!errors.email}
         helperText={errors.email?.message}
-        sx={{
-          backgroundColor: "#D6F9FA",
-          borderRadius: "5px",
-          "& .MuiInputBase-input": {
-            color: "#000000",
-          },
-        }}
+        sx={formStyle.input}
       />
 
       <TextField
         label="City"
         fullWidth
-        margin="normal"
         {...register("city", {
           maxLength: {
             value: 50,
@@ -127,19 +106,12 @@ const UserProfileUI = ({
         })}
         error={!!errors.city}
         helperText={errors.city?.message}
-        sx={{
-          backgroundColor: "#D6F9FA",
-          borderRadius: "5px",
-          "& .MuiInputBase-input": {
-            color: "#000000",
-          },
-        }}
+        sx={formStyle.input}
       />
 
       <TextField
         label="Post Code"
         fullWidth
-        margin="normal"
         {...register("post_code", {
           validate: (value) =>
             value === "" ||
@@ -148,24 +120,16 @@ const UserProfileUI = ({
         })}
         error={!!errors.post_code}
         helperText={errors.post_code?.message}
-        sx={{
-          backgroundColor: "#D6F9FA",
-          borderRadius: "5px",
-          "& .MuiInputBase-input": {
-            color: "#000000",
-          },
-        }}
+        sx={formStyle.input}
       />
 
       <Button
         type="submit"
-        variant="contained"
+        size="large"
+        variant="outlined"
+        color="secondary"
         fullWidth
-        sx={{
-          mt: 2,
-          backgroundColor: "#47CAD1",
-          borderRadius: "10px",
-        }}
+        sx={formStyle.buttonWide}
         disabled={isLoading}
       >
         Update
@@ -174,42 +138,41 @@ const UserProfileUI = ({
       {isLoading && <LinearProgress sx={{ mt: 2 }} />}
 
       <Dialog open={showConfirm} onClose={() => setShowConfirm(false)}>
-        <DialogTitle>Confirm Update</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to update your profile?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleConfirmUpdate}
-            sx={{
-              backgroundColor: "#47CAD1",
-              borderRadius: "10px",
-              color: "#000000",
-            }}
-          >
-            Yes
-          </Button>
-          <Button
-            onClick={() => setShowConfirm(false)}
-            variant="outlined"
-            sx={{ borderRadius: "10px", color: "#000000" }}
-          >
-            No
-          </Button>
-        </DialogActions>
+        <Box sx={formStyle.dialog}>
+          <DialogTitle>Confirm Update</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to update your profile?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setShowConfirm(false)}
+              variant="contained"
+              color="red"
+              sx={formStyle.buttonSmall}
+              size="large"
+            >
+              No
+            </Button>
+            <Button
+              onClick={handleConfirmUpdate}
+              sx={formStyle.buttonSmall}
+              size="large"
+              variant="contained"
+            >
+              Yes
+            </Button>
+          </DialogActions>
+        </Box>
       </Dialog>
-
       <Button
         onClick={() => setShowDeleteConfirm(true)}
         variant="outlined"
-        color="error"
+        color="red"
         fullWidth
-        sx={{
-          mt: 2,
-          borderRadius: "10px",
-        }}
+        sx={{ ...formStyle.buttonWide, mt: 0 }}
+        size="large"
       >
         Delete Profile
       </Button>
@@ -218,30 +181,35 @@ const UserProfileUI = ({
         open={showDeleteConfirm}
         onClose={() => setShowDeleteConfirm(false)}
       >
-        <DialogTitle>Confirm Deletion</DialogTitle>
-        <DialogContent>
-          <DialogContentText color="error">
-            Are you sure you want to permanently delete your account and data?
-            This action cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handleDelete}
-            variant="contained"
-            color="error"
-            sx={{ borderRadius: "10px" }}
-          >
-            Yes, Delete
-          </Button>
-          <Button
-            onClick={() => setShowDeleteConfirm(false)}
-            variant="outlined"
-            sx={{ borderRadius: "10px" }}
-          >
-            No, Cancel
-          </Button>
-        </DialogActions>
+        <Box sx={formStyle.dialog}>
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogContent>
+            <DialogContentText color="red">
+              Are you sure you want to permanently delete your account and data?
+              This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleDelete}
+              variant="contained"
+              color="red"
+              size="large"
+              sx={formStyle.buttonSmall}
+            >
+              Yes, Delete
+            </Button>
+            <Button
+              onClick={() => setShowDeleteConfirm(false)}
+              variant="contained"
+              color="primary"
+              sx={formStyle.buttonSmall}
+              size="large"
+            >
+              No, Cancel
+            </Button>
+          </DialogActions>
+        </Box>
       </Dialog>
     </Box>
   );

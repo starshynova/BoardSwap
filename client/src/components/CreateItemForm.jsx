@@ -12,6 +12,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { uploadImage } from "../util/uploadImage";
+import formStyle from "../util/formStyle.js";
 
 const CreateItemForm = (sellerId) => {
   const itemType = [
@@ -24,21 +25,6 @@ const CreateItemForm = (sellerId) => {
     { value: "Like New", label: "Like New" },
     { value: "Used", label: "Used" },
   ];
-
-  const inputStyles = {
-    width: "100%",
-    borderRadius: "5px",
-    "& .MuiOutlinedInput-root": {
-      backgroundColor: "#D6F9FA",
-      borderRadius: "5px",
-    },
-    "& .MuiInputBase-input": {
-      color: "#000000",
-    },
-    "& .MuiFormHelperText-root": {
-      backgroundColor: "transparent",
-    },
-  };
 
   const [formData, setFormData] = useState({
     title: "",
@@ -63,6 +49,8 @@ const CreateItemForm = (sellerId) => {
   const fileInputRef = useRef(null);
   const timeoutRef = useRef(null);
   const navigate = useNavigate();
+
+  console.log(formStyle);
 
   const token = localStorage.getItem("authToken");
   useEffect(() => {
@@ -188,24 +176,7 @@ const CreateItemForm = (sellerId) => {
   const hasErrors = Object.values(errors).some((error) => error);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        gap: "40px",
-        flexDirection: "column",
-        width: "50vw",
-        margin: "auto",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: "80px",
-        marginBottom: "40px",
-        boxShadow: 3,
-        borderRadius: 2,
-        padding: "40px",
-      }}
-      noValidate
-      autoComplete="off"
-    >
+    <Box sx={formStyle.boxBig} noValidate autoComplete="off">
       <Typography variant="h5" textAlign="center" mb={2}>
         Add a new advert
       </Typography>
@@ -214,7 +185,7 @@ const CreateItemForm = (sellerId) => {
         id="outlined-title"
         name="title"
         label="Title"
-        sx={inputStyles}
+        sx={formStyle.input}
         onChange={(e) => {
           const value = e.target.value;
 
@@ -243,7 +214,7 @@ const CreateItemForm = (sellerId) => {
         id="outlined-price"
         name="price"
         label="Price"
-        sx={inputStyles}
+        sx={formStyle.input}
         slotProps={{
           input: {
             startAdornment: <InputAdornment position="start">€</InputAdornment>,
@@ -270,7 +241,7 @@ const CreateItemForm = (sellerId) => {
         name="type"
         select
         label="Category"
-        sx={inputStyles}
+        sx={formStyle.input}
         helperText="Please select the category of your product"
         onChange={handleChange}
         value={formData.type}
@@ -293,7 +264,7 @@ const CreateItemForm = (sellerId) => {
         name="condition"
         select
         label="Condition"
-        sx={inputStyles}
+        sx={formStyle.input}
         helperText="Please select the condition of the product"
         onChange={handleChange}
         value={formData.condition}
@@ -330,7 +301,7 @@ const CreateItemForm = (sellerId) => {
             <TextField
               label="Attach a file"
               value={fileName}
-              sx={{ ...inputStyles, flex: 1 }}
+              sx={{ ...formStyle.input, flex: 1 }}
               onClick={() => fileInputRef.current.click()}
               slotProps={{
                 input: {
@@ -346,14 +317,8 @@ const CreateItemForm = (sellerId) => {
             <Button
               variant="contained"
               size="medium"
-              color="black"
-              sx={{
-                width: "160px",
-                height: "40px",
-                mt: 2,
-                backgroundColor: "#47CAD1",
-                borderRadius: "10px",
-              }}
+              color="primary"
+              sx={[formStyle.buttonSmall, { width: "160px" }]}
               onClick={handleUploadClick}
               disabled={!selectedFile}
             >
@@ -379,7 +344,7 @@ const CreateItemForm = (sellerId) => {
         id="outlined-multiline-description"
         name="description"
         label="Description"
-        sx={inputStyles}
+        sx={formStyle.input}
         multiline
         rows={4}
         onChange={(e) => {
@@ -403,24 +368,12 @@ const CreateItemForm = (sellerId) => {
         error={!!errors.description}
         helperText={errors.description}
       />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <Box sx={formStyle.center}>
         <Button
           variant="contained"
           size="large"
           color="primary"
-          sx={{
-            width: "200px",
-            mt: 2,
-            borderRadius: "10px",
-          }}
+          sx={formStyle.buttonSmall}
           onClick={handleSubmit}
           disabled={hasEmptyFields || hasErrors}
         >

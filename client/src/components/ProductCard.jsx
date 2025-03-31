@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import formStyle from "../util/formStyle";
 
 const ProductCard = ({ product, isInCart, toggleCartItem }) => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
 
   return (
     <Grid item xs={12} sm={6} md={3}>
-      <Card sx={{ boxShadow: 2, textAlign: "center" }}>
+      <Card sx={formStyle.card}>
         <CardContent>
           <Box sx={{ cursor: "pointer" }} onClick={handleNavigate}>
             <CardMedia
@@ -50,7 +51,7 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
               height="200"
               image={product.photo}
               alt={product.title}
-              sx={{ objectFit: "contain" }}
+              sx={{ objectFit: "contain", mb: 5 }}
             />
 
             <Typography
@@ -67,9 +68,6 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
             >
               {product.title}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {product.status}
-            </Typography>
             <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
               €{product.price}
             </Typography>
@@ -78,20 +76,22 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
           {validToken === product.seller_id ? (
             <Button
               variant="contained"
-              color="green"
+              color="secondary"
               onClick={handleNavigate}
-              sx={{ mt: 2 }}
-              fullWidth
+              sx={formStyle.buttonWide}
             >
               View details
             </Button>
           ) : (
             <Button
-              variant="contained"
-              color={isInCart ? "error" : "primary"}
+              variant={isInCart ? "outlined" : "contained"}
+              color={isInCart ? "secondary" : "primary"}
               onClick={handleToggleCart}
-              sx={{ mt: 2 }}
-              fullWidth
+              sx={
+                isInCart
+                  ? { ...formStyle.buttonWide, color: "#178388" }
+                  : { ...formStyle.buttonWide, color: "#ffffff" }
+              }
             >
               {isInCart ? "Remove from Cart" : "Add to Cart"}
             </Button>

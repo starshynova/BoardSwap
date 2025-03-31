@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { TextField, Container, Typography, Box } from "@mui/material";
-import theme from "../../components/theme";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import formStyle from "../../util/formStyle";
 
 const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
   const {
@@ -43,20 +43,16 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
-        Order Form
-      </Typography>
+    <Container>
       <Box
         component="form"
         ref={formRef}
         onSubmit={handleSubmit(saveOrderData)}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-        }}
+        sx={formStyle.boxBig}
       >
+        <Typography variant="h4" gutterBottom>
+          Order Form
+        </Typography>
         <TextField
           label="Email"
           {...register("email", {
@@ -69,7 +65,7 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
           error={!!errors.email}
           helperText={errors.email?.message}
           fullWidth
-          sx={{ input: { color: theme.palette.text.secondary } }}
+          sx={formStyle.input}
           onChange={onInputChange}
         />
 
@@ -79,7 +75,7 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
           error={!!errors.firstName}
           helperText={errors.firstName?.message}
           fullWidth
-          sx={{ input: { color: theme.palette.text.secondary } }}
+          sx={formStyle.input}
           onChange={onInputChange}
         />
 
@@ -89,7 +85,7 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
           error={!!errors.lastName}
           helperText={errors.lastName?.message}
           fullWidth
-          sx={{ input: { color: theme.palette.text.secondary } }}
+          sx={formStyle.input}
           onChange={onInputChange}
         />
 
@@ -99,7 +95,7 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
           error={!!errors.address}
           helperText={errors.address?.message}
           fullWidth
-          sx={{ input: { color: theme.palette.text.secondary } }}
+          sx={formStyle.input}
           onChange={onInputChange}
         />
 
@@ -117,7 +113,7 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
           error={!!errors.postcode}
           helperText={errors.postcode?.message}
           fullWidth
-          sx={{ input: { color: theme.palette.text.secondary } }}
+          sx={formStyle.input}
           onChange={onInputChange}
         />
 
@@ -127,7 +123,7 @@ const OrderForm = ({ setIsOrderValid, setOrderData, formRef }) => {
           error={!!errors.city}
           helperText={errors.city?.message}
           fullWidth
-          sx={{ input: { color: theme.palette.text.secondary } }}
+          sx={formStyle.input}
           onChange={onInputChange}
         />
       </Box>

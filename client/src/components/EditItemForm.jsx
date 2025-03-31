@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadImage } from "../util/uploadImage";
 import { useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch.js";
+import formStyle from "../util/formStyle";
 import Loader from "./Loader.jsx";
 
 const EditItemForm = () => {
@@ -26,21 +27,6 @@ const EditItemForm = () => {
     { value: "Like New", label: "Like New" },
     { value: "Used", label: "Used" },
   ];
-
-  const inputStyles = {
-    width: "100%",
-    borderRadius: "5px",
-    "& .MuiOutlinedInput-root": {
-      backgroundColor: "#D6F9FA",
-      borderRadius: "5px",
-    },
-    "& .MuiInputBase-input": {
-      color: "#000000",
-    },
-    "& .MuiFormHelperText-root": {
-      backgroundColor: "transparent",
-    },
-  };
 
   const { id } = useParams();
 
@@ -183,24 +169,7 @@ const EditItemForm = () => {
   return !formData ? (
     <Loader />
   ) : (
-    <Box
-      sx={{
-        display: "flex",
-        gap: "40px",
-        flexDirection: "column",
-        width: "50vw",
-        margin: "auto",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: "80px",
-        marginBottom: "40px",
-        boxShadow: 3,
-        borderRadius: 2,
-        padding: "40px",
-      }}
-      noValidate
-      autoComplete="off"
-    >
+    <Box sx={formStyle.boxBig} noValidate autoComplete="off">
       <Typography variant="h5" textAlign="center" mb={2}>
         Edit an advert
       </Typography>
@@ -209,7 +178,7 @@ const EditItemForm = () => {
         id="outlined-title"
         name="title"
         label="Title"
-        sx={inputStyles}
+        sx={formStyle.input}
         onChange={(e) => {
           const value = e.target.value;
 
@@ -237,7 +206,7 @@ const EditItemForm = () => {
         id="outlined-price"
         name="price"
         label="Price"
-        sx={inputStyles}
+        sx={formStyle.input}
         slotProps={{
           input: {
             startAdornment: <InputAdornment position="start">€</InputAdornment>,
@@ -265,7 +234,7 @@ const EditItemForm = () => {
         name="type"
         select
         label="Category"
-        sx={inputStyles}
+        sx={formStyle.input}
         helperText="Please select the category of your product"
         onChange={handleChange}
         value={formData.type}
@@ -288,7 +257,7 @@ const EditItemForm = () => {
         name="condition"
         select
         label="Condition"
-        sx={inputStyles}
+        sx={formStyle.input}
         helperText="Please select the condition of the product"
         onChange={handleChange}
         value={formData.condition}
@@ -329,7 +298,7 @@ const EditItemForm = () => {
             <TextField
               label="Attach a file"
               value={fileName}
-              sx={{ ...inputStyles, flex: 1 }}
+              sx={{ ...formStyle.input, flex: 1 }}
               onClick={() => fileInputRef.current.click()}
               slotProps={{
                 input: {
@@ -346,13 +315,7 @@ const EditItemForm = () => {
               variant="contained"
               size="medium"
               color="black"
-              sx={{
-                width: "160px",
-                height: "40px",
-                mt: 2,
-                backgroundColor: "#47CAD1",
-                borderRadius: "10px",
-              }}
+              sx={[formStyle.buttonSmall, { width: "160px" }]}
               onClick={handleUploadClick}
               disabled={!selectedFile}
             >
@@ -379,7 +342,7 @@ const EditItemForm = () => {
         id="outlined-multiline-description"
         name="description"
         label="Description"
-        sx={inputStyles}
+        sx={formStyle.input}
         multiline
         rows={4}
         onChange={(e) => {
@@ -403,28 +366,16 @@ const EditItemForm = () => {
         error={!!errors.description}
         helperText={errors.description}
       />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <Box sx={formStyle.center}>
         <Button
-          variant="contained"
+          variant="outlined"
           size="large"
-          color="primary"
-          sx={{
-            width: "200px",
-            mt: 2,
-            borderRadius: "10px",
-          }}
+          color="secondary"
+          sx={formStyle.buttonMiddle}
           onClick={handleEdit}
           disabled={hasEmptyFields || hasErrors}
         >
-          Edit
+          Save changes
         </Button>
         {submitSuccess && (
           <Typography color="green" sx={{ mt: 2 }}>
