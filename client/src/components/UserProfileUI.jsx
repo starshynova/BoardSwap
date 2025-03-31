@@ -40,7 +40,7 @@ const UserProfileUI = ({
     <Box
       component="form"
       onSubmit={handleSubmit(onSubmit)}
-      sx={formStyle.boxBig}
+      sx={formStyle.boxSmall}
     >
       <Typography
         variant="h5"
@@ -122,96 +122,95 @@ const UserProfileUI = ({
         helperText={errors.post_code?.message}
         sx={formStyle.input}
       />
-      <Box style={{ display: "flex", gap: "40px" }}>
-        <Button
-          onClick={() => setShowDeleteConfirm(true)}
-          variant="outlined"
-          color="red"
-          fullWidth
-          sx={formStyle.buttonSmall}
-          size="large"
-        >
-          Delete Profile
-        </Button>
 
-        <Dialog
-          open={showDeleteConfirm}
-          onClose={() => setShowDeleteConfirm(false)}
-        >
-          <Box sx={formStyle.dialog}>
-            <DialogTitle>Confirm Deletion</DialogTitle>
-            <DialogContent>
-              <DialogContentText color="red">
-                Are you sure you want to permanently delete your account and
-                data? This action cannot be undone.
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={handleDelete}
-                variant="contained"
-                color="red"
-                size="large"
-                sx={formStyle.buttonSmall}
-              >
-                Yes, Delete
-              </Button>
-              <Button
-                onClick={() => setShowDeleteConfirm(false)}
-                variant="contained"
-                color="primary"
-                sx={formStyle.buttonSmall}
-                size="large"
-              >
-                No, Cancel
-              </Button>
-            </DialogActions>
-          </Box>
-        </Dialog>
-        <Button
-          type="submit"
-          size="large"
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          sx={formStyle.buttonSmall}
-          disabled={isLoading}
-        >
-          Update
-        </Button>
+      <Button
+        type="submit"
+        size="large"
+        variant="outlined"
+        color="secondary"
+        fullWidth
+        sx={formStyle.buttonWide}
+        disabled={isLoading}
+      >
+        Update
+      </Button>
 
-        {isLoading && <LinearProgress sx={{ mt: 2 }} />}
+      {isLoading && <LinearProgress sx={{ mt: 2 }} />}
 
-        <Dialog open={showConfirm} onClose={() => setShowConfirm(false)}>
-          <Box sx={formStyle.dialog}>
-            <DialogTitle>Confirm Update</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Are you sure you want to update your profile?
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={() => setShowConfirm(false)}
-                variant="contained"
-                color="red"
-                sx={formStyle.buttonSmall}
-                size="large"
-              >
-                No
-              </Button>
-              <Button
-                onClick={handleConfirmUpdate}
-                sx={formStyle.buttonSmall}
-                size="large"
-                variant="contained"
-              >
-                Yes
-              </Button>
-            </DialogActions>
-          </Box>
-        </Dialog>
-      </Box>
+      <Dialog open={showConfirm} onClose={() => setShowConfirm(false)}>
+        <Box sx={formStyle.dialog}>
+          <DialogTitle>Confirm Update</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to update your profile?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setShowConfirm(false)}
+              variant="contained"
+              color="red"
+              sx={formStyle.buttonSmall}
+              size="large"
+            >
+              No
+            </Button>
+            <Button
+              onClick={handleConfirmUpdate}
+              sx={formStyle.buttonSmall}
+              size="large"
+              variant="contained"
+            >
+              Yes
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
+      <Button
+        onClick={() => setShowDeleteConfirm(true)}
+        variant="outlined"
+        color="red"
+        fullWidth
+        sx={{ ...formStyle.buttonWide, mt: 0 }}
+        size="large"
+      >
+        Delete Profile
+      </Button>
+
+      <Dialog
+        open={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+      >
+        <Box sx={formStyle.dialog}>
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogContent>
+            <DialogContentText color="red">
+              Are you sure you want to permanently delete your account and data?
+              This action cannot be undone.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handleDelete}
+              variant="contained"
+              color="red"
+              size="large"
+              sx={formStyle.buttonSmall}
+            >
+              Yes, Delete
+            </Button>
+            <Button
+              onClick={() => setShowDeleteConfirm(false)}
+              variant="contained"
+              color="primary"
+              sx={formStyle.buttonSmall}
+              size="large"
+            >
+              No, Cancel
+            </Button>
+          </DialogActions>
+        </Box>
+      </Dialog>
     </Box>
   );
 };

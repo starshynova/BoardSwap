@@ -23,6 +23,7 @@ const formStyle = {
     maxWidth: "400px",
     padding: 4,
     marginTop: "60px",
+    marginBottom: "40px",
     marginLeft: "auto",
     marginRight: "auto",
     gap: "24px",

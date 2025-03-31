@@ -90,7 +90,11 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
               variant={isInCart ? "outlined" : "contained"}
               color={isInCart ? "secondary" : "primary"}
               onClick={handleToggleCart}
-              sx={formStyle.buttonWide}
+              sx={
+                isInCart
+                  ? { ...formStyle.buttonWide, color: "#178388" }
+                  : { ...formStyle.buttonWide, color: "#ffffff" }
+              }
             >
               {isInCart ? "Remove from Cart" : "Add to Cart"}
             </Button>
