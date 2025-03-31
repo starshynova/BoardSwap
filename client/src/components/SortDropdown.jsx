@@ -17,7 +17,14 @@ const SortDropdown = ({ onSortChange, sortValue }) => {
   );
 
   return (
-    <FormControl sx={{ minWidth: 200, height: 40, backgroundColor: "white" }}>
+    <FormControl
+      variant="outlined"
+      sx={{
+        minWidth: 200,
+        height: 40,
+        backgroundColor: "white",
+      }}
+    >
       <InputLabel
         id="sort-label"
         sx={{
@@ -31,6 +38,7 @@ const SortDropdown = ({ onSortChange, sortValue }) => {
         Sort by
       </InputLabel>
       <Select
+        id="sort-select"
         label="Sort by"
         labelId="sort-label"
         value={sortValue}
@@ -38,6 +46,18 @@ const SortDropdown = ({ onSortChange, sortValue }) => {
         sx={{
           color: theme.palette.text.secondary,
           height: 40,
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderWidth: "1px",
+            borderColor: "rgba(0, 0, 0, 0.23)",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderWidth: "1px",
+            borderColor: "rgba(0, 0, 0, 0.23)",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderWidth: "1px",
+            borderColor: theme.palette.primary.main,
+          },
           "& .MuiSelect-select": {
             padding: "8px 14px",
           },
