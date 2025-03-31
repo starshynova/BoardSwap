@@ -51,7 +51,7 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
               height="200"
               image={product.photo}
               alt={product.title}
-              sx={{ objectFit: "contain" }}
+              sx={{ objectFit: "contain", mb: 5 }}
             />
 
             <Typography
@@ -67,9 +67,6 @@ const ProductCard = ({ product, isInCart, toggleCartItem }) => {
               }}
             >
               {product.title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {product.status}
             </Typography>
             <Typography variant="h6" color="primary" sx={{ mt: 1 }}>
               €{product.price}
