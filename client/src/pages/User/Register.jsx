@@ -19,24 +19,25 @@ const Register = () => {
         color="text.secondary"
         sx={{
           textAlign: "center",
-          marginTop: "32px",
-          marginBottom: "40px",
-          maxWidth: "600px",
+          marginTop: "15px",
+          maxWidth: "800px",
         }}
       >
-        Welcome to BoarSwap! Ready to trade, buy, or sell board games and
-        puzzles? Join now and start your adventure!
+        Welcome to BoarSwap!
+        <br />
+        Ready to trade, buy, or sell board games and puzzles?
+        <br />
+        Join now and start your adventure!
       </Typography>
 
       <Box
         sx={{
-          p: 4,
           borderRadius: 2,
           textAlign: "center",
           width: "100%",
           maxWidth: "500px",
           backgroundColor: "white",
-          marginBottom: "24px",
+          marginBottom: "40px",
         }}
       >
         <CreateUser />

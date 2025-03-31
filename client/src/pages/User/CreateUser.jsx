@@ -40,7 +40,6 @@ const CreateUser = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
       }}
     >
       <UserForm
