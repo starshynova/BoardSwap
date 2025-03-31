@@ -18,6 +18,7 @@ import { useUIContext } from "../context/UIContext";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Logout from "./Logout";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -43,7 +44,7 @@ const Logo = styled("img")({
 
 const Nav = () => {
   const { cart, setShowCart } = useUIContext();
-  const { token, userId } = useContext(AuthContext); // Use the context directly
+  const { token, userId } = useContext(AuthContext);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -77,7 +78,7 @@ const Nav = () => {
 
   return (
     <AppBar
-      position="sticky"
+      position="static"
       sx={{
         width: "100%",
         height: "80px",
@@ -126,7 +127,7 @@ const Nav = () => {
                   onClick={handleClick}
                   sx={{ color: "white" }}
                 >
-                  <PersonIcon sx={{ fontSize: "30px" }} />
+                  <AccountCircleIcon sx={{ fontSize: "30px" }} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -146,7 +147,7 @@ const Nav = () => {
           ) : (
             <Link to="/login">
               <Tooltip title="Login">
-                <IconButton aria-label="login" sx={{ color: "gray" }}>
+                <IconButton aria-label="login" sx={{ color: "white" }}>
                   <PersonIcon sx={{ fontSize: "30px" }} />
                 </IconButton>
               </Tooltip>

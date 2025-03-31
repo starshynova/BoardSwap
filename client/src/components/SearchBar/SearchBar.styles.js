@@ -8,7 +8,7 @@ export const SearchContainer = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   border: "1.5px solid ",
-  borderColor: theme.palette.secondary.main,
+  borderColor: "white",
   flex: 1,
 }));
 
