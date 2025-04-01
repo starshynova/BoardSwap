@@ -23,11 +23,9 @@ const Register = () => {
           maxWidth: "800px",
         }}
       >
-        Welcome to BoarSwap!
-        <br />
-        Ready to trade, buy, or sell board games and puzzles?
-        <br />
-        Join now and start your adventure!
+        Welcome to BoardSwap! Discover and trade second-hand board games and
+        puzzles. Save money, reduce waste, and give games a second life! Join
+        now and start swapping!
       </Typography>
 
       <Box
