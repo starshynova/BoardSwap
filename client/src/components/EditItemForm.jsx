@@ -45,9 +45,7 @@ const EditItemForm = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("");
-  const [uploadSuccess, setUploadSuccess] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const fileInputRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -104,7 +102,7 @@ const EditItemForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -117,17 +115,20 @@ const EditItemForm = () => {
       return;
     }
 
-    setSelectedFile(file);
     setFileName(file.name);
     setErrors((prev) => ({ ...prev, photo: "" }));
-  };
 
-  const handleUploadClick = async () => {
-    if (!selectedFile) return;
-
-    const uploadedImg = await uploadImage(selectedFile);
-    setFormData({ ...formData, photo_name: fileName, photo: uploadedImg });
-    setUploadSuccess(true);
+    try {
+      const uploadedImg = await uploadImage(file);
+      setFormData((prev) => ({
+        ...prev,
+        photo_name: file.name,
+        photo: uploadedImg,
+      }));
+    } catch (error) {
+      console.error("Image upload error:", error);
+      setErrors((prev) => ({ ...prev, photo: "Failed to upload image" }));
+    }
   };
 
   const handleEdit = async (e) => {
@@ -287,55 +288,24 @@ const EditItemForm = () => {
           onChange={handleFileChange}
         />
         <Box>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 2,
+          <TextField
+            label="Attach a file"
+            value={fileName}
+            sx={{ ...formStyle.input, flex: 1 }}
+            onClick={() => fileInputRef.current.click()}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AttachFileIcon />
+                  </InputAdornment>
+                ),
+              },
             }}
-          >
-            <TextField
-              label="Attach a file"
-              value={fileName}
-              sx={{ ...formStyle.input, flex: 1 }}
-              onClick={() => fileInputRef.current.click()}
-              slotProps={{
-                input: {
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AttachFileIcon />
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              fullWidth
-            />
-            <Button
-              variant="contained"
-              size="medium"
-              color="black"
-              sx={[formStyle.buttonSmall, { width: "160px" }]}
-              onClick={handleUploadClick}
-              disabled={!selectedFile}
-            >
-              Upload
-            </Button>
-          </Box>
-          {!errors.photo ? (
-            <FormHelperText>
-              * Choose a file and then click Upload
-            </FormHelperText>
-          ) : (
-            <FormHelperText error>{errors.photo}</FormHelperText>
-          )}
+            fullWidth
+          />
         </Box>
-
-        {uploadSuccess && (
-          <Typography color="green" sx={{ mt: 2 }}>
-            Successful
-          </Typography>
-        )}
+        {errors.photo && <FormHelperText error>{errors.photo}</FormHelperText>}
       </div>
 
       <TextField
