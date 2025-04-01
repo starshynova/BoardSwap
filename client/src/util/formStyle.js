@@ -74,19 +74,16 @@ const formStyle = {
     width: "100%",
     borderRadius: "10px",
     mt: 2,
-    color: "white",
   },
   buttonSmall: {
     width: "200px",
     borderRadius: "10px",
     mt: 2,
-    color: "white",
   },
   buttonMiddle: {
     width: "50%",
     borderRadius: "10px",
     mt: 2,
-    color: "white",
   },
   boxForSmallFields: {
     display: "flex",

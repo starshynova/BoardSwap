@@ -127,7 +127,7 @@ const ItemDetailsForm = ({
                   variant={isInCart ? "outlined" : "contained"}
                   color={isInCart ? "secondary" : "primary"}
                   onClick={() => toggleCartItem(data)}
-                  sx={formStyle.buttonSmall}
+                  sx={formStyle.buttonMiddle}
                   size="large"
                 >
                   {isInCart ? "Remove from Cart" : "Add to Cart"}
