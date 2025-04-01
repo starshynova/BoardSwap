@@ -21,7 +21,9 @@ const App = () => {
               location.pathname !== "/register" && <Nav />}
             <Cart />
             <AppRoutes />
-            <Footer />
+            {/* Conditionally render Footer based on the route */}
+            {location.pathname !== "/login" &&
+              location.pathname !== "/register" && <Footer />}
           </ThemeProvider>
         </UIProvider>
       </SearchProvider>
