@@ -1,6 +1,7 @@
 import Order, { validateOrder } from "../models/order-model.js";
 import { logError } from "../util/logging.js";
 import validationErrorMessage from "../util/validationErrorMessage.js";
+import User from "../models/user-model.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -21,7 +22,12 @@ export const createOrder = async (req, res) => {
         .status(400)
         .json({ success: false, msg: validationErrorMessage(errorList) });
     }
+
     const newOrder = await Order.create(orderData);
+
+    await User.findByIdAndUpdate(orderData.userId, {
+      $push: { orders: newOrder._id },
+    });
 
     res.status(201).json({ success: true, order: newOrder });
   } catch (error) {

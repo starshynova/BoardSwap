@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 import validateAllowedFields from "../util/validateAllowedFields.js";
 
 const orderSchema = new mongoose.Schema(
@@ -11,7 +10,9 @@ const orderSchema = new mongoose.Schema(
     },
     items: [
       {
-        type: mongoose.Schema.Types.Mixed,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "items",
+        required: true,
       },
     ],
     total_price: {
@@ -46,7 +47,7 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-const Order = mongoose.model("orders", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
 
 export const validateOrder = (orderObject) => {
   const errorList = [];
