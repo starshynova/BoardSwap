@@ -55,9 +55,11 @@ const ItemDetailsForm = ({
         <Typography variant="h4" textAlign="left">
           {data.title}
         </Typography>
-        <Box sx={{ display: "flex", flexDirection: "row", gap: 4 }}>
-          <Box sx={{ flexShrink: 0, alignSelf: "center" }}>
-            <ImageListItem sx={{ width: "300px" }}>
+        <Box
+          sx={{ display: "flex", flexDirection: "row", gap: 4, width: "100%" }}
+        >
+          <Box sx={{ flexShrink: 0, alignSelf: "center", width: "300px" }}>
+            <ImageListItem sx={{ width: "100%" }}>
               <img
                 src={data.photo}
                 alt={data.title}
