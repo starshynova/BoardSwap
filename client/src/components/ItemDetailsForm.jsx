@@ -36,103 +36,135 @@ const ItemDetailsForm = ({
   }, []);
 
   return (
-    <Box sx={formStyle.boxBig}>
-      <List sx={formStyle.list}>
-        <Typography variant="h4" textAlign="center" mb={2}>
+    <Box>
+      <Box
+        sx={{
+          ...formStyle.boxBig,
+          maxWidth: "1000px",
+          marginTop: "20px",
+          display: "flex",
+          gap: 4,
+        }}
+      >
+        <Typography variant="h4" textAlign="left">
           {data.title}
         </Typography>
-
-        <ImageListItem sx={{ width: "300px" }}>
-          <img src={data.photo} alt={data.title} />
-        </ImageListItem>
-
-        <ListItem sx={{ ...formStyle.listItem, mt: 5 }}>
-          <Box sx={{ width: "160px" }}>
-            <Typography variant="h6" fontWeight="bold">
-              Price
-            </Typography>
-          </Box>
-          <Typography variant="h6">{data.price} €</Typography>
-        </ListItem>
-        <Divider component="li" sx={formStyle.divider} />
-        <ListItem sx={formStyle.listItem}>
-          <Box sx={{ width: "160px" }}>
-            <Typography variant="h6" fontWeight="bold">
-              Category
-            </Typography>
+        <Box sx={{ display: "flex", flexDirection: "row", gap: 4 }}>
+          <Box sx={{ flexShrink: 0, alignSelf: "center" }}>
+            <ImageListItem sx={{ width: "300px" }}>
+              <img
+                src={data.photo}
+                alt={data.title}
+                style={{ width: "100%", height: "auto" }}
+              />
+            </ImageListItem>
           </Box>
 
-          <Typography variant="h6">{data.type}</Typography>
-        </ListItem>
-        <Divider component="li" sx={formStyle.divider} />
-        <ListItem sx={formStyle.listItem}>
-          <Box sx={{ width: "160px" }}>
-            <Typography variant="h6" fontWeight="bold">
-              Condition
-            </Typography>
-          </Box>
-          <Typography variant="h6">{data.condition}</Typography>
-        </ListItem>
-        <Divider component="li" sx={formStyle.divider} />
+          <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            <List sx={formStyle.list}>
+              <ListItem sx={formStyle.listItem}>
+                <Box sx={{ width: "160px" }}>
+                  <Typography variant="h6" fontWeight="bold">
+                    Price
+                  </Typography>
+                </Box>
+                <Typography variant="h6">{data.price} €</Typography>
+              </ListItem>
+              <Divider component="li" sx={formStyle.divider} />
 
-        {data.description && (
-          <Box style={{ width: "100%" }}>
-            <ListItem sx={{ ...formStyle.listItem, alignItems: "flex-start" }}>
-              <Box sx={{ width: "160px", flexShrink: 0 }}>
-                <Typography variant="h6" fontWeight="bold">
-                  Description
-                </Typography>
-              </Box>
-              <Typography
-                variant="h6"
-                sx={{ wordBreak: "break-word", flex: 1 }}
-              >
-                {data.description}
-              </Typography>
-            </ListItem>
-            <Divider component="li" sx={formStyle.divider} />
-          </Box>
-        )}
-      </List>
+              <ListItem sx={formStyle.listItem}>
+                <Box sx={{ width: "160px" }}>
+                  <Typography variant="h6" fontWeight="bold">
+                    Category
+                  </Typography>
+                </Box>
+                <Typography variant="h6">{data.type}</Typography>
+              </ListItem>
+              <Divider component="li" sx={formStyle.divider} />
 
-      {!isSeller ? (
-        <Button
-          variant={isInCart ? "outlined" : "contained"}
-          color={isInCart ? "secondary" : "primary"}
-          onClick={() => toggleCartItem(data)}
-          sx={formStyle.buttonMiddle}
-          size="large"
+              <ListItem sx={formStyle.listItem}>
+                <Box sx={{ width: "160px" }}>
+                  <Typography variant="h6" fontWeight="bold">
+                    Condition
+                  </Typography>
+                </Box>
+                <Typography variant="h6">{data.condition}</Typography>
+              </ListItem>
+              <Divider component="li" sx={formStyle.divider} />
+
+              {data.description && (
+                <Box style={{ width: "100%" }}>
+                  <ListItem
+                    sx={{
+                      ...formStyle.listItem,
+                      alignItems: "flex-start",
+                      display: "block",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        wordBreak: "break-word",
+                        flex: 1,
+                        textAlign: "justify",
+                      }}
+                    >
+                      {data.description}
+                    </Typography>
+                  </ListItem>
+                </Box>
+              )}
+            </List>
+          </Box>
+        </Box>
+
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-          {isInCart ? "Remove from Cart" : "Add to Cart"}
-        </Button>
-      ) : (
-        <div style={{ display: "flex", gap: "40px" }}>
-          <Button
-            variant="outlined"
-            color="red"
-            size="large"
-            sx={formStyle.buttonSmall}
-            onClick={handleDelete}
-          >
-            Delete
-          </Button>
+          {!isSeller ? (
+            <Button
+              variant={isInCart ? "outlined" : "contained"}
+              color={isInCart ? "secondary" : "primary"}
+              onClick={() => toggleCartItem(data)}
+              sx={formStyle.buttonMiddle}
+              size="large"
+            >
+              {isInCart ? "Remove from Cart" : "Add to Cart"}
+            </Button>
+          ) : (
+            <Box sx={{ display: "flex", gap: "40px" }}>
+              <Button
+                variant="outlined"
+                color="error"
+                size="large"
+                sx={formStyle.buttonSmall}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
 
-          <Button
-            variant="outlined"
-            color="secondary"
-            sx={formStyle.buttonSmall}
-            size="large"
-            onClick={handleEdit}
-          >
-            Edit
-          </Button>
-        </div>
-      )}
-      {deleteSuccess && (
-        <Typography color="green" sx={{ mt: 2 }}>
-          Item was successfully deleted
-        </Typography>
-      )}
+              <Button
+                variant="outlined"
+                color="secondary"
+                sx={formStyle.buttonSmall}
+                size="large"
+                onClick={handleEdit}
+              >
+                Edit
+              </Button>
+            </Box>
+          )}
+          {deleteSuccess && (
+            <Typography color="green" sx={{ mt: 2 }}>
+              Item was successfully deleted
+            </Typography>
+          )}
+        </Box>
+      </Box>{" "}
     </Box>
   );
 };
