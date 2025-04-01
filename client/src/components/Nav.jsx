@@ -18,7 +18,6 @@ import { useUIContext } from "../context/UIContext";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Logout from "./Logout";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: "flex",
@@ -127,7 +126,7 @@ const Nav = () => {
                   onClick={handleClick}
                   sx={{ color: "white" }}
                 >
-                  <AccountCircleIcon sx={{ fontSize: "30px" }} />
+                  <PersonIcon sx={{ fontSize: "30px" }} />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -147,7 +146,7 @@ const Nav = () => {
           ) : (
             <Link to="/login">
               <Tooltip title="Login">
-                <IconButton aria-label="login" sx={{ color: "white" }}>
+                <IconButton aria-label="login" sx={{ color: "grey" }}>
                   <PersonIcon sx={{ fontSize: "30px" }} />
                 </IconButton>
               </Tooltip>
