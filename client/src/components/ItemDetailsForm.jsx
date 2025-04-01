@@ -66,7 +66,14 @@ const ItemDetailsForm = ({
             </ImageListItem>
           </Box>
 
-          <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+              justifyContent: "space-between",
+            }}
+          >
             <List sx={formStyle.list}>
               <ListItem sx={formStyle.listItem}>
                 <Box sx={{ width: "160px" }}>
