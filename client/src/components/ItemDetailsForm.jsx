@@ -6,6 +6,11 @@ import {
   ListItem,
   ImageListItem,
   Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
@@ -23,6 +28,7 @@ const ItemDetailsForm = ({
   handleEdit,
 }) => {
   const [isSeller, setIsSeller] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   useEffect(() => {
     try {
@@ -112,11 +118,54 @@ const ItemDetailsForm = ({
             color="red"
             size="large"
             sx={formStyle.buttonSmall}
-            onClick={handleDelete}
+            onClick={() => setShowDeleteConfirm(true)}
           >
             Delete
           </Button>
-
+          <Dialog
+            open={showDeleteConfirm}
+            onClose={() => setShowDeleteConfirm(false)}
+          >
+            <Box sx={formStyle.dialog}>
+              <DialogTitle>Confirm Deletion</DialogTitle>
+              {!deleteSuccess ? (
+                <>
+                  <DialogContent>
+                    <DialogContentText color="red" textAlign={"center"}>
+                      Are you sure you want to delete your product? This action
+                      cannot be undone.
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      onClick={handleDelete}
+                      variant="contained"
+                      color="red"
+                      size="large"
+                      sx={formStyle.buttonSmall}
+                    >
+                      Yes, Delete
+                    </Button>
+                    <Button
+                      onClick={() => setShowDeleteConfirm(false)}
+                      variant="contained"
+                      color="primary"
+                      sx={formStyle.buttonSmall}
+                      size="large"
+                    >
+                      No, Cancel
+                    </Button>
+                  </DialogActions>
+                </>
+              ) : (
+                <DialogContent>
+                  <DialogContentText color="green" textAlign={"center"}>
+                    Your product was successfully deleted
+                  </DialogContentText>
+                </DialogContent>
+              )}
+            </Box>
+          </Dialog>
           <Button
             variant="outlined"
             color="secondary"
@@ -127,11 +176,6 @@ const ItemDetailsForm = ({
             Edit
           </Button>
         </div>
-      )}
-      {deleteSuccess && (
-        <Typography color="green" sx={{ mt: 2 }}>
-          Item was successfully deleted
-        </Typography>
       )}
     </Box>
   );
