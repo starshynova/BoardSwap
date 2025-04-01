@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema({
       ref: "items",
     },
   ],
+  orders: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+    },
+  ],
 });
 
 export const validateUser = (userObject) => {

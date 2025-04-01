@@ -26,7 +26,10 @@ const Login = () => {
 
       try {
         const decoded = jwtDecode(data.token);
-        user = { id: decoded.id };
+        user = {
+          id: decoded.id,
+          name: decoded.name || "User",
+        };
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
@@ -34,6 +37,7 @@ const Login = () => {
       if (user) {
         login(data.token, user);
         localStorage.setItem("userId", user.id);
+        localStorage.setItem("userName", user.name);
         setShowWelcome(false);
 
         setTimeout(() => {
@@ -45,7 +49,7 @@ const Login = () => {
           window.location.reload();
         }, 2000);
       } else {
-        console.error("User ID is missing from token.");
+        console.error("User ID or name is missing from token.");
       }
     } else {
       console.error("Invalid login response:", data);

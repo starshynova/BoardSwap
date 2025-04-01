@@ -3,7 +3,7 @@ import User, { validateUser } from "../models/user-model.js";
 import { logError } from "../util/logging.js";
 import validationErrorMessage from "../util/validationErrorMessage.js";
 import Item from "../models/item-model.js";
-import order from "../models/order-model.js";
+import Order from "../models/order-model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -95,9 +95,13 @@ export const loginUser = async (req, res) => {
   }
 
   try {
-    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign(
+      { id: user._id, name: user.name },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "7h",
+      },
+    );
     return res.status(200).json({ success: true, token });
   } catch (err) {
     logError(err);
@@ -237,7 +241,7 @@ export const deleteUser = async (req, res) => {
     }
 
     if (deletedUser.orders && deletedUser.orders.length > 0) {
-      await order.deleteMany({ _id: { $in: deletedUser.orders } });
+      await Order.deleteMany({ _id: { $in: deletedUser.orders } });
     }
 
     return res.status(200).json({
@@ -250,5 +254,62 @@ export const deleteUser = async (req, res) => {
       success: false,
       msg: "Unable to delete user, try again later",
     });
+  }
+};
+
+export const getUserItems = async (req, res) => {
+  try {
+    const { id } = req.user;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "Invalid user ID format." });
+    }
+
+    const user = await User.findById(id).populate({
+      path: "items",
+      select:
+        "title price type condition photo description status created_date",
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, msg: "User not found." });
+    }
+
+    return res.status(200).json({ success: true, items: user.items || [] });
+  } catch (error) {
+    logError(error);
+    return res
+      .status(500)
+      .json({ success: false, msg: "Error fetching items." });
+  }
+};
+
+export const getUserOrders = async (req, res) => {
+  try {
+    const { id } = req.user;
+
+    if (!mongoose.isValidObjectId(id)) {
+      return res
+        .status(400)
+        .json({ success: false, msg: "Invalid user ID format." });
+    }
+    const userOrders = await Order.find({ user_id: id })
+      .populate({
+        path: "items",
+        select: "title price description",
+      })
+      .select("items total_price address createdAt");
+
+    if (!userOrders || userOrders.length === 0) {
+      return res.status(200).json({ success: true, orders: [] });
+    }
+
+    return res.status(200).json({ success: true, orders: userOrders });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, msg: "Error fetching orders." });
   }
 };
