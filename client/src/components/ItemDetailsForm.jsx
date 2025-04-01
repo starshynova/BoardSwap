@@ -115,54 +115,53 @@ const ItemDetailsForm = ({
                 </Box>
               )}
             </List>
-          </Box>
-        </Box>
 
-        <Box
-          sx={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {!isSeller ? (
-            <Button
-              variant={isInCart ? "outlined" : "contained"}
-              color={isInCart ? "secondary" : "primary"}
-              onClick={() => toggleCartItem(data)}
-              sx={formStyle.buttonMiddle}
-              size="large"
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
-              {isInCart ? "Remove from Cart" : "Add to Cart"}
-            </Button>
-          ) : (
-            <Box sx={{ display: "flex", gap: "40px" }}>
-              <Button
-                variant="outlined"
-                color="error"
-                size="large"
-                sx={formStyle.buttonSmall}
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
+              {!isSeller ? (
+                <Button
+                  variant={isInCart ? "outlined" : "contained"}
+                  color={isInCart ? "secondary" : "primary"}
+                  onClick={() => toggleCartItem(data)}
+                  sx={formStyle.buttonSmall}
+                  size="large"
+                >
+                  {isInCart ? "Remove from Cart" : "Add to Cart"}
+                </Button>
+              ) : (
+                <Box sx={{ display: "flex", gap: "40px" }}>
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    size="large"
+                    sx={formStyle.buttonSmall}
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </Button>
 
-              <Button
-                variant="outlined"
-                color="secondary"
-                sx={formStyle.buttonSmall}
-                size="large"
-                onClick={handleEdit}
-              >
-                Edit
-              </Button>
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    sx={formStyle.buttonSmall}
+                    size="large"
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </Button>
+                </Box>
+              )}
+              {deleteSuccess && (
+                <Typography color="green" sx={{ mt: 2 }}>
+                  Item was successfully deleted
+                </Typography>
+              )}
             </Box>
-          )}
-          {deleteSuccess && (
-            <Typography color="green" sx={{ mt: 2 }}>
-              Item was successfully deleted
-            </Typography>
-          )}
+          </Box>
         </Box>
       </Box>{" "}
     </Box>
