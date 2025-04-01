@@ -128,8 +128,9 @@ const ItemDetailsForm = ({
                   color={isInCart ? "secondary" : "primary"}
                   onClick={() => toggleCartItem(data)}
                   sx={{
-                    ...formStyle.buttonMiddle,
+                    ...formStyle.buttonSmall,
                     color: !isInCart ? "white" : "secondary",
+                    whiteSpace: "nowrap",
                   }}
                   size="large"
                 >
