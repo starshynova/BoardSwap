@@ -43,7 +43,7 @@ const Logo = styled("img")({
 
 const Nav = () => {
   const { cart, setShowCart } = useUIContext();
-  const { token, userId } = useContext(AuthContext); // Use the context directly
+  const { token, userId } = useContext(AuthContext);
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -77,7 +77,7 @@ const Nav = () => {
 
   return (
     <AppBar
-      position="sticky"
+      position="static"
       sx={{
         width: "100%",
         height: "80px",
@@ -146,7 +146,7 @@ const Nav = () => {
           ) : (
             <Link to="/login">
               <Tooltip title="Login">
-                <IconButton aria-label="login" sx={{ color: "gray" }}>
+                <IconButton aria-label="login" sx={{ color: "grey" }}>
                   <PersonIcon sx={{ fontSize: "30px" }} />
                 </IconButton>
               </Tooltip>

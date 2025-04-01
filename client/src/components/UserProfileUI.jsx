@@ -184,7 +184,7 @@ const UserProfileUI = ({
         <Box sx={formStyle.dialog}>
           <DialogTitle>Confirm Deletion</DialogTitle>
           <DialogContent>
-            <DialogContentText color="red">
+            <DialogContentText color="red" textAlign={"center"}>
               Are you sure you want to permanently delete your account and data?
               This action cannot be undone.
             </DialogContentText>
