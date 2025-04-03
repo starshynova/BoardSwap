@@ -65,7 +65,9 @@ const ItemsSection = ({
                     }}
                   />
                 )}
-                <Typography variant="h6">{item.title}</Typography>
+                <Typography color="textSecondary" sx={{ fontWeight: "bold" }}>
+                  {item.title}
+                </Typography>
                 <Typography color="textSecondary">
                   {item.description || "No description available."}
                 </Typography>
