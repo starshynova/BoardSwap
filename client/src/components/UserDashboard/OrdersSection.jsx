@@ -9,8 +9,16 @@ const OrdersSection = ({
   handleShowLessOrders,
 }) => (
   <div>
-    <Typography variant="h5" color="textPrimary" align="center">
-      Your Orders
+    <Typography
+      variant="h5"
+      color="textSecondary"
+      sx={{
+        textAlign: "left",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+      }}
+    >
+      My Orders
     </Typography>
 
     {orders.length === 0 ? (
@@ -29,14 +37,11 @@ const OrdersSection = ({
                     <strong>Total Price:</strong> €{order.total_price}
                   </Typography>
                   <Typography color="textSecondary">
-                    <strong>Buyer:</strong> {order.firstName} {order.lastName}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    <strong>Email:</strong> {order.email}
+                    <strong>Email:</strong> {order.user_id.email}
                   </Typography>
                   <Typography color="textSecondary">
                     <strong>Shipping Address:</strong> {order.address},{" "}
-                    {order.city}, {order.postcode}
+                    {order.city}, {order.user_id.postcode}
                   </Typography>
                   <Typography color="textSecondary">
                     <strong>Order Date:</strong>{" "}

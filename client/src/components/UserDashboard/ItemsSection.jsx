@@ -10,8 +10,16 @@ const ItemsSection = ({
   handleShowLessItems,
 }) => (
   <div>
-    <Typography variant="h5" color="textPrimary" align="center">
-      Your Uploaded Items
+    <Typography
+      variant="h5"
+      color="textSecondary"
+      sx={{
+        textAlign: "left",
+        paddingTop: "20px",
+        paddingBottom: "20px",
+      }}
+    >
+      My Items
     </Typography>
 
     {itemsError && <Typography color="error">{itemsError}</Typography>}

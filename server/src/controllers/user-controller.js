@@ -295,12 +295,17 @@ export const getUserOrders = async (req, res) => {
         .status(400)
         .json({ success: false, msg: "Invalid user ID format." });
     }
+
     const userOrders = await Order.find({ user_id: id })
       .populate({
-        path: "items",
-        select: "title price description",
+        path: "user_id",
+        select: "email firstName lastName postcode",
       })
-      .select("items total_price address createdAt");
+      .populate({
+        path: "items",
+        select: "title price description condition type photo",
+      })
+      .select("total_price address city createdAt");
 
     if (!userOrders || userOrders.length === 0) {
       return res.status(200).json({ success: true, orders: [] });

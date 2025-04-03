@@ -1,171 +1,149 @@
-import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { IconButton, Box, Typography, CircularProgress } from "@mui/material";
-import UserSettings from "./User";
-import ItemsSection from "../../components/UserDashboard/ItemsSection";
-import OrdersSection from "../../components/UserDashboard/OrdersSection";
-import DeleteConfirmationDialog from "../../components/UserDashboard/DeleteConfirmationDialog";
-import useFetch from "../../hooks/useFetch";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useForm } from "react-hook-form";
+import useFetch from "../../hooks/useFetch";
+import UserProfileUI from "../../components/UserProfileUI";
+import Loader from "../../components/Loader";
 
 const UserProfile = () => {
-  const history = useNavigate();
-  const { token, userId, userName } = useContext(AuthContext);
-
-  const [items, setItems] = useState([]);
-  const [orders, setOrders] = useState([]);
+  const { token, userId, logout } = useContext(AuthContext);
   const [error, setError] = useState(null);
-  const [showDeleteItemModal, setShowDeleteItemModal] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
-  const [visibleItems, setVisibleItems] = useState(3);
-  const [visibleOrders, setVisibleOrders] = useState(3);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
   const {
-    isLoading: isLoadingItems,
-    error: itemsError,
-    performFetch: fetchItems,
-  } = useFetch(
-    `/users/${userId}/items`,
-    (data) => setItems(data.items || []),
-    null,
-    token,
-  );
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const {
-    isLoading: isLoadingOrders,
-    error: ordersError,
-    performFetch: fetchOrders,
-  } = useFetch(
-    `/users/${userId}/orders`,
-    (data) => setOrders(data.orders || []),
-    null,
-    token,
-  );
-
-  useEffect(() => {
-    if (!userId || !token) {
-      history("/login");
-    }
-  }, [userId, token, history]);
-
-  useEffect(() => {
-    if (userId && token && !isDataFetched) {
-      fetchItems();
-      fetchOrders();
-      setIsDataFetched(true);
-    }
-  }, [userId, token, isDataFetched, fetchItems, fetchOrders]);
-
-  useEffect(() => {
-    if (itemsError || ordersError) {
-      setError(itemsError || ordersError);
-    }
-  }, [itemsError, ordersError]);
-
-  const handleDeleteItem = async () => {
-    if (itemToDelete && token) {
-      try {
-        await fetch(`/api/items/${itemToDelete._id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-        fetchItems();
-        setShowDeleteItemModal(false);
-      } catch (error) {
-        console.error("Failed to delete item", error);
+  const { isLoading: fetchIsLoading, performFetch } = useFetch(
+    `/users/${userId}`,
+    (data) => {
+      if (data.success) {
+        setValue("name", data.result.name);
+        setValue("email", data.result.email);
+        setValue("city", data.result.city);
+        setValue("post_code", data.result.post_code);
+        setIsDataFetched(true);
+      } else {
+        setError(data.msg || "User profile not found.");
+        setFeedbackMessage(null);
       }
+    },
+    null,
+    token,
+  );
+
+  useEffect(() => {
+    if (!token) {
+      setError("Please log in to access your profile.");
+      return;
+    }
+
+    if (!isDataFetched) {
+      performFetch();
+    }
+  }, [token, userId, isDataFetched, performFetch]);
+
+  const updateProfile = async (data) => {
+    setIsLoading(true);
+    setError(null);
+    setFeedbackMessage(null);
+
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify(data),
+    };
+
+    try {
+      const response = await fetch(`/api/users/${userId}`, options);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update profile.");
+      }
+
+      await response.json();
+      setFeedbackMessage("Profile updated successfully!");
+
+      setTimeout(() => {
+        setFeedbackMessage(null);
+      }, 3000);
+
+      setError(null);
+    } catch (err) {
+      setError(
+        err.message || "Unable to update your profile. Please try again.",
+      );
+      setFeedbackMessage(null);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return (
-    <Box sx={{ padding: 2, position: "relative", minHeight: "100vh" }}>
-      <Box sx={{ position: "absolute", top: 16, right: 16, zIndex: 9999 }}>
-        <IconButton
-          color="secondary"
-          size="large"
-          onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-          sx={{
-            backgroundColor: "white",
-            boxShadow: 3,
-            "&:hover": { backgroundColor: "#f0f0f0" },
-          }}
-        >
-          <SettingsIcon fontSize="inherit" sx={{ fontSize: "2.5rem" }} />
-        </IconButton>
-      </Box>
+  const handleDelete = async () => {
+    if (!token) {
+      setError("Please log in to delete your account.");
+      return;
+    }
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: 2,
-        }}
-      >
-        <Typography variant="h5" component="h2">
-          Hi, {userName || "User"}!
-        </Typography>
-      </Box>
+    try {
+      const response = await fetch(`/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-      {error && <Typography color="error">{error}</Typography>}
+      if (!response.ok) {
+        throw new Error(
+          "Unable to delete your profile. Please try again later.",
+        );
+      }
 
-      {isSettingsOpen ? (
-        <Box sx={{ padding: 2, textAlign: "center" }}>
-          <Typography variant="h5" component="h2" fontWeight="bold" mb={2}>
-            Account Settings
-          </Typography>
-          <UserSettings />
-        </Box>
-      ) : (
-        <>
-          {isLoadingItems || isLoadingOrders ? (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                minHeight: "60vh",
-              }}
-            >
-              <CircularProgress />
-            </Box>
-          ) : (
-            <>
-              <ItemsSection
-                items={items}
-                visibleItems={visibleItems}
-                handleDeleteClick={(item) => {
-                  setItemToDelete(item);
-                  setShowDeleteItemModal(true);
-                }}
-                handleShowMoreItems={() => setVisibleItems(visibleItems + 3)}
-                handleShowLessItems={() => setVisibleItems(3)}
-              />
+      const deletedData = await response.json();
+      if (deletedData.success) {
+        logout();
+      } else {
+        setError("We couldn't delete your profile. Please try again later.");
+      }
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setShowDeleteConfirm(false);
+    }
+  };
 
-              <OrdersSection
-                orders={orders}
-                visibleOrders={visibleOrders}
-                handleShowMoreOrders={() => setVisibleOrders(visibleOrders + 3)}
-                handleShowLessOrders={() => setVisibleOrders(3)}
-              />
-            </>
-          )}
-        </>
-      )}
-
-      <DeleteConfirmationDialog
-        open={showDeleteItemModal}
-        onClose={() => setShowDeleteItemModal(false)}
-        onConfirmDelete={handleDeleteItem}
-      />
-    </Box>
+  const content = fetchIsLoading ? (
+    <Loader />
+  ) : (
+    <UserProfileUI
+      errors={errors}
+      register={register}
+      handleSubmit={handleSubmit}
+      isLoading={isLoading}
+      showConfirm={showConfirm}
+      setShowConfirm={setShowConfirm}
+      showDeleteConfirm={showDeleteConfirm}
+      setShowDeleteConfirm={setShowDeleteConfirm}
+      updateProfile={updateProfile}
+      handleDelete={handleDelete}
+      feedbackMessage={feedbackMessage}
+      error={error}
+    />
   );
+
+  return <div>{content}</div>;
 };
 
 export default UserProfile;

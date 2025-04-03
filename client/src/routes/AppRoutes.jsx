@@ -10,6 +10,7 @@ import ItemDetails from "../pages/Item/ItemDetails";
 import EditItem from "../pages/Item/EditItem";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/User/Profile";
+import Dashboard from "../pages/User/Dashboard";
 
 const AppRoutes = () => {
   return (
@@ -46,6 +47,14 @@ const AppRoutes = () => {
         element={
           <PrivateRoute>
             <Order />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
           </PrivateRoute>
         }
       />
