@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
 import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import DeleteButton from "../Buttons/DeleteButton";
+import EditButton from "../Buttons/EditButton";
 
 const ItemsSection = ({
   items,
@@ -56,59 +58,55 @@ const ItemsSection = ({
                   mb: "16px",
                 }}
               >
-                {item.photo && (
-                  <img
-                    src={item.photo}
-                    alt={item.title}
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "5px",
-                      objectFit: "cover",
-                      marginBottom: "16px",
-                    }}
-                  />
-                )}
-                <Typography color="textSecondary" sx={{ fontWeight: "bold" }}>
-                  {item.title}
-                </Typography>
-                <Typography color="textSecondary">
-                  {item.description || "No description available."}
-                </Typography>
-                <Typography color="textSecondary">
-                  <strong>Price:</strong> €{item.price}
-                </Typography>
-                <Typography color="textSecondary">
-                  <strong>Condition:</strong> {item.condition}
-                </Typography>
-                <Typography color="textSecondary">
-                  <strong>Category:</strong> {item.type}
-                </Typography>
+                <Box>
+                  {item.photo && (
+                    <img
+                      src={item.photo}
+                      alt={item.title}
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        borderRadius: "5px",
+                        objectFit: "cover",
+                        marginBottom: "16px",
+                      }}
+                    />
+                  )}
+                  <Typography color="textSecondary" sx={{ fontWeight: "bold" }}>
+                    {item.title}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    {item.description || "No description available."}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    <strong>Price:</strong> €{item.price}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    <strong>Condition:</strong> {item.condition}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    <strong>Category:</strong> {item.type}
+                  </Typography>
 
-                {item.status === "Sold" ? (
-                  <Typography color="error">
-                    <strong>Status:</strong> Sold
-                  </Typography>
-                ) : (
-                  <Typography color="success.main">
-                    <strong>Status:</strong> Available
-                  </Typography>
+                  {item.status === "Sold" ? (
+                    <Typography color="error">
+                      <strong>Status:</strong> Sold
+                    </Typography>
+                  ) : (
+                    <Typography color="success.main">
+                      <strong>Status:</strong> Available
+                    </Typography>
+                  )}
+                </Box>
+                {item.status !== "Sold" && (
+                  <Box>
+                    <DeleteButton onClick={() => handleDeleteClick(item)}>
+                      Delete
+                    </DeleteButton>
+                    <EditButton> Edit </EditButton>
+                  </Box>
                 )}
               </CardContent>
-              {item.status !== "Sold" && (
-                <Box>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    size="small"
-                    onClick={() => handleDeleteClick(item)}
-                    sx={{ marginTop: "auto" }}
-                  >
-                    Delete
-                  </Button>
-                  <Button> Edit </Button>
-                </Box>
-              )}
             </Card>
           ))}
         </Box>
