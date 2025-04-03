@@ -22,10 +22,9 @@ const ItemsSection = ({
     <Box sx={{ py: "20px", px: "80px" }}>
       <Typography
         variant="h5"
-        color="textSecondary"
+        color="secondary"
         sx={{
           textAlign: "left",
-          paddingTop: "20px",
           paddingBottom: "20px",
         }}
       >
