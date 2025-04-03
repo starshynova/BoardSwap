@@ -58,7 +58,6 @@ const ItemsSection = ({
                   flexDirection: "column",
                   cursor: "pointer",
                 }}
-                onClick={() => handleNavigate(item._id)}
               >
                 <CardContent
                   sx={{
@@ -68,7 +67,10 @@ const ItemsSection = ({
                     justifyContent: "space-between",
                   }}
                 >
-                  <Box sx={{ mb: "16px" }}>
+                  <Box
+                    sx={{ mb: "16px" }}
+                    onClick={() => handleNavigate(item._id)}
+                  >
                     {item.photo && (
                       <img
                         src={item.photo}
@@ -88,7 +90,16 @@ const ItemsSection = ({
                     >
                       {item.title}
                     </Typography>
-                    <Typography color="textSecondary">
+                    <Typography
+                      color="textSecondary"
+                      sx={{
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        WebkitLineClamp: 3,
+                        textOverflow: "ellipsis",
+                      }}
+                    >
                       {item.description || "No description available."}
                     </Typography>
                     <Typography color="textSecondary">
