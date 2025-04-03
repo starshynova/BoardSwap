@@ -45,7 +45,7 @@ const ItemsSection = ({
             <Card
               key={item._id}
               sx={{
-                flex: "1 1 calc(33.33% - 16px)",
+                flex: "0 1 calc(33.33% - 16px)",
                 display: "flex",
                 flexDirection: "column",
               }}
