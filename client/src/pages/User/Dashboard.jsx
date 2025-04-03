@@ -90,7 +90,7 @@ const Dashboard = () => {
           marginBottom: 2,
         }}
       >
-        <Typography variant="h5" component="h2">
+        <Typography variant="h5" component="h2" color="secondary">
           Hi, {userName || "User"}!
         </Typography>
       </Box>
