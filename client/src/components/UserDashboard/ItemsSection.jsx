@@ -43,16 +43,16 @@ const ItemsSection = ({
           {items.slice(0, visibleItems).map((item) => (
             <Card
               key={item._id}
-              sx={{ width: "300px", display: "flex", flexDirection: "column" }}
+              sx={{
+                flex: "1 1 calc(33.33% - 16px)",
+                minWidth: "280px",
+                maxWidth: "400px",
+                display: "flex",
+                flexDirection: "column",
+              }}
             >
               <CardContent
-                sx={{
-                  flex: "1 1 calc(33.33% - 16px)",
-                  minWidth: "280px",
-                  maxWidth: "400px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
+                sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
               >
                 {item.photo && (
                   <img
