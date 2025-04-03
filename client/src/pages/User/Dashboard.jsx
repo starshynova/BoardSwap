@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import ItemsSection from "../../components/UserDashboard/ItemsSection";
-import OrdersSection from "../../components/UserDashboard/OrdersSection";
 import DeleteConfirmationDialog from "../../components/UserDashboard/DeleteConfirmationDialog";
 import useFetch from "../../hooks/useFetch";
 import { AuthContext } from "../../context/AuthContext";
@@ -12,12 +11,10 @@ const Dashboard = () => {
   const { token, userId, userName } = useContext(AuthContext);
 
   const [items, setItems] = useState([]);
-  const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
   const [showDeleteItemModal, setShowDeleteItemModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [visibleItems, setVisibleItems] = useState(3);
-  const [visibleOrders, setVisibleOrders] = useState(3);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
   const {
@@ -31,17 +28,6 @@ const Dashboard = () => {
     token,
   );
 
-  const {
-    isLoading: isLoadingOrders,
-    error: ordersError,
-    performFetch: fetchOrders,
-  } = useFetch(
-    `/users/${userId}/orders`,
-    (data) => setOrders(data.orders || []),
-    null,
-    token,
-  );
-
   useEffect(() => {
     if (!userId || !token) {
       history("/login");
@@ -51,16 +37,15 @@ const Dashboard = () => {
   useEffect(() => {
     if (userId && token && !isDataFetched) {
       fetchItems();
-      fetchOrders();
       setIsDataFetched(true);
     }
-  }, [userId, token, isDataFetched, fetchItems, fetchOrders]);
+  }, [userId, token, isDataFetched, fetchItems]);
 
   useEffect(() => {
-    if (itemsError || ordersError) {
-      setError(itemsError || ordersError);
+    if (itemsError) {
+      setError(itemsError);
     }
-  }, [itemsError, ordersError]);
+  }, [itemsError]);
 
   const handleDeleteItem = async () => {
     if (itemToDelete && token) {
@@ -97,7 +82,7 @@ const Dashboard = () => {
 
       {error && <Typography color="error">{error}</Typography>}
 
-      {isLoadingItems || isLoadingOrders ? (
+      {isLoadingItems ? (
         <Box
           sx={{
             display: "flex",
@@ -119,13 +104,6 @@ const Dashboard = () => {
             }}
             handleShowMoreItems={() => setVisibleItems(visibleItems + 3)}
             handleShowLessItems={() => setVisibleItems(3)}
-          />
-
-          <OrdersSection
-            orders={orders}
-            visibleOrders={visibleOrders}
-            handleShowMoreOrders={() => setVisibleOrders(visibleOrders + 3)}
-            handleShowLessOrders={() => setVisibleOrders(3)}
           />
         </>
       )}

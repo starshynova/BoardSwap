@@ -74,6 +74,11 @@ const Nav = () => {
     handleClose();
   }, [navigate, handleClose]);
 
+  const handleMyOrders = useCallback(() => {
+    navigate("/myorders");
+    handleClose();
+  }, [navigate, handleClose]);
+
   const handleCartClick = useCallback(() => {
     setShowCart(true);
   }, []);
@@ -143,6 +148,10 @@ const Nav = () => {
                 </MenuItem>
                 <MenuItem onClick={handleDashboard} sx={{ color: "black" }}>
                   Items
+                </MenuItem>
+
+                <MenuItem onClick={handleMyOrders} sx={{ color: "black" }}>
+                  Orders
                 </MenuItem>
                 <MenuItem sx={{ color: "black" }}>
                   <Logout />
