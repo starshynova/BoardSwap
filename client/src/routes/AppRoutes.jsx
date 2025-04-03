@@ -11,6 +11,7 @@ import EditItem from "../pages/Item/EditItem";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/User/Profile";
 import Dashboard from "../pages/User/Dashboard";
+import Orders from "../pages/User/Orders";
 
 const AppRoutes = () => {
   return (
@@ -59,6 +60,14 @@ const AppRoutes = () => {
         }
       />
 
+      <Route
+        path="/myorders"
+        element={
+          <PrivateRoute>
+            <Orders />
+          </PrivateRoute>
+        }
+      />
       <Route path="*" element={<NotFound />} />
       <Route path="items/edit/:id" element={<EditItem />} />
     </Routes>
