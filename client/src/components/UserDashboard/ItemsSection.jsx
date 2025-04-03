@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Grid, Card, CardContent, Typography, Button } from "@mui/material";
+import { Card, CardContent, Typography, Button, Box } from "@mui/material";
 
 const ItemsSection = ({
   items,
@@ -9,7 +9,7 @@ const ItemsSection = ({
   handleShowMoreItems,
   handleShowLessItems,
 }) => (
-  <div>
+  <Box sx={{ py: "20px", px: "80px" }}>
     <Typography
       variant="h5"
       color="textSecondary"
@@ -31,64 +31,81 @@ const ItemsSection = ({
 
     {items.length > 0 && (
       <>
-        <Grid container spacing={2}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "16px",
+            justifyContent: "center",
+          }}
+        >
+          {" "}
           {items.slice(0, visibleItems).map((item) => (
-            <Grid item xs={12} sm={6} md={4} key={item._id}>
-              <Card>
-                <CardContent>
-                  {item.photo && (
-                    <img
-                      src={item.photo}
-                      alt={item.title}
-                      style={{
-                        width: "80px",
-                        height: "80px",
-                        borderRadius: "5px",
-                        objectFit: "cover",
-                      }}
-                    />
-                  )}
-                  <Typography variant="h6">{item.title}</Typography>
-                  <Typography color="textSecondary">
-                    {item.description || "No description available."}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    <strong>Price:</strong> €{item.price}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    <strong>Condition:</strong> {item.condition}
-                  </Typography>
-                  <Typography color="textSecondary">
-                    <strong>Category:</strong> {item.type}
-                  </Typography>
+            <Card
+              key={item._id}
+              sx={{ width: "300px", display: "flex", flexDirection: "column" }}
+            >
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  minHeight: "200px",
+                }}
+              >
+                {item.photo && (
+                  <img
+                    src={item.photo}
+                    alt={item.title}
+                    style={{
+                      width: "80px",
+                      height: "80px",
+                      borderRadius: "5px",
+                      objectFit: "cover",
+                    }}
+                  />
+                )}
+                <Typography variant="h6">{item.title}</Typography>
+                <Typography color="textSecondary">
+                  {item.description || "No description available."}
+                </Typography>
+                <Typography color="textSecondary">
+                  <strong>Price:</strong> €{item.price}
+                </Typography>
+                <Typography color="textSecondary">
+                  <strong>Condition:</strong> {item.condition}
+                </Typography>
+                <Typography color="textSecondary">
+                  <strong>Category:</strong> {item.type}
+                </Typography>
 
-                  {item.status === "Sold" ? (
-                    <Typography color="error">
-                      <strong>Status:</strong> Sold
-                    </Typography>
-                  ) : (
-                    <Typography color="success.main">
-                      <strong>Status:</strong> Available
-                    </Typography>
-                  )}
+                {item.status === "Sold" ? (
+                  <Typography color="error">
+                    <strong>Status:</strong> Sold
+                  </Typography>
+                ) : (
+                  <Typography color="success.main">
+                    <strong>Status:</strong> Available
+                  </Typography>
+                )}
 
-                  {item.status !== "Sold" && (
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      size="small"
-                      onClick={() => handleDeleteClick(item)}
-                    >
-                      Delete
-                    </Button>
-                  )}
-                </CardContent>
-              </Card>
-            </Grid>
+                {item.status !== "Sold" && (
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    size="small"
+                    onClick={() => handleDeleteClick(item)}
+                    sx={{ marginTop: "auto" }}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
           ))}
-        </Grid>
+        </Box>
 
-        <div
+        <Box
           style={{
             marginTop: "10px",
             display: "flex",
@@ -114,10 +131,10 @@ const ItemsSection = ({
               Show Less
             </Button>
           )}
-        </div>
+        </Box>
       </>
     )}
-  </div>
+  </Box>
 );
 
 ItemsSection.propTypes = {
