@@ -40,7 +40,14 @@ const formStyle = {
       backgroundColor: "#D6F9FA",
       borderRadius: "5px",
       "& fieldset": {
-        borderRadius: "8px",
+        borderRadius: "5px",
+        border: "1px solid #a3bebf",
+      },
+      "&:hover fieldset": {
+        border: "1px solid #a3bebf",
+      },
+      "&.Mui-focused fieldset": {
+        border: "2px solid #40c9d0",
       },
     },
     "& .MuiInputBase-input": {
@@ -60,7 +67,7 @@ const formStyle = {
       backgroundColor: "#D6F9FA",
       borderRadius: "5px",
       "& fieldset": {
-        borderRadius: "8px",
+        borderRadius: "5px",
       },
     },
     "& .MuiInputBase-input": {
