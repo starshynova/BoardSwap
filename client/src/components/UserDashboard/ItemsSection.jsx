@@ -55,10 +55,10 @@ const ItemsSection = ({
                   flexGrow: 1,
                   display: "flex",
                   flexDirection: "column",
-                  mb: "16px",
+                  justifyContent: "space-between",
                 }}
               >
-                <Box>
+                <Box sx={{ mb: "16px" }}>
                   {item.photo && (
                     <img
                       src={item.photo}
@@ -99,7 +99,7 @@ const ItemsSection = ({
                   )}
                 </Box>
                 {item.status !== "Sold" && (
-                  <Box>
+                  <Box sx={{ display: "flex", gap: "16px;" }}>
                     <DeleteButton onClick={() => handleDeleteClick(item)}>
                       Delete
                     </DeleteButton>
