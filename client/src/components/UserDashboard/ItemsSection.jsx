@@ -49,7 +49,12 @@ const ItemsSection = ({
               }}
             >
               <CardContent
-                sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  mb: "16px",
+                }}
               >
                 {item.photo && (
                   <img
@@ -60,6 +65,7 @@ const ItemsSection = ({
                       height: "80px",
                       borderRadius: "5px",
                       objectFit: "cover",
+                      marginBottom: "16px",
                     }}
                   />
                 )}
@@ -88,8 +94,9 @@ const ItemsSection = ({
                     <strong>Status:</strong> Available
                   </Typography>
                 )}
-
-                {item.status !== "Sold" && (
+              </CardContent>
+              {item.status !== "Sold" && (
+                <Box>
                   <Button
                     variant="outlined"
                     color="error"
@@ -99,8 +106,9 @@ const ItemsSection = ({
                   >
                     Delete
                   </Button>
-                )}
-              </CardContent>
+                  <Button> Edit </Button>
+                </Box>
+              )}
             </Card>
           ))}
         </Box>
