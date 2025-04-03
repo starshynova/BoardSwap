@@ -47,10 +47,11 @@ const ItemsSection = ({
             >
               <CardContent
                 sx={{
-                  flexGrow: 1,
+                  flex: "1 1 calc(33.33% - 16px)",
+                  minWidth: "280px",
+                  maxWidth: "400px",
                   display: "flex",
                   flexDirection: "column",
-                  minHeight: "200px",
                 }}
               >
                 {item.photo && (
