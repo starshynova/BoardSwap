@@ -129,7 +129,8 @@ const ItemsSection = ({
                       <DeleteButton onClick={() => handleDeleteClick(item)}>
                         Delete
                       </DeleteButton>
-                      <EditButton onClick={() => handleEdit(item)}>
+                      Unable to get product by ID, try again later
+                      <EditButton onClick={() => handleEdit(item._id)}>
                         Edit
                       </EditButton>
                     </Box>
