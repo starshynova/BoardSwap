@@ -172,7 +172,7 @@ const EditItemForm = () => {
   ) : (
     <Box sx={formStyle.boxBig} noValidate autoComplete="off">
       <Typography variant="h5" textAlign="center" mb={2}>
-        Edit an advert
+        Edit My Item
       </Typography>
       <TextField
         required
