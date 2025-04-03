@@ -142,7 +142,7 @@ const Nav = () => {
                   Profile
                 </MenuItem>
                 <MenuItem onClick={handleDashboard} sx={{ color: "black" }}>
-                  Items
+                  My Items
                 </MenuItem>
                 <MenuItem sx={{ color: "black" }}>
                   <Logout />
