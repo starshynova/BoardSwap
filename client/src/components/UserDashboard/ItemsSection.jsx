@@ -36,7 +36,6 @@ const ItemsSection = ({
             display: "flex",
             flexWrap: "wrap",
             gap: "16px",
-            justifyContent: "center",
           }}
         >
           {" "}
@@ -45,8 +44,6 @@ const ItemsSection = ({
               key={item._id}
               sx={{
                 flex: "1 1 calc(33.33% - 16px)",
-                minWidth: "280px",
-                maxWidth: "400px",
                 display: "flex",
                 flexDirection: "column",
               }}
