@@ -60,16 +60,19 @@ const Nav = () => {
     setAnchorEl(null);
   }, []);
 
-  const handleProfile = useCallback(() => {
+  const handleMySettings = useCallback(() => {
     if (userId) {
-      console.log("Navigating to user profile:", `/users/${userId}`);
       navigate(`/users/${userId}`);
       handleClose();
     } else {
-      console.error("User ID is not available. Redirecting to login.");
       navigate("/login");
     }
   }, [navigate, userId, handleClose]);
+
+  const handleDashboard = useCallback(() => {
+    navigate("/dashboard");
+    handleClose();
+  }, [navigate, handleClose]);
 
   const handleCartClick = useCallback(() => {
     setShowCart(true);
@@ -120,7 +123,7 @@ const Nav = () => {
 
           {token ? (
             <>
-              <Tooltip title="User profile">
+              <Tooltip title="User menu">
                 <IconButton
                   aria-label="user"
                   onClick={handleClick}
@@ -135,8 +138,11 @@ const Nav = () => {
                 onClose={handleClose}
                 MenuListProps={{ "aria-labelledby": "user-button" }}
               >
-                <MenuItem onClick={handleProfile} sx={{ color: "black" }}>
+                <MenuItem onClick={handleMySettings} sx={{ color: "black" }}>
                   Profile
+                </MenuItem>
+                <MenuItem onClick={handleDashboard} sx={{ color: "black" }}>
+                  Items
                 </MenuItem>
                 <MenuItem sx={{ color: "black" }}>
                   <Logout />
