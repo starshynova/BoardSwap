@@ -222,17 +222,19 @@ export default function OrderStepper({ cart, toggleCartItem }) {
             <Button
               disabled={activeStep === 0}
               onClick={handleNavigation(activeStep - 1)}
-              sx={{ mr: 1, ...formStyle.buttonSmall }}
+              sx={{ mr: 1, ...formStyle.buttonSmall, width: "100px" }}
               variant="contained"
-              color="secondary"
+              color="primary"
             >
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button
               onClick={handleNavigation(activeStep + 1)}
-              sx={{ mr: 1, width: "200px", borderRadius: "10px", mt: 2 }}
               disabled={activeStep === 2}
+              sx={{ mr: 1, ...formStyle.buttonSmall, width: "100px" }}
+              variant="contained"
+              color="primary"
             >
               Next
             </Button>
