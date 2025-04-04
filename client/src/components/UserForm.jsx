@@ -111,7 +111,6 @@ const UserForm = ({
         onChange={handleInputChange}
         error={!!errors.password}
         helperText={errors.password}
-        required
         sx={formStyle.input}
       />
 
@@ -121,7 +120,7 @@ const UserForm = ({
             variant="determinate"
             value={passwordStrength * 25}
             color={getProgressBarColor(passwordStrength)}
-            sx={{ mb: 1 }}
+            sx={{ zIndex: 1000, width: "100%" }}
           />
           <Typography
             variant="body2"
