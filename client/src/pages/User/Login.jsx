@@ -12,7 +12,7 @@ const Login = () => {
   const location = useLocation();
   const { login } = useContext(AuthContext);
   const [showWelcome, setShowWelcome] = useState(true);
-  const [welcomeText, setWelcomeText] = useState("Welcome Back");
+  const [welcomeText, setWelcomeText] = useState("Welcome Back to BoardSwap!");
 
   useEffect(() => {
     if (location.state?.from === "/order") {
