@@ -59,6 +59,13 @@ const UserForm = ({
   const getPasswordStrengthLabel = (strength) =>
     passwordStrengthLabels[strength] || "Very Weak";
 
+  useEffect(() => {
+    if (successMessage) {
+      const input = document.querySelector('input[name="password"]');
+      if (input) input.blur();
+    }
+  }, [successMessage]);
+
   return (
     <Box component="form" onSubmit={handleSubmit} sx={formStyle.boxSmall}>
       <Typography variant="h5" textAlign="center" mb={2}>
