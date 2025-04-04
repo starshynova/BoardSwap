@@ -65,7 +65,10 @@ const OrdersSection = ({
                       {new Date(order.createdAt).toLocaleString()}
                     </Typography>
                   </Box>
-                  <Typography variant="h6" sx={{ marginTop: "10px" }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ marginTop: "10px", color: "black" }}
+                  >
                     Items Purchased:
                   </Typography>
                   {order.items.map((item) => (
@@ -88,7 +91,7 @@ const OrdersSection = ({
                       <Box>
                         <Typography
                           variant="subtitle1"
-                          sx={{ fontWeight: "bold" }}
+                          sx={{ fontWeight: "bold", color: "black" }}
                         >
                           {item.title}
                         </Typography>
