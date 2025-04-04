@@ -11,7 +11,7 @@ const CartSummary = ({ totalPrice, clearCart }) => (
       <Typography variant="body2" color="text.secondary">
         Subtotal: €{totalPrice.toFixed(2)}
       </Typography>
-      <Typography variant="body2" color="green">
+      <Typography variant="body2" color="green" sx={{ display: "flex" }}>
         <LocalShippingIcon fontSize="small" sx={{ mr: 0.5 }} /> Free
       </Typography>
       <Typography variant="body2" fontWeight="bold" color="text.secondary">
