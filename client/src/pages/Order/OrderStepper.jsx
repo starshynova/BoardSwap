@@ -21,6 +21,7 @@ import { Alert, Snackbar, StepLabel } from "@mui/material";
 import { jwtDecode } from "jwt-decode";
 import { AuthContext } from "../../context/AuthContext";
 import DialogConfirmation from "./DialogConfirmation";
+import formStyle from "../../util/formStyle";
 
 const steps = ["Order summary", "Details", "Order Payment"];
 
@@ -221,7 +222,9 @@ export default function OrderStepper({ cart, toggleCartItem }) {
             <Button
               disabled={activeStep === 0}
               onClick={handleNavigation(activeStep - 1)}
-              sx={{ mr: 1, width: "200px", borderRadius: "10px", mt: 2 }}
+              sx={{ mr: 1, ...formStyle.buttonSmall }}
+              variant="contained"
+              color="secondary"
             >
               Back
             </Button>
