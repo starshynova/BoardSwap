@@ -19,7 +19,6 @@ const Register = () => {
         sx={{
           textAlign: "center",
           marginTop: "15px",
-          maxWidth: "800px",
         }}
       >
         Welcome to BoardSwap! Discover and trade second-hand board games and

@@ -5,6 +5,7 @@ import { Box, Typography } from "@mui/material";
 import OrdersSection from "../../components/UserDashboard/OrdersSection";
 import useFetch from "../../hooks/useFetch";
 import { AuthContext } from "../../context/AuthContext";
+import Heading from "../../components/Heading";
 
 const Dashboard = () => {
   const history = useNavigate();
@@ -68,9 +69,9 @@ const Dashboard = () => {
           marginBottom: 2,
         }}
       >
-        <Typography variant="h5" component="h2" color="secondary">
+        <Heading variant="h5" component="h2" color="secondary">
           Hi, {userName || "User"}!
-        </Typography>
+        </Heading>
       </Box>
 
       {error && <Typography color="error">{error}</Typography>}
