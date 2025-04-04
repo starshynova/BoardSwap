@@ -17,6 +17,9 @@ const ItemsSection = ({
   const handleNavigate = (id) => {
     navigate(`/items/${id}`);
   };
+  const handleEdit = (id) => {
+    navigate(`/items/edit/${id}`);
+  };
 
   return (
     <Box sx={{ py: "20px", px: "80px" }}>
@@ -126,7 +129,9 @@ const ItemsSection = ({
                       <DeleteButton onClick={() => handleDeleteClick(item)}>
                         Delete
                       </DeleteButton>
-                      <EditButton> Edit </EditButton>
+                      <EditButton onClick={() => handleEdit(item._id)}>
+                        Edit
+                      </EditButton>
                     </Box>
                   )}
                 </CardContent>
@@ -136,7 +141,7 @@ const ItemsSection = ({
 
           <Box
             style={{
-              marginTop: "10px",
+              marginTop: "20px",
               display: "flex",
               justifyContent: "center",
             }}

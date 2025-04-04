@@ -147,7 +147,7 @@ const Nav = () => {
                   Profile
                 </MenuItem>
                 <MenuItem onClick={handleDashboard} sx={{ color: "black" }}>
-                  Items
+                  My Items
                 </MenuItem>
 
                 <MenuItem onClick={handleMyOrders} sx={{ color: "black" }}>
