@@ -35,7 +35,6 @@ const Register = () => {
           width: "100%",
           maxWidth: "500px",
           backgroundColor: "white",
-          marginBottom: "40px",
         }}
       >
         <CreateUser />

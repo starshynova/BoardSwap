@@ -75,14 +75,15 @@ const Login = () => {
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        justifyContent: "center",
+        minHeight: "100vh",
         flexDirection: "column",
+        padding: "24px",
       }}
     >
       {showWelcome && (
-        <Typography variant="h4" component="h2" align="center">
+        <Typography variant="h5" align="center">
           {welcomeText}
         </Typography>
       )}
@@ -98,7 +99,7 @@ const Login = () => {
         isLogin={true}
       />
 
-      <div style={{ marginTop: "40px" }}>
+      <div>
         <ExploreGamesButton />
       </div>
     </div>
