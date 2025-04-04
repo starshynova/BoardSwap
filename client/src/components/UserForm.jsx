@@ -61,8 +61,11 @@ const UserForm = ({
 
   useEffect(() => {
     if (successMessage) {
-      const input = document.querySelector('input[name="password"]');
-      if (input) input.blur();
+      const fields = ["name", "email", "password"];
+      fields.forEach((fieldName) => {
+        const input = document.querySelector(`input[name="${fieldName}"]`);
+        if (input) input.blur();
+      });
     }
   }, [successMessage]);
 
