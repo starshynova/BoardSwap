@@ -107,7 +107,6 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           }
 
           const fullItem = await itemResponse.json();
-
           const itemData = fullItem.result;
 
           if (
@@ -180,6 +179,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
           </Step>
         ))}
       </Stepper>
+
       <div>
         <Fragment>
           <Box sx={{ mt: 2, mb: 1, py: 1 }}>
@@ -198,6 +198,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
                       product={product}
                       isInCart={cart.some((item) => item._id === product._id)}
                       toggleCartItem={toggleCartItem}
+                      isOrderStage={activeStep === 0} // Pass isOrderStage here
                     />
                   ))}
                 </Grid>
@@ -213,10 +214,11 @@ export default function OrderStepper({ cart, toggleCartItem }) {
             {activeStep === 2 && (
               <>
                 <PaymentForm onPaymentSuccess={handlePaymentSuccess} />
-                <DialogConfirmation></DialogConfirmation>
+                <DialogConfirmation />
               </>
             )}
           </Box>
+
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               disabled={activeStep === 0}
