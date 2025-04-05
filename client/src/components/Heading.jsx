@@ -8,7 +8,14 @@ const Heading = ({ children }) => {
       align="center"
       color="secondary"
       gutterBottom
-      sx={{ py: "10px", px: "10px", textAlign: "center", maxWidth: "800px" }}
+      sx={{
+        py: "10px",
+        px: "10px",
+        textAlign: "center",
+        maxWidth: "800px",
+        display: "flex",
+        justifySelf: "center",
+      }}
     >
       {children}
     </Typography>
