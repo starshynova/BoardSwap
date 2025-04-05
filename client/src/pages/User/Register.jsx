@@ -1,6 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import CreateUser from "./CreateUser";
 import ExploreGamesButton from "../../components/ExploreGamesButton";
+import Heading from "../../components/Heading";
 
 const Register = () => {
   return (
@@ -14,19 +15,16 @@ const Register = () => {
         p: 3,
       }}
     >
-      <Typography
-        variant="h5"
-        color="text.secondary"
+      <Heading
         sx={{
           textAlign: "center",
           marginTop: "15px",
-          maxWidth: "800px",
         }}
       >
         Welcome to BoardSwap! Discover and trade second-hand board games and
         puzzles. Save money, reduce waste, and give games a second life! Join
         now and start swapping!
-      </Typography>
+      </Heading>
 
       <Box
         sx={{
@@ -35,7 +33,6 @@ const Register = () => {
           width: "100%",
           maxWidth: "500px",
           backgroundColor: "white",
-          marginBottom: "40px",
         }}
       >
         <CreateUser />

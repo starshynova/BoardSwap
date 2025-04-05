@@ -9,7 +9,13 @@ const ExploreGamesButton = () => {
       onClick={() => navigate("/")}
       variant="outlined"
       color="secondary"
-      sx={{ px: 4, py: 1.5, fontSize: "1rem", fontWeight: "bold" }}
+      sx={{
+        px: 4,
+        py: 1.5,
+        fontSize: "1rem",
+        fontWeight: "bold",
+        backgroundColor: "white",
+      }}
     >
       Explore Games
     </Button>

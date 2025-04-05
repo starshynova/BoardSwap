@@ -4,15 +4,15 @@ import { AuthContext } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import UserForm from "../../components/UserForm";
 import { jwtDecode } from "jwt-decode";
-import { Typography } from "@mui/material";
 import ExploreGamesButton from "../../components/ExploreGamesButton";
+import Heading from "../../components/Heading";
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useContext(AuthContext);
   const [showWelcome, setShowWelcome] = useState(true);
-  const [welcomeText, setWelcomeText] = useState("Welcome Back");
+  const [welcomeText, setWelcomeText] = useState("Welcome Back to BoardSwap!");
 
   useEffect(() => {
     if (location.state?.from === "/order") {
@@ -75,17 +75,14 @@ const Login = () => {
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        justifyContent: "center",
+        minHeight: "100vh",
         flexDirection: "column",
+        padding: "24px",
       }}
     >
-      {showWelcome && (
-        <Typography variant="h4" component="h2" align="center">
-          {welcomeText}
-        </Typography>
-      )}
+      {showWelcome && <Heading>{welcomeText}</Heading>}
 
       <UserForm
         formData={formData}
@@ -98,7 +95,7 @@ const Login = () => {
         isLogin={true}
       />
 
-      <div style={{ marginTop: "40px" }}>
+      <div>
         <ExploreGamesButton />
       </div>
     </div>

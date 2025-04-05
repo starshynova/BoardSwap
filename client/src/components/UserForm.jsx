@@ -59,6 +59,16 @@ const UserForm = ({
   const getPasswordStrengthLabel = (strength) =>
     passwordStrengthLabels[strength] || "Very Weak";
 
+  useEffect(() => {
+    if (successMessage) {
+      const fields = ["name", "email", "password"];
+      fields.forEach((fieldName) => {
+        const input = document.querySelector(`input[name="${fieldName}"]`);
+        if (input) input.blur();
+      });
+    }
+  }, [successMessage]);
+
   return (
     <Box component="form" onSubmit={handleSubmit} sx={formStyle.boxSmall}>
       <Typography variant="h5" textAlign="center" mb={2}>
@@ -111,7 +121,6 @@ const UserForm = ({
         onChange={handleInputChange}
         error={!!errors.password}
         helperText={errors.password}
-        required
         sx={formStyle.input}
       />
 
@@ -121,7 +130,7 @@ const UserForm = ({
             variant="determinate"
             value={passwordStrength * 25}
             color={getProgressBarColor(passwordStrength)}
-            sx={{ mb: 1 }}
+            sx={{ zIndex: 1000, width: "100%" }}
           />
           <Typography
             variant="body2"

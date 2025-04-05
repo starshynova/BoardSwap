@@ -5,6 +5,7 @@ import ItemsSection from "../../components/UserDashboard/ItemsSection";
 import DeleteConfirmationDialog from "../../components/UserDashboard/DeleteConfirmationDialog";
 import useFetch from "../../hooks/useFetch";
 import { AuthContext } from "../../context/AuthContext";
+import Heading from "../../components/Heading";
 
 const Dashboard = () => {
   const history = useNavigate();
@@ -75,9 +76,7 @@ const Dashboard = () => {
           marginBottom: 2,
         }}
       >
-        <Typography variant="h5" component="h2" color="secondary">
-          Hi, {userName || "User"}!
-        </Typography>
+        <Heading>Hi, {userName || "User"}!</Heading>
       </Box>
 
       {error && <Typography color="error">{error}</Typography>}

@@ -151,7 +151,7 @@ const Nav = () => {
                 </MenuItem>
 
                 <MenuItem onClick={handleMyOrders} sx={{ color: "black" }}>
-                  Orders
+                  My Orders
                 </MenuItem>
                 <MenuItem sx={{ color: "black" }}>
                   <Logout />

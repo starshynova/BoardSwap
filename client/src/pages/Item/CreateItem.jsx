@@ -31,7 +31,10 @@ const CreateItem = () => {
           >
             <Typography variant="h5" textAlign="center">
               You should be <br />
-              <Link to="/login">
+              <Link
+                to="/login"
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
                 <Typography variant="h5" component="span" color="#47CAD1">
                   logged in
                 </Typography>
