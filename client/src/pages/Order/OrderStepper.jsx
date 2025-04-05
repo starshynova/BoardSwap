@@ -189,7 +189,7 @@ export default function OrderStepper({ cart, toggleCartItem }) {
                 <Typography variant="h6">
                   Items in cart: {cart.length}
                 </Typography>
-                <Typography variant="h6">
+                <Typography variant="h6" sx={{ mb: "20px" }}>
                   Total amount: €{totalAmount}
                 </Typography>
                 <Grid container spacing={2}>
