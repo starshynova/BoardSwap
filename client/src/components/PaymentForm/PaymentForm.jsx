@@ -104,7 +104,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
 
   return (
     <>
-      <Card sx={formStyle.boxSmall}>
+      <Card sx={{ ...formStyle.boxSmall, my: "40px" }}>
         <Typography variant="h5" align="center" gutterBottom>
           Payment Details
         </Typography>
