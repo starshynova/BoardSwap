@@ -18,6 +18,18 @@ Each user has a personal profile, can manage their listed products, add games to
     - Place and view orders.
     - See a final page with order details.
     - Secure storage of user and product data.
+3. **Shopping Process**
+    - The user adds games to the cart.
+    - The cart can be viewed and updated.
+    - When placing an order, an order document is created, and the items are marked as sold.
+
+## Tech Stack
+- **Frontend:** React/MUI
+- **Backend:** Node.js + Express
+- **Database:** MongoDB
+- **Deployment:** Heroku
+- **Domain:** https://c50-group-b-c5689f722e00.herokuapp.com
+
 
 ## Database Structure
 
@@ -121,6 +133,11 @@ postcode: {
 },
 }
 ```
+
+## Structure of the project
+
+```
+Project structure:
 
   
 
