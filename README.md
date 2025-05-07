@@ -1,119 +1,127 @@
-`TODO: Add a nice screenshot of the app!`
+# BoardSwap
 
-# Cohort XX final project
+You can try this app by visiting [BoardSwap](https://c50-group-b-c5689f722e00.herokuapp.com/)
 
-This is the final project for the HackYourFuture curriculum we did as a cohort using the [MERN stack](https://www.mongodb.com/resources/languages/mern-stack) by following the agile methodology with our team and a group of mentors. A quick guide to what we built:
+## Overview
 
-> TODO: Add short description of the app
+**BoardSwap** is a web application for buying and selling board games. Users can create accounts, list their games for sale, browse items posted by others, and place orders. The project is built using **React**, **Node.js**, **MongoDB**, **MUI**.
+Each user has a personal profile, can manage their listed products, add games to their shopping cart, and complete purchases.
 
-`[Click here for the Demo version](TODO: add link)`
+## Usage
 
-## 1. Setup
+1. **User Authentication**
+    The user registers with the name,  email and password. Upon login, the user receives a JWT token that is stored in localStorage.
+2. **Main Features**
+    - Create and edit listings for selling products
+    - View product cards with photo, description, price, and condition (new/like new/used)
+    - Add products to the shopping cart
+    - Place and view orders.
+    - See a final page with order details.
+    - Secure storage of user and product data.
 
-First, to setup all the directories run the following in the main directory:
+## Database Structure
 
-`npm install`
-
-`npm run setup`
-
-The first command will install `cypress` and some small libraries needed for running the rest of the commands. The second will go into the `client` and `server` directories and set those up to be ran.
-
-In the `client` and `server` directory there are two `.env.example` files. Create a copy and rename that to `.env`. Then follow the instructions in those files to fill in the right values.
-
-To run the app in dev mode you can run the following command in the main directory:
-
-`npm run dev`
-
-## 2. Code structure
+1. **items**
 
 ```
-client
-├── public
-└── src
-|   └── __tests__
-|   └── __testUtils__
-|   └── components
-|   └── hooks
-|   └── pages
-|       └── __tests__
-|       └── components
-|   └── util
-|   index.jsx
-cypress
-|   └── fixtures
-|   └── integration
-|   └── plugins
-|   └── support
-server
-└── src
-    └── __tests__
-    └── __testUtils__
-    └── controllers
-    └── db
-    └── models
-    └── routes
-    └── util
-    index.js
+_id: { type: ObjectId, required: true },
+title: { type: String, required: true },
+price: { type: Number, required: true, min: 0 },
+type: { type: String, required: true, enum: ["Puzzle", "Board Game"] },
+condition: {
+  type: String,
+  required: true,
+  enum: ["New", "Like New", "Used"],
+},
+photo_name: { type: String, required: false, default: "" },
+photo: {
+  type: String,
+  required: false,
+  default:
+    "https://res.cloudinary.com/dogm5xki5/image/upload/v1742978122/qfsn7oqaob87rxurw5xq.jpg",
+},
+description: { type: String, required: false, maxLength: 300 },
+created_date: { type: Date, default: Date.now },
+seller_id: {
+  type: mongoose.Schema.Types.ObjectId,
+  required: true,
+  ref: "users",
+},
+status: { type: String, required: true, enum: ["Available", "Sold"] }
 ```
 
-### 2.1 Client structure
+2. **users**
 
-- `public` || public facing client code
-- `__tests__` || any `jest` tests for specific components will be in a `__tests__` folder on the same level
-- `__testUtils__` || any code that is only being used in the tests is put in the `__testUtils__` folder to separate that away from the rest of the code
-- `components` || all of our shared components that are used over multiple pages
-- `hooks` || all of our custom hooks
-- `pages` || the page components of our app, any routing will go between these components
-- `pages/components` || components used specifically on those pages
-- `util` || any utility functions that can be used anywhere on the client side
-- `main.jsx` || the start point of the client
-- `vite.config.js` || to configure vite
+```
+_id: { type: ObjectId, required: true },
+name: { type: String, minLength: 2, required: true },
+email: { type: String, required: true, unique: true },
+password: { type: String, required: true, minlength: 8 },
+post_code: { type: String, minLength: 6, maxLength: 6, required: false },
+city: { type: String, minLength: 2, maxLength: 15, required: false },
+created_date: { type: Date, default: Date.now },
+items: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "items",
+  },
+],
+orders: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Order",
+  },
+]
+```
 
-### 2.2 Cypress structure
+3. **orders**
 
-- `fixtures` || any data/files that `cypress` needs can be placed here
-- `integration` || all of our tests are in here, separated in folders based on the pages in our app
-- `plugins` || any plugins for our `cypress` configuration can be placed here
-- `support` || custom commands and other support files for `cypress` can be placed here
+```
+{
+_id: { type: ObjectId, required: true },
+user_id: {
+  type: mongoose.Schema.Types.ObjectId,
+  required: true,
+  ref: "users",
+},
+items: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "items",
+    required: true,
+  },
+],
+total_price: {
+  type: Number,
+  required: true,
+},
+address: {
+  type: String,
+  required: true,
+},
+city: {
+  type: String,
+  required: true,
+},
+email: {
+  type: String,
+  required: true,
+},
+firstName: {
+  type: String,
+  required: true,
+},
+lastName: {
+  type: String,
+  required: true,
+},
+postcode: {
+  type: String,
+  required: true,
+},
+}
+```
 
-### 2.3 Server structure
+  
 
-- `__tests__` || any `jest` tests for the api endpoints as that is our testing strategy for the backend
-- `__testUtils__` || any code that is only being used in the tests is put in the `__testUtils__` folder to separate that away from the rest of the code
-- `controllers` || all of our controller functions that interact with the database
-- `db` || all of our configuration for the database
-- `models` || all of our `mongoose` models will be placed here
-- `routes` || code to match up the API with our controllers
-- `util` || any utility functions that can be used anywhere on the server side
-- `index.js` || the start point of the server
 
-## 3. Stack / external libraries
-
-The base stack of the app is a MERN stack (Mongoose, Express, React, Node). Next to that we make use of the following extras:
-
-### 3.1 Configuration libraries
-
-- `dotenv` || To load the .env variables into the process environment. See [docs](https://www.npmjs.com/package/dotenv)
-- `vite` || To bundle our React app and create a static app to host. See [docs](https://vite.dev/)
-- `husky` || To run our tests and linter before committing. See [docs](https://typicode.github.io/husky/#/)
-- `eslint` || To check our code. We have different configurations for frontend and backend. You can check out the configuration in the `.eslintrc.(c)js` files in the respective `client` and `server` folders. See [docs](https://eslint.org/)
-- `prettier` || To automatically format our code. See [docs](https://prettier.io/)
-- `concurrently` || To run commands in parallel. See [docs](https://github.com/open-cli-tools/concurrently#readme)
-
-For more information on how these work together including the automatic deployment to heroku, have a look at our detailed [DEV](./DEV.md) file.
-
-### 3.2 Client-side libraries
-
-- `@testing-library/*` || We use React Testing Library to write all of our tests. See [docs](https://testing-library.com/docs/react-testing-library/intro/)
-- `jest` || To run our tests and coverage. See [docs](https://jestjs.io/)
-- `jest-fetch-mock` || To mock out the backend for our testing purposes. See [docs](https://github.com/jefflau/jest-fetch-mock#readme)
-- `prop-types` || To type-check our components. See [docs](https://github.com/facebook/prop-types)
-
-### 3.3 Server-side libraries
-
-- `nodemon` || To automatically restart the server when in development mode. See [docs](https://nodemon.io/)
-- `jest` || To run our tests and coverage. See [docs](https://jestjs.io/)
-- `supertest` || To more easily test our endpoints. See [docs](https://github.com/visionmedia/supertest#readme)
-- `mongodb-memory-server` || To mock out our database in our backend tests. See [docs](https://github.com/nodkz/mongodb-memory-server)
-- `cors` || To open up our API. See [docs](https://github.com/expressjs/cors#readme)
-- `mongoose` || To add schemas to our database. See [docs](https://mongoosejs.com/)
