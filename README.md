@@ -139,6 +139,163 @@ postcode: {
 ```
 Project structure:
 
+├── .github
+│   └── workflows
+│       ├── client-code-style-check.yml
+│       └── server-code-style-check.yml
+├── .gitignore
+├── .husky
+│   └── pre-commit
+├── .prettierrc.json
+├── .vscode
+│   └── settings.json
+├── client
+│   ├── .babelrc
+│   ├── .eslintrc.js
+│   ├── babel.config.json
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── jest.config.js
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   │   ├── background.png
+│   │   ├── favicon.png
+│   │   ├── Logo.svg
+│   │   └── Puzzle.png
+│   ├── setupTests.js
+│   ├── src
+│   │   ├── App.jsx
+│   │   ├── AppWrapper.jsx
+│   │   ├── components
+│   │   │   ├── Buttons
+│   │   │   │   ├── DeleteButton.jsx
+│   │   │   │   └── EditButton.jsx
+│   │   │   ├── Cart
+│   │   │   │   ├── Cart.jsx
+│   │   │   │   ├── CartHeader.jsx
+│   │   │   │   ├── CartItem.jsx
+│   │   │   │   ├── CartSummary.jsx
+│   │   │   │   └── CartUI.styles.js
+│   │   │   ├── CreateItemForm.jsx
+│   │   │   ├── EditItemForm.jsx
+│   │   │   ├── ExploreGamesButton.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   ├── Heading.jsx
+│   │   │   ├── Input.jsx
+│   │   │   ├── ItemDetailsForm.jsx
+│   │   │   ├── Loader.jsx
+│   │   │   ├── LoadingErrorMessage.jsx
+│   │   │   ├── Logout.jsx
+│   │   │   ├── Nav.jsx
+│   │   │   ├── Nav.testid.js
+│   │   │   ├── PaymentForm
+│   │   │   │   ├── PaymentForm.jsx
+│   │   │   │   └── validators.js
+│   │   │   ├── ProductCard.jsx
+│   │   │   ├── ProductList.jsx
+│   │   │   ├── SearchBar
+│   │   │   │   ├── SearchBar.jsx
+│   │   │   │   └── SearchBar.styles.js
+│   │   │   ├── SearchResultsHeader.jsx
+│   │   │   ├── ShareButton.jsx
+│   │   │   ├── SortDropdown.jsx
+│   │   │   ├── Stepper.jsx
+│   │   │   ├── Tabs.jsx
+│   │   │   ├── theme.jsx
+│   │   │   ├── UserDashboard
+│   │   │   │   ├── DeleteConfirmationDialog.jsx
+│   │   │   │   ├── ItemsSection.jsx
+│   │   │   │   └── OrdersSection.jsx
+│   │   │   ├── UserForm.jsx
+│   │   │   ├── UserProfileUI.jsx
+│   │   │   └── WarningMessage.jsx
+│   │   ├── context
+│   │   │   ├── AuthContext.jsx
+│   │   │   ├── AuthProvider.jsx
+│   │   │   ├── index.jsx
+│   │   │   ├── SearchContext.jsx
+│   │   │   ├── UIContext.jsx
+│   │   │   └── UIProvider.jsx
+│   │   ├── hooks
+│   │   │   ├── useFetch.js
+│   │   │   └── useForm.jsx
+│   │   ├── index.css
+│   │   ├── main.jsx
+│   │   ├── pages
+│   │   │   ├── Home
+│   │   │   │   └── Home.jsx
+│   │   │   ├── Item
+│   │   │   │   ├── CreateItem.jsx
+│   │   │   │   ├── EditItem.jsx
+│   │   │   │   └── ItemDetails.jsx
+│   │   │   ├── NotFound
+│   │   │   │   └── NotFound.jsx
+│   │   │   ├── Order
+│   │   │   │   ├── DialogConfirmation.jsx
+│   │   │   │   ├── Order.jsx
+│   │   │   │   ├── OrderConfirmation.jsx
+│   │   │   │   ├── OrderForm.jsx
+│   │   │   │   └─── OrderStepper.jsx
+│   │   │   ├── User
+│   │   │   │   ├── CreateUser.jsx
+│   │   │   │   ├── CreateUser.testid.js
+│   │   │   │   ├── Dashboard.jsx
+│   │   │   │   ├── Login.jsx
+│   │   │   │   ├── Orders.jsx
+│   │   │   │   ├── Profile.jsx
+│   │   │   │   ├── Register.jsx
+│   │   │   │   ├── UserList.jsx
+│   │   │   │   └── UserList.testid.js
+│   │   ├── routes
+│   │   │   ├── AppRoutes.jsx
+│   │   │   └── PrivateRoute.jsx
+│   │   └── util
+│   │       ├── createTestIdFilePath.js
+│   │       ├── formStyle.js
+│   │       ├── uploadImage.js
+│   │       └── validations.jsx
+│   ├── vite.config.js
+│   └── __mocks__
+│       ├── fileMock.js
+│       └── styleMock.js
+├── generateStructure.js
+├── package-lock.json
+├── package.json
+├── Procfile
+├── README.md
+└── server
+    ├── .eslintrc.cjs
+    ├── babel.config.cjs
+    ├── jest.config.js
+    ├── package-lock.json
+    ├── package.json
+    └── src
+        ├── app.js
+        ├── controllers
+        │   ├── item-controller.js
+        │   ├── order-controller.js
+        │   └── user-controller.js
+        ├── db
+        │   └── connectDB.js
+        ├── index.js
+        ├── middleware
+        │   └── authMiddleware.js
+        ├── models
+        │   ├── item-model.js
+        │   ├── order-model.js
+        │   └── user-model.js
+        ├── routes
+        │   ├── item-route.js
+        │   ├── order-route.js
+        │   └── user-route.js
+        ├── testRouter.js
+        └── util
+            ├── logging.js
+            ├── validateAllowedFields.js
+            └── validationErrorMessage.js
+```
+
   
 
 
