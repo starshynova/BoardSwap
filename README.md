@@ -23,12 +23,28 @@ Each user has a personal profile, can manage their listed products, add games to
     - The cart can be viewed and updated.
     - When placing an order, an order document is created, and the items are marked as sold.
 
+
 ## Tech Stack
-- **Frontend:** React/MUI
-- **Backend:** Node.js + Express
-- **Database:** MongoDB
-- **Deployment:** Heroku
-- **Domain:** https://c50-group-b-c5689f722e00.herokuapp.com
+
+### Client side
+
+1. React
+2. MUI
+
+### Server side
+
+1. Node.js
+2. Express.js
+3. MongoDB
+
+### Deployment
+
+Heroku.com
+
+### Domain
+
+https://c50-group-b-c5689f722e00.herokuapp.com
+
 
 
 ## Database Structure
